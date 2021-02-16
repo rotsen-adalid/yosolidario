@@ -1,0 +1,109 @@
+<x-slot name="title">
+    {{__('My campaigns')}} : YoSolidario
+</x-slot>
+<x-slot  name="seo">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@iconscout/unicons@3.0.6/css/line.css">
+</x-slot>
+<div class="bg-white">
+<x-section-content>
+    <x-slot name="header">
+        <header class="bg-gray-50 shadow pt-2 mb-4 sm:mb-10"> 
+            <div class="sm:flex justify-between items-start max-w-7xl mx-auto px-4 sm:px-0 lg:px-0 pb-6 space-y-2">
+                <h2 class="flex items-center font-semibold text-xl text-black leading-tight pt-4">
+                    <a class="underline hover:text-gray-900" href="{{ route('campaign/update',  $this->slug) }}">
+                        {{ __('Edit campaign') }}
+                    </a>
+                </h2>
+            </div>
+        </header>
+    </x-slot>
+    <x-slot  name="content">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-10 rounded-lg">
+            <div class="lg:col-span-2">
+                <livewire:preview.cover-page :slug="$slug"/>
+            </div>
+            <div class="px-4">
+              <!-- organizer -->
+                <livewire:preview.organizer :slug="$slug"/>
+                <livewire:preview.counters :slug="$slug"/>
+            </div>
+        </div>
+        <!-- --> 
+        <div class=" grid grid-cols-1 md:grid-cols-3 md:gap-10 rounded-lg">
+            <div class="lg:col-span-2">
+                <!-- -->
+                <div class="text-base text-black px-4 sm:px-0"> <!--  activeClasses: 'border-l border-t border-r rounded-t text-ys1 font-bold capitalize', -->
+                    <div 
+                        x-data="{
+                        openTab: window.location.hash ? window.location.hash.substring(1) : 'about',
+                        activeClasses: 'bg-white shadow border-b border-ys1 text-ys1  capitalize',
+                        inactiveClasses: 'hover:text-green-500 capitalize'
+                        }" 
+                        class="py-6 "
+                    >
+                    <ul class="flex border-b shadow overflow-x-auto overflow-y-hidden" >
+                        <li @click.prevent="openTab = 'about'; window.location.hash = 'about'" :class="{ '-mb-px': openTab === 'about' }" class="-mb-px mr-1">
+                            <a :class="openTab === 'about' ? activeClasses : inactiveClasses" 
+                            class="bg-white inline-block py-3 px-5 font-semibold" href="#">
+                            {{__('about')}}
+                        </a>
+                        </li>
+                        <li class="md:hidden" @click.prevent="openTab = 'recognitions'; window.location.hash = 'recognitions'" :class="{ '-mb-px': openTab === 'recognitions' }" class="mr-1">
+                            <a :class="openTab === 'recognitions' ? activeClasses : inactiveClasses" 
+                            class="bg-white inline-block py-3 px-5 font-semibold" href="#">
+                                {{__('recognitions')}}
+                            </a>
+                        </li>
+                        <li @click.prevent="openTab = 'updates'; window.location.hash = 'updates'" :class="{ '-mb-px': openTab === 'updates' }" class="mr-1">
+                            <a :class="openTab === 'updates' ? activeClasses : inactiveClasses" 
+                            class="bg-white inline-block py-3 px-5 font-semibold" href="#">
+                                {{__('updates')}}
+                            </a>
+                        </li>
+                        <li @click.prevent="openTab = 'collaborators'; window.location.hash = 'collaborators'" :class="{ '-mb-px': openTab === 'collaborators' }" class="mr-1">
+                            <a :class="openTab === 'collaborators' ? activeClasses : inactiveClasses" 
+                            class="bg-white inline-block py-3 px-5 font-semibold" href="#">
+                                {{__('collaborators')}}
+                            </a>
+                        </li>
+                        <li @click.prevent="openTab = 'comments'; window.location.hash = 'comments'" :class="{ '-mb-px': openTab === 'comments' }" class="mr-1">
+                            <a :class="openTab === 'comments' ? activeClasses : inactiveClasses" 
+                            class="bg-white inline-block py-3 px-5 font-semibold" href="#">
+                                {{__('comments')}}
+                            </a>
+                        </li>
+                    </ul>
+                
+                    <div class="w-full pt-4">
+                        <div x-show="openTab === 'about'">
+                        <livewire:preview.about :slug="$slug"/>
+                        </div>
+                        <div class="md:hidden" x-show="openTab === 'recognitions'">
+                            <livewire:preview.recognitions :slug="$slug"/>
+                        </div>
+                        <div x-show="openTab === 'updates'">
+                        <livewire:preview.updates :slug="$slug"/>
+                        </div>
+                        <div x-show="openTab === 'collaborators'">
+                        <livewire:preview.collaborators :slug="$slug"/>
+                        </div>
+                        <div x-show="openTab === 'comments'">
+                        <livewire:preview.comments :slug="$slug"/>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <!-- -->
+            </div>
+            <div>
+              <!-- organizer -->
+              <div class="hidden md:block">
+                <livewire:preview.recognitions :slug="$slug"/>
+              </div>
+            </div>
+        </div>
+        <!-- --> 
+    </x-slot>
+</x-section-content>
+</div>
+<livewire:footer/>
