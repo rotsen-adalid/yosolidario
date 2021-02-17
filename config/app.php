@@ -178,7 +178,7 @@ return [
         App\Providers\JetstreamServiceProvider::class,
 
         Laraveles\Spanish\SpanishServiceProvider::class,
-        Merujan99\LaravelVideoEmbed\Providers\LaravelVideoEmbedServiceProvider::class,
+        Spatie\Permission\PermissionServiceProvider::class,
     ],
 
     /*

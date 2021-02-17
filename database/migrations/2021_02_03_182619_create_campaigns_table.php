@@ -43,7 +43,7 @@ class CreateCampaignsTable extends Migration
             $table->text('locality')->nullable();
             
             $table->integer('telephone_country_id');
-            $table->foreign('telephone_country_id')->references('id')->on('countries')->onDelete('set null')->onUpdate('cascade');
+            //$table->foreign('telephone_country_id')->references('id')->on('countries')->onDelete('set null')->onUpdate('cascade');
             
             $table->integer('telephone');
 

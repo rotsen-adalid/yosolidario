@@ -54,7 +54,7 @@ class CreateCampaignQuestionsTable extends Migration
             $table->longText('question_body_add_en')->nullable();
             $table->longText('question_body_add_pt_BR')->nullable();
             $table->string('question_url_add')->nullable();
-            
+
             $table->unsignedBigInteger('campaign_id')->unique();
             $table->foreign('campaign_id')->references('id')->on('campaigns')->onDelete('cascade')->onUpdate('cascade');
 

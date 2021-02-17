@@ -11,9 +11,10 @@ use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
 
-use App\Models\Telephone;
 use App\Models\Campaign;
 use App\Models\Country;
+//use App\Traits\UserTrait;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable // implements MustVerifyEmail
 {
@@ -23,7 +24,8 @@ class User extends Authenticatable // implements MustVerifyEmail
     use HasTeams;
     use Notifiable;
     use TwoFactorAuthenticatable;
-
+    use HasRoles;
+    //use UserTrait;
     /**
      * The attributes that are mass assignable.
      *
@@ -76,7 +78,7 @@ class User extends Authenticatable // implements MustVerifyEmail
     }*/
     
     // uno a uno
-    public function personaInformation() {
+    public function personalInformation() {
         return $this->hasMany(PersonalInformation::class);
     }
 
@@ -96,43 +98,14 @@ class User extends Authenticatable // implements MustVerifyEmail
         return $this->belongsTo(Country::class);
     }
 
-    // muchos a muchos
-    public function accesess()
-    {
-        return $this->belongsToMany(Access::class)->withTimestamps();
-    }
-
     // relacion polimorfica uno a uno
     public function image() {
         return $this->morphOne(Image::class, 'imageable');
     }
-
-    public function authorizeAccesses($roles)
-    {
-        abort_unless($this->hasAnyAccess($roles), 401);
-        return true;
-    }
-    public function hasAnyAccess($roles)
-    {
-        if (is_array($roles)) {
-            foreach ($roles as $role) {
-                if ($this->hasAccess($role)) {
-                    return true;
-                }
-            }
-        } else {
-            if ($this->hasAccess($roles)) {
-                return true; 
-            }   
-        }
-        return false;
-    }
-    public function hasAccess($role)
-    {
-        if ($this->accesses()->where('name', $role)->first()) {
-            return true;
-        }
-        return false;
-    }
     
+     // uno a muchos inversa
+     public function agency()
+     {
+         return $this->belongsTo(Agency::class);
+     }
 }

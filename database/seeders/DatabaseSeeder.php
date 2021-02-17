@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Agency;
 use App\Models\Campaign;
 use App\Models\Organization;
 use App\Models\Profile;
@@ -23,14 +24,15 @@ class DatabaseSeeder extends Seeder
         Storage::deleteDirectory('public/campaign_question_image');
         Storage::deleteDirectory('public/profile-photos');
         Storage::makeDirectory('public/campaign_image');
+        $this->call(RoleSeeder::class);
         $this->call([
             CountrySeeder::class,
-            AccessSeeder::class, 
-            UserSeeder::class,
+            BankSeeder::class,
+            AgencySeeder::class,
             CategoryCampaignSeeder::class
         ]);
+        $this->call(UserSeeder::class);
         Organization::factory(1)->create();
-        //$this->call(CampaignSeeder::class);
         Profile::factory(1)->create();
     }
 }

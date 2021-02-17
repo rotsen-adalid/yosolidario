@@ -15,16 +15,42 @@ class CreatePersonalInformationTable extends Migration
     {
         Schema::create('personal_information', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 100);
-            $table->string('last_name', 100);
-            $table->enum('identification_type',['IDENTIFICATION', 'PASSPORT'])->default('IDENTIFICATION');
-            $table->string('identification',100);
-
-            $table->unsignedBigInteger('user_id')->unique()->nullable();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null')->onUpdate('cascade');
-            
+            $table->string('name', 100)->nullable();
+            $table->string('last_name', 100)->nullable();
+            $table->enum('identification_type',['IDENTIFICATION', 'PASSPORT'])->default('IDENTIFICATION')->nullable();
+            $table->string('identification')->nullable();
+            $table->string('identification_exp')->nullable();
+            $table->string('identification_obverse_path')->nullable();
+            $table->string('identification_back_path')->nullable();
             $table->string('telephone')->nullable();
             $table->string('telephone_movil')->nullable();
+            $table->string('email')->nullable();
+
+            $table->text('address')->nullable();
+            $table->string('longitude')->nullable();
+            $table->string('latigude')->nullable();
+            $table->string('locality')->nullable();
+
+            $table->string('face_path')->nullable();
+            $table->text('address_document_path')->nullable();
+            $table->enum('marital_status',['SINGLE', 'MARRIED', 'WIDOWER'])->default('SINGLE')->nullable();
+            $table->enum('gender',['MEN', 'WOMAN'])->default('MEN');
+
+            $table->text('reference_contact')->nullable();
+
+            $table->unsignedBigInteger('user_id')->unique();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+
+            $table->unsignedBigInteger('country_id')->nullable();
+            $table->foreign('country_id')->references('id')->on('countries')->onDelete('set null')->onUpdate('cascade');
+
+            $table->string('bank_account_number')->nullable();
+            $table->unsignedBigInteger('bank_id')->nullable();
+            $table->foreign('bank_id')->references('id')->on('banks')->onDelete('set null')->onUpdate('cascade');
+
+            $table->enum('status',['UNVERIFIED', 'VERIFIED'])->default('UNVERIFIED')->nullable();
+            $table->text('search')->nullable();
+
             $table->timestamps();
         });
     }

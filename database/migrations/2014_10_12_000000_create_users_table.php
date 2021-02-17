@@ -23,11 +23,15 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->foreignId('current_team_id')->nullable();
             $table->text('profile_photo_path')->nullable();
-
+            
             $table->unsignedBigInteger('country_id')->nullable();
             $table->foreign('country_id')->references('id')->on('countries')->onDelete('set null')->onUpdate('cascade');
             
+            $table->unsignedBigInteger('agency_id')->nullable();
+            $table->foreign('agency_id')->references('id')->on('agencies')->onDelete('set null')->onUpdate('cascade');
+
             $table->enum('status',['UNVERIFIED', 'VERIFIED'])->default('UNVERIFIED');
+            $table->enum('access_adm',['YES', 'NO'])->default('NO');
 
             $table->text('search')->nullable();
 

@@ -47,7 +47,6 @@ class CampaignFactory extends Factory
             'country_id' => 1,
             'organization_id' => 1,
             'user_id' => User::all()->random()->id,
-            
         ];
     }
 }
