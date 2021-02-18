@@ -20,17 +20,17 @@
            
             <div class="col-span-6 pt-5 sm:py-10">
                 <h1 class="text-center sm:text-left font-bold text-2xl sm:text-4xl md:text-5xl max-w-xl text-gray-900 leading-tight">
-                {{ __('Recauda fondos hoy para las causas que mas te mueven') }}
+                {{ __('Raise funds today for the causes that move you the most') }}
                 </h1>
                <!-- 
                  <hr class="item-center w-12 h-1 bg-orange-500 rounded-full mt-4 sm:mt-8">
                -->
                 <p class="text-center sm:text-left text-gray-800 text-base leading-relaxed mt-6 sm:mt-8 font-semibold">
-                {{ __('Se aplican comiciones por transaccion') }}
+                {{ __('Transaction fees apply') }}
                 </p>
                 <div class="get-app flex space-x-5 mt-2 sm:mt-10 justify-center md:justify-start">
                     <button wire:click="createCampaign" wire:loading.attr="disabled" class="focus:outline-none text-white bg-ys1 shadow-md px-3 py-2 rounded-full flex items-center space-x-4 hover:text-white mt-4 hover:bg-ys2">
-                    {{ __('Crear Campana') }}
+                    {{ __('Create Campaign') }}
                     </button>
                     
                 </div>
