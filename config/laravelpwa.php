@@ -7,7 +7,7 @@ return [
         'short_name' => 'YS',
         'start_url' => '/',
         'background_color' => '#ffffff',
-        'theme_color' => '#000000',
+        'theme_color' => '#02a85c',
         'display' => 'standalone',
         'orientation'=> 'any',
         'status_bar'=> 'black',
