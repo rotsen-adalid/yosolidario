@@ -21,6 +21,10 @@ Route::get('/', function () {
 use App\Http\Livewire\Home;
 Route::get('/', Home::class)->name('home');
 
+Route::get('/offline', function () {
+    return view('vendor/laravelpwa/offline');
+});
+
 Route::get('welcome', function () {
     App::setLocale('es'); 
     session()->put('locale', 'es');

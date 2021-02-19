@@ -278,6 +278,7 @@
             </div>
         </div>
         @else
+            <div class="border-t border-gray-200"></div>
             <div class="pt-2 pb-3 space-y-1">
                 <x-jet-responsive-nav-link href="{{ route('login') }}" :active="request()->routeIs('login')">
                     {{ __('Login ') }}
