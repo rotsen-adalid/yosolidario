@@ -189,8 +189,20 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" x-on:click.away="open = false" class="hidden sm:hidden ">
         <div class="pt-2 pb-3 space-y-1">
-            <x-jet-responsive-nav-link href="{{ url('dashboard') }}" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
+            <x-jet-responsive-nav-link href="{{ route('campaign/create') }}" :active="request()->routeIs('campaign/create')">
+                {{ __('Create campaign ') }}
+            </x-jet-responsive-nav-link>
+        </div>
+
+        <div class="pt-2 pb-3 space-y-1">
+            <x-jet-responsive-nav-link href="{{ route('campaign/create') }}" :active="request()->routeIs('campaign/create')">
+                {{ __('Campaigns') }}
+            </x-jet-responsive-nav-link>
+        </div>
+
+        <div class="pt-2 pb-3 space-y-1">
+            <x-jet-responsive-nav-link href="{{ route('campaign/create') }}" :active="request()->routeIs('campaign/create')">
+                {{ __('How it works? ') }}
             </x-jet-responsive-nav-link>
         </div>
 
@@ -266,40 +278,11 @@
             </div>
         </div>
         @else
-            login
+            <div class="pt-2 pb-3 space-y-1">
+                <x-jet-responsive-nav-link href="{{ route('login') }}" :active="request()->routeIs('login')">
+                    {{ __('Login ') }}
+                </x-jet-responsive-nav-link>
+            </div>
         @endauth
     </div>
 </nav>
-
-
-<style>
-      
-    .u-ratio {
-        position: relative;
-        width: 100%;
-        padding: 0;
-    }
-    .u-ratio::before {
-        display: block;
-        content: "";
-    }
-    .u-ratio__item {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        width: 100%;
-        height: 100%;
-    }
-    .u-ratio--1by1::before {
-        padding-top: 100%;
-    }
-    .u-ratio--4by3::before {
-        padding-top: calc((3 / 4) * 100%);
-    }
-    .u-ratio--16by9::before {
-        padding-top: calc((9 / 16) * 100%);
-    }
-    
-</style>
