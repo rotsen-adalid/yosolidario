@@ -4,7 +4,7 @@ return [
     'name' => 'YoSolidario',
     'manifest' => [
         'name' => env('APP_NAME', 'YoSolidario'),
-        'short_name' => 'YS',
+        'short_name' => 'YoSolidario',
         'start_url' => '/',
         'background_color' => '#ffffff',
         'theme_color' => '#02a85c',
