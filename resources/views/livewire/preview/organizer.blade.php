@@ -17,6 +17,7 @@
                 <span class="font-bold">{{__('Organizator')}}: </span>
                 {{$this->campaign->user->name}}
             </div>
+            @if($this->campaign->user->profile->count() > 0)
             <div class="flex item-center space-x-3">
                 @if($this->campaign->user->profile[0]->facebook)
                 <a href="https://www.facebook.com/{{$this->campaign->user->profile[0]->facebook}}" target="_blank">
@@ -117,6 +118,7 @@
                 </a>
                 @endif
             </div>
+            @endif
         </div>
     </div>
 </div>

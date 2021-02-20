@@ -46,8 +46,8 @@ class CreateNewUser implements CreatesNewUsers
                 $this->createTeam($user);
             });
  
-            $user->Accesess()->attach(Access::where('name', 'client')->first());
-            
+            $user->assignRole('organizer');
+
             return $user;
         });
     }

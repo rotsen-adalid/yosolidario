@@ -19,8 +19,6 @@ class Questions extends Component
     public $question_title_add, $question_body_add, $question_url_add;
     public $campaign_question_id;
     public $message;
-    public $about_url_upload, $use_of_money_url_upload, $about_organizer_url_upload;
-    public $delivery_of_awards_url_upload, $contact_organizer_url_upload;
     public $question_url_add_upload;
 
     public $slug;
@@ -32,13 +30,6 @@ class Questions extends Component
     public $photoFour;
     public $photoFive;
     public $photoSix;
-
-    public $photoOneUpload = false;
-    public $photoTwoUpload = false;
-    public $photoThreeUpload = false;
-    public $photoFourUpload = false;
-    public $photoFiveUpload = false;
-    public $photoSixUpload = false;
 
     public $file;
     public $filerespuesta;
@@ -277,29 +268,6 @@ class Questions extends Component
         ]);
         $this->photoSix = null;
         $this->question_url_add = null;
-    }
-
-    public function clickOne() {
-        $this->photoOneUpload = true;
-    }
-
-    public function clickTwo() {
-        $this->photoTwoUpload = true;
-    }
-
-    public function clickThree() {
-        $this->photoThreeUpload = true;
-    }
-
-    public function clickFour() {
-        $this->photoFourUpload = true;
-    }
-
-    public function clickFive() {
-        $this->photoFiveUpload = true;
-    }
-    public function clickSix() {
-        $this->photoSixUpload = true;
     }
 
     public function reviewConfirm() {

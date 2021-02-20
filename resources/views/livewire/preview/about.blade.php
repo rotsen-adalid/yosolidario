@@ -26,8 +26,8 @@
 <div class="text-justify">
  {!! nl2br(e($this->campaign->campaignQuestion[0]->about_organizer), false) !!}
 </div>
-@if($this->campaign->campaignQuestion[0]->about_promoter_url)
-    <img src="{{ URL::to('/').$this->campaign->campaignQuestion[0]->about_promoter_url}}" alt="placeholder image" class="object-cover w-full my-5">
+@if($this->campaign->campaignQuestion[0]->about_organizer_url)
+    <img src="{{ URL::to('/').$this->campaign->campaignQuestion[0]->about_organizer_url}}" alt="placeholder image" class="object-cover w-full my-5">
 @endif
 <!-- -->
 <div class="border-b mt-4 mb-5 font-bold py-1">

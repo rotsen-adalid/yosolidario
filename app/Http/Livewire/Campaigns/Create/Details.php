@@ -33,6 +33,12 @@ class Details extends Component
     public $slug_next;
     public $confirmingSendReview = false;
     
+    public $amountOne;
+    public $amountTwo;
+    public $amountThree;
+    public $amountFour;
+    public $amountFive;
+
     public function mount($slug = null)
     {
         if($slug != null) {
@@ -272,7 +278,7 @@ class Details extends Component
             'search' => addslashes($search_all),
             
             'status' => 'DRAFT',
-            'status_register' => 'INCOMPLETE'
+            //'status_register' => 'INCOMPLETE'
         ]);
 
         $this->emit('message');
@@ -353,9 +359,17 @@ class Details extends Component
             $description_five = "¡Eres un súper colaborador! Tu aportación significa mucho para la recaudación. Como agradecimiento queremos hacerte llegar un video de agradecimiento + un certificado digital + una mención especial en nuestras redes sociales.";
         }
 
+        if($this->country_id) {
+            $this->amountOne = 50;
+            $this->amountTwo = 100;
+            $this->amountThree = 150;
+            $this->amountFour = 200;
+            $this->amountFive = 200;
+        }
+
         $recordOne = CampaignRecognition::create([
             'image_url' => null,
-            'amount' => 50,
+            'amount' => $this->amountOne,
             'description' => $description_one,
             'delivery_date' => null,
             'limiter' => 'NO',
@@ -365,7 +379,7 @@ class Details extends Component
         ]);
         $recordTwo = CampaignRecognition::create([
             'image_url' => null,
-            'amount' => 100,
+            'amount' => $this->amountTwo,
             'description' => $description_two,
             'delivery_date' => null,
             'limiter' => 'NO',
@@ -375,7 +389,7 @@ class Details extends Component
         ]);
         $recordThree = CampaignRecognition::create([
             'image_url' => null,
-            'amount' => 150,
+            'amount' =>  $this->amountThree,
             'description' => $description_three,
             'delivery_date' => null,
             'limiter' => 'NO',
@@ -385,7 +399,7 @@ class Details extends Component
         ]);
         $recordFour = CampaignRecognition::create([
             'image_url' => null,
-            'amount' => 200,
+            'amount' => $this->amountFour,
             'description' => $description_four,
             'delivery_date' => null,
             'limiter' => 'NO',
@@ -395,7 +409,7 @@ class Details extends Component
         ]);
         $recordFive = CampaignRecognition::create([
             'image_url' => null,
-            'amount' => 300,
+            'amount' => $this->amountFive,
             'description' => $description_five,
             'delivery_date' => null,
             'limiter' => 'NO',

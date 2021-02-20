@@ -35,6 +35,7 @@ class PersonalInformation extends Model
         'country_id',
         'bank_id',
         'bank_account_number',
+        'bank_statement_path',
         'status',
         'search'
     ];
@@ -43,9 +44,12 @@ class PersonalInformation extends Model
     public function user() {
         return $this->belongsTo(user::class);
     }
-
     // uno a uno inversa
     public function bank() {
         return $this->belongsTo(Bank::class);
+    }
+    // uno a uno inversa
+    public function country() {
+        return $this->belongsTo(Country::class);
     }
 }

@@ -21,9 +21,9 @@
     <div class="flex flex-wrap sm:-m-4 -mx-4 -mb-10 -mt-4 pb-10">
     @foreach ($collection as $item)
     <div class="p-4 md:w-1/3 md:mb-0 mb-6 flex flex-col justify-center items-center max-w-sm mx-auto">
-      <div class="bg-gray-300 h-56 w-full rounded-lg shadow-md bg-cover bg-center" 
-      style="background-image: url({{ URL::to('/').$item->image->url}})">
-    </div>
+        <div wire:click="preview({{$item->id}})" wire:loading.attr="disabled" class="cursor-pointer bg-gray-300 h-56 w-full rounded-lg shadow-md bg-cover bg-center" 
+            style="background-image: url({{ URL::to('/').$item->image->url}})">
+        </div>
 
       <div class=" w-full bg-white -mt-10 shadow-lg rounded-lg overflow-hidden p-5">
     
@@ -48,7 +48,7 @@
                 </div>
                 <div>{{__('In review')}}</div>
             @elseif ($item->status == 'IN_REVIEW')
-                <div class="category-badge flex-1  h-4 w-4 m rounded-full m-1 bg-yellow-100">
+                <div class="category-badge flex-1  h-4 w-4 m rounded-full m-1 bg-green-100">
                     <div class="h-2 w-2 rounded-full m-1 bg-green-500 " ></div>
                 </div>
                 <div>{{__('Published')}}</div>
@@ -118,7 +118,7 @@
             <h2 class="mt-6 text-center text-xl font-light">
                 {{ __('You have no campaigns') }}
             </h2>
-            <p class="mt-2 text-center">
+            <p class="mt-2 mb-16 text-center">
                 <x-button wire:click="createCampaign" wire:loading.attr="disabled">
                     {{ __('Create campaign') }}
                 </x-button>

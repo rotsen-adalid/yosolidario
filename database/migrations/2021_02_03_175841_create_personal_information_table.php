@@ -45,6 +45,7 @@ class CreatePersonalInformationTable extends Migration
             $table->foreign('country_id')->references('id')->on('countries')->onDelete('set null')->onUpdate('cascade');
 
             $table->string('bank_account_number')->nullable();
+            $table->text('bank_statement_path')->nullable();
             $table->unsignedBigInteger('bank_id')->nullable();
             $table->foreign('bank_id')->references('id')->on('banks')->onDelete('set null')->onUpdate('cascade');
 

@@ -31,4 +31,10 @@ class Country extends Model
     public function users() {
         return $this->hasMany(User::class);
     }
+
+    // uno a muchos
+    public function personalInformation() {
+        return $this->hasMany(PersonalInformation::class);
+    }
 }
+

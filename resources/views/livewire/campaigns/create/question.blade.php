@@ -97,7 +97,7 @@
                             <img src="{{asset('images/photo_upload.png')}}" alt="" class="rounded-sm h-60 sm:h-72 w-full object-cover">
                         @endif
                     </div>
-                    <x-jet-secondary-button class="mt-2 mr-2" type="button" wire:click="clickOne" x-on:click.prevent="$refs.photo.click()">
+                    <x-jet-secondary-button class="mt-2 mr-2" type="button" x-on:click.prevent="$refs.photo.click()">
                         {{ __('Select A Image') }}
                     </x-jet-secondary-button>
                     
@@ -165,7 +165,7 @@
                             <img src="{{asset('images/photo_upload.png')}}" alt="" class="rounded-sm h-60 sm:h-72 w-full object-cover">
                         @endif
                     </div>
-                    <x-jet-secondary-button class="mt-2 mr-2" type="button" wire:click="clickTwo" x-on:click.prevent="$refs.photo.click()">
+                    <x-jet-secondary-button class="mt-2 mr-2" type="button" x-on:click.prevent="$refs.photo.click()">
                         {{ __('Select A Image') }}
                     </x-jet-secondary-button>
                     
@@ -233,7 +233,7 @@
                             <img src="{{asset('images/photo_upload.png')}}" alt="" class="rounded-sm h-60 sm:h-72 w-full object-cover">
                         @endif
                     </div>
-                    <x-jet-secondary-button class="mt-2 mr-2" type="button" wire:click="clickThree" x-on:click.prevent="$refs.photo.click()">
+                    <x-jet-secondary-button class="mt-2 mr-2" type="button" x-on:click.prevent="$refs.photo.click()">
                         {{ __('Select A Image') }}
                     </x-jet-secondary-button>
                     
@@ -301,7 +301,7 @@
                             <img src="{{asset('images/photo_upload.png')}}" alt="" class="rounded-sm h-60 sm:h-72 w-full object-cover">
                         @endif
                     </div>
-                    <x-jet-secondary-button class="mt-2 mr-2" type="button" wire:click="clickFour" x-on:click.prevent="$refs.photo.click()">
+                    <x-jet-secondary-button class="mt-2 mr-2" type="button" x-on:click.prevent="$refs.photo.click()">
                         {{ __('Select A Image') }}
                     </x-jet-secondary-button>
                     
@@ -369,7 +369,7 @@
                             <img src="{{asset('images/photo_upload.png')}}" alt="" class="rounded-sm h-60 sm:h-72 w-full object-cover">
                         @endif
                     </div>
-                    <x-jet-secondary-button class="mt-2 mr-2" type="button" wire:click="clickFive" x-on:click.prevent="$refs.photo.click()">
+                    <x-jet-secondary-button class="mt-2 mr-2" type="button" x-on:click.prevent="$refs.photo.click()">
                         {{ __('Select A Image') }}
                     </x-jet-secondary-button>
                     
@@ -443,7 +443,7 @@
                             <img src="{{asset('images/photo_upload.png')}}" alt="" class="rounded-sm h-60 sm:h-72 w-full object-cover">
                         @endif
                     </div>
-                    <x-jet-secondary-button class="mt-2 mr-2" type="button" wire:click="clickSix" x-on:click.prevent="$refs.photo.click()">
+                    <x-jet-secondary-button class="mt-2 mr-2" type="button" x-on:click.prevent="$refs.photo.click()">
                         {{ __('Select A Image') }}
                     </x-jet-secondary-button>
                     
