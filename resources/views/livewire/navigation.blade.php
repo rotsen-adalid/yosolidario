@@ -213,7 +213,7 @@
 
       @auth
       <!-- Responsive Settings Options -->
-      <div class="mt-2 pt-4 border-t border-gray-200 ">
+      <div class="mt-2 pt-4 pb-2 border-t border-gray-200 ">
           <a  href="{{ route('user', Auth::user()->slug)}}">
             <div class="flex items-center px-4">
                 @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
@@ -230,7 +230,7 @@
           </a>
           <div class="mt-3">
               <!-- Management Panel -->
-              <div class="block pt-2 px-4 text-xs text-gray-400">
+              <div class="block pt-2 pb-1 px-4 text-xs text-gray-400">
                 {{ __('Management Panel') }}
               </div>
               <x-responsive-nav-link href="{{ route('my-campaigns') }}" :active="request()->routeIs('my-campaigns')">
@@ -241,7 +241,7 @@
                 {{ __('My collaborations') }}
               </x-responsive-nav-link>
               <!-- Account Management -->
-              <div class="block pt-2 px-4 text-xs text-gray-400">
+              <div class="block pt-2 pb-1 px-4 text-xs text-gray-400">
                 {{ __('Manage Account') }}
               </div>
 
@@ -255,7 +255,7 @@
                   {{ __('Account Setting') }}
               </x-responsive-nav-link>
 
-              <div class="border-t my-2 border-gray-200"></div>
+              <div class="border-t mt-2 mb-1 border-gray-200"></div>
 
               @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
                   <x-jet-responsive-nav-link href="{{ route('api-tokens.index') }}" :active="request()->routeIs('api-tokens.index')">
@@ -267,11 +267,11 @@
               <form method="POST" action="{{ route('logout') }}">
                   @csrf
 
-                  <x-jet-responsive-nav-link href="{{ route('logout') }}"
+                  <x-responsive-nav-link href="{{ route('logout') }}"
                                  onclick="event.preventDefault();
                                   this.closest('form').submit();">
                       {{ __('Logout') }}
-                  </x-jet-responsive-nav-link>
+                  </x-responsive-nav-link>
               </form>
 
               <!-- Team Management -->
