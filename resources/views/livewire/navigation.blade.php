@@ -190,45 +190,63 @@
 
   <!-- Responsive Navigation Menu -->
   <div :class="{'block': open, 'hidden': ! open}" x-on:click.away="open = false" class="hidden sm:hidden ">
-      <div class="pt-2 pb-3 space-y-1">
-          <x-jet-responsive-nav-link href="{{ route('campaign/create') }}" :active="request()->routeIs('campaign/create')">
-              {{ __('Create campaign ') }}
-          </x-jet-responsive-nav-link>
-      </div>
+        <div class="pt-2 px-4 pb-4">
+            <x-input-rounded id="search" class="block mt-1 w-full" type="text" name="search" placeholder="{{ __('Search Campaigns') }}" />
+        </div>  
+        <div class="space-y-1">
+            <x-responsive-nav-link href="{{ route('campaign/create') }}" :active="request()->routeIs('campaign/create')">
+                {{ __('Create campaign ') }}
+            </x-responsive-nav-link>
+        </div>
 
-      <div class="pt-2 pb-3 space-y-1">
-          <x-jet-responsive-nav-link href="{{ route('campaign/create') }}" :active="request()->routeIs('campaign/create')">
+      <div class="space-y-1">
+          <x-responsive-nav-link href="{{ url('campaign/create') }}" :active="request()->routeIs('campaign/create0')">
               {{ __('Campaigns') }}
-          </x-jet-responsive-nav-link>
+          </x-responsive-nav-link>
       </div>
 
-      <div class="pt-2 pb-3 space-y-1">
-          <x-jet-responsive-nav-link href="{{ route('campaign/create') }}" :active="request()->routeIs('campaign/create')">
+      <div class="space-y-1">
+          <x-responsive-nav-link href="{{ url('campaign/create') }}" :active="request()->routeIs('campaign/create1')">
               {{ __('How it works? ') }}
-          </x-jet-responsive-nav-link>
+          </x-responsive-nav-link>
       </div>
 
       @auth
       <!-- Responsive Settings Options -->
       <div class="pt-4 pb-1 border-t border-gray-200 ">
-          <div class="flex items-center px-4">
-              @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
-                  <div class="flex-shrink-0 mr-3">
-                      <img class="h-10 w-10 rounded-full object-cover" src="{{ Auth::user()->profile_photo_path }}" alt="{{ Auth::user()->name }}" />
-                  </div>
-              @endif
+          <a  href="{{ route('user', Auth::user()->slug)}}">
+            <div class="flex items-center px-4">
+                @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
+                    <div class="flex-shrink-0 mr-3">
+                        <img class="h-10 w-10 rounded-full object-cover" src="{{ Auth::user()->profile_photo_path }}" alt="{{ Auth::user()->name }}" />
+                    </div>
+                @endif
 
-              <div>
-                  <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-                  <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                <div>
+                    <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
+                    <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                </div>
+            </div>
+          </a>
+          <div class="mt-3">
+              <!-- Management Panel -->
+              <div class="block pt-2 px-4 text-xs text-gray-400">
+                {{ __('Management Panel') }}
               </div>
-          </div>
+              <x-responsive-nav-link href="{{ route('my-campaigns') }}" :active="request()->routeIs('my-campaigns')">
+                {{ __('My campaigns') }}
+              </x-responsive-nav-link>
 
-          <div class="mt-3 space-y-1">
+              <x-responsive-nav-link href="{{ route('profile.show') }}" :active="request()->routeIs('profile.show')">
+                {{ __('My collaborations') }}
+              </x-responsive-nav-link>
               <!-- Account Management -->
-              <x-jet-responsive-nav-link href="{{ route('profile.show') }}" :active="request()->routeIs('profile.show')">
-                  {{ __('Profile') }}
-              </x-jet-responsive-nav-link>
+              <div class="block pt-2 px-4 text-xs text-gray-400">
+                {{ __('Manage Account') }}
+              </div>
+              <x-responsive-nav-link href="{{ route('setting/account') }}" :active="request()->routeIs('setting/accountw')">
+                  {{ __('Account Setting') }}
+              </x-responsive-nav-link>
 
               @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
                   <x-jet-responsive-nav-link href="{{ route('api-tokens.index') }}" :active="request()->routeIs('api-tokens.index')">
