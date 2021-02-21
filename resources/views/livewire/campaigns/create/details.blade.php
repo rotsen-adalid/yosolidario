@@ -13,7 +13,7 @@
 <x-section-content>
     <x-slot name="header">
         <header class="bg-white shadow pt-2 mb-10"> 
-            <div class="sm:flex justify-between items-start max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 space-y-2">
+            <div class="sm:flex justify-between items-start max-w-7xl mx-auto px-4 sm:px-4 lg:px-0 pb-6 space-y-2">
                 <h2 class="flex items-center font-semibold text-xl text-gray-800 leading-tight pt-4">
                     @if ($this->campaign_id > 0)
                         {{ __('Details') }} 
@@ -248,44 +248,9 @@
             </x-slot>
         </x-form-section-multiple>
         <!-- Send to review Modal -->
-        <x-dialog-modal wire:model="confirmingSendReview">
-            <x-slot name="title">
-                {{ __('Send for review?') }}
-            </x-slot>
-            <x-slot name="content">
-                <div class="font-bold text-lg">
-                    <span>{{$this->title}}</>
-                </div>
-                <div class="summary-post text-base text-justify mt-5">
-                    {{ __('Your campaign will be sent for review, we will contact you in less than 48 hours and your campaign will be published.') }}
-                </div>
-                @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
-                <div class="my-5">
-                    <x-jet-label for="terms">
-                        <div class="flex items-center">
-                            <x-jet-checkbox name="terms" id="terms"/>
-
-                            <div class="ml-2">
-                                {!! __('I agree to the :terms_of_service and :privacy_policy', [
-                                        'terms_of_service' => '<a target="_blank" href="'.route('terms.show').'" class="underline text-sm text-gray-600 hover:text-gray-900">'.__('Terms of Service').'</a>',
-                                        'privacy_policy' => '<a target="_blank" href="'.route('policy.show').'" class="underline text-sm text-gray-600 hover:text-gray-900">'.__('Privacy Policy').'</a>',
-                                ]) !!}
-                            </div>
-                        </div>
-                    </x-jet-label>
-                </div>
-                @endif
-            </x-slot>
-            <x-slot name="footer">
-                <x-secondary-button wire:click="$toggle('confirmingSendReview')" wire:loading.attr="disabled">
-                    {{ __('Nevermind') }}
-                </x-secondary-button>
-                <x-button class="ml-2" wire:click="sendReview" wire:loading.attr="disabled">
-                    {{ __('Send') }}
-                </x-button>
-            </x-slot>
-        </x-dialog-modal>
-        
+        @if($this->campaign)
+            @include('livewire.campaigns.create.send-to-review')
+        @endif
     </x-slot>
 </x-section-content>
 

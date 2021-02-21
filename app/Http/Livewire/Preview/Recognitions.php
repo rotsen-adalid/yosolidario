@@ -10,6 +10,7 @@ class Recognitions extends Component
 {
     public $slug;
     public $campaign;
+    public $campaign_id;
     public $country;
     public $collection;
 
@@ -23,11 +24,10 @@ class Recognitions extends Component
                         ->where('status', 'DRAFT')
                         ->orWhere('status', 'IN_REVIEW')
                         ->get();
-            if($campaign->count() == 1) {
-                $this->campaign =  $campaign[0];
-                $this->campaign_id = $this->campaign->id;
+            if($campaign->count() > 0) {
+                $this->campaign_id = $campaign[0]->id;
+                $this->campaign =  Campaign::find($this->campaign_id);
                 $this->country = Country::find($campaign[0]->telephone_country_id);
-
             } 
         }
     } 

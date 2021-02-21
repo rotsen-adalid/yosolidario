@@ -18,16 +18,15 @@
     <x-slot  name="content">
     @if ($collection->count() > 0)
 
-    <div class="flex flex-wrap sm:-m-4 -mx-4 -mb-10 -mt-4 pb-10">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mt-7 ">
     @foreach ($collection as $item)
-    <div class="p-4 md:w-1/3 md:mb-0 mb-6 flex flex-col justify-center items-center max-w-sm mx-auto">
+    <div class="px-4 sm:px-0 @if($collection->count() == 1) sm:col-start-2 @endif">
         <div wire:click="preview({{$item->id}})" wire:loading.attr="disabled" class="cursor-pointer bg-gray-300 h-56 w-full rounded-lg shadow-md bg-cover bg-center" 
             style="background-image: url({{ URL::to('/').$item->image->url}})">
         </div>
 
-      <div class=" w-full bg-white -mt-10 shadow-lg rounded-lg overflow-hidden p-5">
+        <div class=" w-full bg-white -mt-10 shadow-lg rounded-lg overflow-hidden p-5">
     
-
         <p x-data="{length: 30}"
             x-init="originalContent = $el.firstElementChild.textContent.trim()">
             <span class="title-post font-semibold text-xl mb-2" x-text="originalContent.slice(0, length)">{{$item->title}}</span>
@@ -35,7 +34,7 @@
             <!-- <button x-cloak @click="length = undefined" x-show="length">...</button> -->
         </p>
 
-       <!-- status -->
+        <!-- status -->
         <div class="flex header-content inline-flex ">
             @if ($item->status == 'DRAFT')
             <div class="category-badge flex-1  h-4 w-4 m rounded-full m-1 bg-yellow-100">

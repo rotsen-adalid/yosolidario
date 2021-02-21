@@ -134,9 +134,11 @@
                                 {{ __('Manage Account') }}
                             </div>
 
-                            <x-jet-dropdown-link href="{{ route('user', Auth::user()) }}">
-                                {{ __('Profile') }}
-                            </x-jet-dropdown-link>
+                            @if(Auth::user()->slug)
+                                <x-jet-dropdown-link href="{{ route('user', Auth::user()->slug) }}">
+                                    {{ __('Profile') }}
+                                </x-jet-dropdown-link>
+                            @endif
 
                             @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
                                 <x-jet-dropdown-link href="{{ route('api-tokens.index') }}">
@@ -163,6 +165,9 @@
                         </x-slot>
                     </x-jet-dropdown>
                 </div>
+                <button wire:click="createCampaign" wire:loading.attr="disabled" class="ml-2 focus:outline-none text-white bg-ys1 shadow-md px-3 py-2 rounded-full flex items-center space-x-4 hover:text-white hover:bg-ys2">
+                    {{ __('Create Campaign') }}
+                </button>
                 @else
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
 

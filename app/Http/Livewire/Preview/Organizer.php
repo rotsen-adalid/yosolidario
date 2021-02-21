@@ -8,6 +8,7 @@ use App\Models\Country;
 class Organizer extends Component
 {
     public $slug;
+    public $campaign_id;
     public $campaign;
     public $country;
 
@@ -23,9 +24,9 @@ class Organizer extends Component
                         ->get();
             $this->country = Country::find($campaign[0]->telephone_country_id);
 
-            if($campaign->count() == 1) {
-                $this->campaign =  $campaign[0];
-                $this->campaign_id = $this->campaign->id;
+            if($campaign->count() > 0) {
+                $this->campaign_id = $campaign[0]->id;
+                $this->campaign =  Campaign::find($this->campaign_id);
             } 
         }
     } 

@@ -16,7 +16,7 @@
                 </div>
 
                 @if (isset($actions))
-                    <div class="flex items-center justify-end px-4 py-3 bg-gray-50 text-right sm:px-6 space-x-2">
+                    <div class="flex items-center justify-end px-4 p-3 bg-gray-50 text-right sm:px-6 space-x-2">
                         {{ $actions }}
                     </div>
                 @endif

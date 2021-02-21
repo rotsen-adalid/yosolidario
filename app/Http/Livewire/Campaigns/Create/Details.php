@@ -25,6 +25,7 @@ class Details extends Component
     public $collection_country;
     public $collection_countries;
     public $campaign_id;
+    public $campaign;
     public $message;
 
     public $photoOne;
@@ -42,13 +43,14 @@ class Details extends Component
     public function mount($slug = null)
     {
         if($slug != null) {
-            $campaign = DB::table('campaigns')
-            ->where('slug', $slug)
-            ->where('status', 'DRAFT')
-            ->get();
+            $campaign = Campaign::
+                        where('slug', '=' ,$slug)
+                        ->where('user_id', '=' , auth()->user()->id)
+                        ->where('status', '=' , 'DRAFT')
+                        ->get();
             if($campaign->count() == 1) {
-                $this->campaign =  $campaign[0];
-                $this->campaign_id = $this->campaign->id;
+                $this->campaign_id = $campaign[0]->id;
+                $this->campaign = Campaign::find($this->campaign_id);
                 $this->slug_next = $slug;
                 $this->edit($this->campaign->id);
             } else {
@@ -435,5 +437,9 @@ class Details extends Component
     public function preview($id) {
         $record = Campaign::findOrFail($id);
         return redirect()->route('preview', ['slug' => $record->slug]);
+    }
+
+    public function editProfile() {
+        return redirect()->route('setting/profile');
     }
 }

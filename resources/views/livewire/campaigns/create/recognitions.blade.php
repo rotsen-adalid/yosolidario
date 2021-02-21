@@ -8,7 +8,7 @@
 <x-section-content>
     <x-slot name="header">
         <header class="bg-white shadow pt-2 mb-10"> 
-            <div class="sm:flex justify-between items-start max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 space-y-2">
+            <div class="sm:flex justify-between items-start max-w-7xl mx-auto px-4 sm:px-4 lg:px-0 pb-6 space-y-2">
                 <h2 class="flex items-center font-semibold text-xl text-gray-800 leading-tight pt-4">
                     <a class="underline hover:text-gray-900" href="{{ route('campaign/update', $this->slug_next) }}">
                         {{ __('Details') }}
@@ -43,21 +43,21 @@
                 </x-button>
             </x-slot>
             <x-slot name="description">
-                <span class="text-base">
+                <span class="text-sm sm:text-base">
                     {{__('Recognitions are the amounts that you suggest to your donor community and that will help them measure the impact of their contribution. Get inspired by the default recognitions and feel free to edit them according to your needs and if you need to add more.')}}
                 </span>
             </x-slot>
         </x-section-title>
 
-        <div class="flex flex-wrap sm:-m-4 pt-20 sm:pt-18">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mt-7">
             @foreach ($collection as $item)
-            <div class="md:w-1/3 md:mb-6 mb-6 flex flex-col justify-center items-center max-w-sm mx-auto pb-10">
+            <div class="px-4 sm:px-0 @if($collection->count() == 1) sm:col-start-2 @endif">
                 <!--
                 <div class="bg-gray-300 h-56 w-full rounded-lg shadow-md bg-cover bg-center" 
                     style="background-image: url()">
                 </div>
                 -->
-                <div class=" w-full bg-white -mt-10 shadow-lg rounded-lg overflow-hidden p-5">
+                <div class=" w-full bg-white shadow-lg rounded-lg overflow-hidden p-5">
                 
                     <div class="title-post font-semibold text-xl">{{$item->amount}} {{$item->campaign->country->currency_symbol}}</div>
               
@@ -106,11 +106,13 @@
         <!-- Store or Update Modal -->
         <x-dialog-modal wire:model="addOrUpdateDialog">
             <x-slot name="title">
+              <div class="font-bold">
                 @if ($this->campaign_reward_id > 0)
                     {{ __('Update recognition') }}
                 @else
                     {{ __('New recognition') }}
                 @endif
+              </div>
             </x-slot>
                 <x-slot name="content">
                     <!-- amount -->
@@ -136,21 +138,26 @@
                     </div>
                     <!-- limiter -->
                     <div class="col-span-6 sm:col-span-4 mt-4">
-                        <x-label for="limiter" class="text-base" value="{{ __('Limit quantity?') }}" />
-                        <div class="flex">
-                            <x-select class="block w-36" id="limiter" wire:model="limiter">
-                                <x-slot name="option">
-                                    <option value="" >{{ __('Chosse') }} </option>
-                                    <option value="NO" >{{ __('No') }} </option> <!--selected -->
-                                    <option value="YES">{{ __('Yes') }} </option>
-                                </x-slot>
-                            </x-select>
-                            @if ($limiter == 'YES')
-                                <x-jet-input id="quantity" type="number" class="ml-2 block w-50" wire:model.defer="quantity" placeholder="{{ __('quantity') }}" autocomplete="off" />
-                            @endif
+                        <div class="flex space-x-1">
+                            <div class="w-36">
+                                <x-label for="limiter" class="text-base" value="{{ __('Limit quantity?') }}" />
+                                <x-select class="block w-full" id="limiter" wire:model="limiter">
+                                    <x-slot name="option">
+                                        <option value="" >{{ __('Chosse') }} </option>
+                                        <option value="NO" >{{ __('No') }} </option> <!--selected -->
+                                        <option value="YES">{{ __('Yes') }} </option>
+                                    </x-slot>
+                                </x-select>
+                                <x-input-error for="limiter" class="mt-2" />
+                            </div>
+                            <div class="w-36">
+                                @if ($limiter == 'YES')
+                                    <x-label for="limiter" class="ml-2 text-base" value="{{ __('Quantity') }}" />
+                                    <x-jet-input id="quantity" type="number" class="ml-2 block w-full" wire:model.defer="quantity" placeholder="{{ __('quantity') }}" autocomplete="off" />
+                                    <x-jet-input-error for="quantity" class="mt-2" />
+                                @endif
+                            </div>
                         </div>
-                        <x-input-error for="limiter" class="mt-2" />
-                        <x-jet-input-error for="quantity" class="mt-2" />
                     </div>
                
                 </x-slot>
@@ -169,25 +176,8 @@
                     @endif
                 </x-slot>
         </x-dialog-modal>
-        <!-- Send to review Modal -->
-        <x-dialog-modal wire:model="confirmingSendReview">
-            <x-slot name="title">
-                {{ __('Send for review?') }}
-            </x-slot>
-            <x-slot name="content">
-                <div class="summary-post text-base text-justify mt-4">
-                    {{ __('Your campaign will be sent for review, we will contact you in less than 48 hours and your campaign will be published.') }}
-                </div>
-            </x-slot>
-            <x-slot name="footer">
-                <x-secondary-button wire:click="$toggle('confirmingSendReview')" wire:loading.attr="disabled">
-                    {{ __('Nevermind') }}
-                </x-secondary-button>
-                <x-button class="ml-2" wire:click="sendReview" wire:loading.attr="disabled">
-                    {{ __('Send') }}
-                </x-button>
-            </x-slot>
-        </x-dialog-modal>
+       <!-- Send to review Modal -->
+       @include('livewire.campaigns.create.send-to-review')
     </x-slot>
 </x-section-content>
 <livewire:footer/>

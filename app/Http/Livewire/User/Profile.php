@@ -22,13 +22,12 @@ class Profile extends Component
             if($this->user->profile->count() == 1) {
                 $this->country = Country::find($data[0]->profile[0]->whatsapp_country_id);
             } else {
-                return redirect()->route('home');
+                //return redirect()->route('home');
             }
             
         } else {
             return redirect()->route('home');
         }
-
     }
 
     public function render()

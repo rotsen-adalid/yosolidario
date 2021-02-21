@@ -7,18 +7,27 @@
 <div class="bg-white">
 <x-section-content>
     <x-slot name="header">
-        <header class="bg-gray-50 shadow pt-2 mb-4 sm:mb-10"> 
+        @if($this->campaign->status == 'DRAFT')
+        <header class="bg-gray-50 shadow pt-2"> 
             <div class="sm:flex justify-between items-start max-w-7xl mx-auto px-4 sm:px-0 lg:px-0 pb-6 space-y-2">
-                <h2 class="flex items-center font-semibold text-xl text-black leading-tight pt-4">
-                    <a class="underline hover:text-gray-900" href="{{ route('campaign/update',  $this->slug) }}">
+                <h2 class="flex items-center font-semibold text-xl text-black leading-tight pt-4 space-x-2">
+                    <x-secondary-button wire:click="editCampaign" wire:loading.attr="disabled">
                         {{ __('Edit campaign') }}
-                    </a>
+                    </x-secondary-button>
+                    <!-- 
+                    if ($this->campaign->status_register == 'COMPLETE')
+                        <x-button wire:click="reviewConfirm({$this->campaign_id}})" wire:loading.attr="disabled">
+                            { __('Send to review') }}
+                        </x-button>
+                    endif
+                    -->
                 </h2>
             </div>
         </header>
+        @endif
     </x-slot>
     <x-slot  name="content">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-10 rounded-lg">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-10 rounded-lg  pt-4 sm:pt-10">
             <div class="lg:col-span-2">
                 <livewire:preview.cover-page :slug="$slug"/>
             </div>
@@ -102,7 +111,8 @@
               </div>
             </div>
         </div>
-        <!-- --> 
+        <!-- Send to review Modal -->
+        @include('livewire.campaigns.create.send-to-review')
     </x-slot>
 </x-section-content>
 </div>

@@ -14,7 +14,7 @@ class Recognitions extends Component
     // public $collection;
     public  $campaign_reward_id, $reward_id, $amount, $description, $delivery_date, $limiter, $quantity, $campaign_id;
     public $recognition_currency_symbol;
-
+    public $campaign;
     public $confirmingDeletion = false;
     public $addOrUpdateDialog = false;
 
@@ -23,15 +23,17 @@ class Recognitions extends Component
     public function mount($slug)
     {
         $this->slug_next = $slug;
-        $campaigns = DB::table('campaigns')
-        ->where('slug', $this->slug_next)
-        ->where('status', 'DRAFT')
-        ->get();
+        $campaign = Campaign::
+                        where('slug', '=' ,$slug)
+                        ->where('user_id', '=' , auth()->user()->id)
+                        ->where('status', '=' , 'DRAFT')
+                        ->get();
 
-        if($campaigns->count() == 1) {
-            $record = Campaign::find($campaigns[0]->id);
+        if($campaign->count() == 1) {
+            $record = Campaign::find($campaign[0]->id);
             $this->status_register = $record->status_register;
-            $this->campaign_id = $campaigns[0]->id;
+            $this->campaign_id = $campaign[0]->id;
+            $this->campaign = Campaign::find($campaign[0]->id);
             // $this->collection = $record->campaignRewards;
             //$this->edit($record->campaignQuestion[0]->id);
         } else {
@@ -82,6 +84,9 @@ class Recognitions extends Component
                 'campaign_id' => $this->campaign_id
             ]);
         } else {
+            if($this->delivery_date == '') {
+                $this->delivery_date = null;
+            }
             // we look for the record
             $record = CampaignRecognition::find($this->campaign_reward_id);
             // we update the info
@@ -155,5 +160,9 @@ class Recognitions extends Component
     public function preview($id) {
         $record = Campaign::findOrFail($id);
         return redirect()->route('preview', ['slug' => $record->slug]);
+    }
+
+    public function editProfile() {
+        return redirect()->route('setting/profile');
     }
 }

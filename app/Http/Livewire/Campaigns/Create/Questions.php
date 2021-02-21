@@ -18,6 +18,7 @@ class Questions extends Component
     public $delivery_of_awards, $delivery_of_awards_url, $contact_organizer, $contact_organizer_url, $campaign_id;
     public $question_title_add, $question_body_add, $question_url_add;
     public $campaign_question_id;
+    public $campaign;
     public $message;
     public $question_url_add_upload;
 
@@ -39,12 +40,15 @@ class Questions extends Component
     public function mount($slug)
     {
         $this->slug_next = $slug;
-        $campaigns = DB::table('campaigns')
-            ->where('slug', $slug)
-            ->where('status', 'DRAFT')
-            ->get();
-            if($campaigns->count() == 1) {
-                $record = Campaign::find($campaigns[0]->id);
+        $campaign = Campaign::
+                    where('slug', '=' ,$slug)
+                    ->where('user_id', '=' , auth()->user()->id)
+                    ->where('status', '=' , 'DRAFT')
+                    ->get();
+            if($campaign->count() == 1) {
+                $this->campaign_id = $campaign[0]->id;
+                $record = Campaign::find($campaign[0]->id);
+                $this->campaign = Campaign::find($campaign[0]->id);
                 $this->status_register = $record->status_register;
                 //$this->campaign_question_id = $record->campaignQuestion[0]->id;
                 $this->edit($record->campaignQuestion[0]->id);
@@ -286,6 +290,10 @@ class Questions extends Component
     public function preview($id) {
         $record = Campaign::findOrFail($id);
         return redirect()->route('preview', ['slug' => $record->slug]);
+    }
+
+    public function editProfile() {
+        return redirect()->route('setting/profile');
     }
 }
 

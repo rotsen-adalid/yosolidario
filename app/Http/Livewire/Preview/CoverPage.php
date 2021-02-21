@@ -21,9 +21,9 @@ class CoverPage extends Component
                         ->where('status', 'DRAFT')
                         ->orWhere('status', 'IN_REVIEW')
                         ->get();
-            if($campaign->count() == 1) {
-                $this->campaign =  $campaign[0];
-                $this->campaign_id = $this->campaign->id;
+            if($campaign->count() > 0) {
+                $this->campaign_id = $campaign[0]->id;
+                $this->campaign =  Campaign::find($this->campaign_id);
                 $video_array = explode("/",$this->campaign->video->url);
                 if($video_array[2] == 'youtu.be') {
                     $this->video_url =  $video_array[3];

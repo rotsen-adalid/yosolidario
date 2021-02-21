@@ -8,20 +8,23 @@ use App\Models\Campaign;
 class Show extends Component
 {
     public $slug;
+    public $campaign_id;
+    public $campaign;
+    public $confirmingSendReview = false;
 
     public function mount($slug = null)
     {
         $this->slug = $slug;
 
         if($slug != null) {
-            $campaign = DB::table('campaigns')
-            ->where('slug', $slug)
-            ->where('status', 'DRAFT')
-            ->orWhere('status', 'IN_REVIEW')
-            ->get();
-            if($campaign->count() == 1) {
-                $this->campaign =  $campaign[0];
-                $this->campaign_id = $this->campaign->id;
+            $campaign = Campaign::
+                        where('slug', $slug)
+                        ->where('status', 'DRAFT')
+                        ->orWhere('status', 'IN_REVIEW')
+                        ->get();
+            if($campaign->count() > 0) {
+                $this->campaign_id = $campaign[0]->id;
+                $this->campaign = Campaign::find($this->campaign_id);
             }  else {
                 return redirect()->route('campaign/create');
             }
@@ -33,7 +36,29 @@ class Show extends Component
         return view('livewire.preview.show');
     }
 
-    public function hola() {
-        return "saludos";
+    public function editCampaign() {
+        return redirect()->route('campaign/update', ['slug' => $this->campaign->slug]);
+    }
+
+    public function reviewConfirm() {
+        $this->confirmingSendReview = true;
+    }
+
+    public function sendReview() {
+        $record = Campaign::find($this->campaign_id);
+        // we update the info
+        $record->update([
+            'status' => 'IN_REVIEW'
+        ]);
+        $this->confirmingSendReview = false;
+    }
+
+    public function preview($id) {
+        $record = Campaign::findOrFail($id);
+        return redirect()->route('preview', ['slug' => $record->slug]);
+    }
+
+    public function editProfile() {
+        return redirect()->route('setting/profile');
     }
  }

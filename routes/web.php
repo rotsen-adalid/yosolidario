@@ -58,7 +58,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/preview/{slug}', Show::cl
 
 // profile 
 use App\Http\Livewire\User\Profile;
-Route::middleware(['auth:sanctum', 'verified'])->get('user/{slug}', Profile::class)
+Route::get('user/{slug}', Profile::class)
 ->name('user');
 
 // setting
