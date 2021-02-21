@@ -33,9 +33,9 @@
           </div>
 
           <div class="hidden sm:flex sm:items-center sm:ml-6">
-              <div>
-                  <x-input-rounded id="search" class="block mt-1 w-full" type="text" name="search" placeholder="{{ __('Search Campaigns') }}" />
-              </div>
+            <div class="w-80">
+                <x-input-rounded id="search" class="block mt-1 w-full" type="text" name="search" placeholder="{{ __('Search Campaigns') }}" />
+            </div>
               @auth
               <!-- Teams Dropdown -->
               @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
@@ -94,9 +94,9 @@
                           @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
                               <button class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition duration-150 ease-in-out">
                                   @if (Auth::user()->profile_photo_path)
-                                      <img class="h-8 w-8 rounded-full object-cover" src="{{ Auth::user()->profile_photo_path }}" alt="{{ Auth::user()->name }}" />
+                                      <img class="h-9 w-9 rounded-full object-cover" src="{{ Auth::user()->profile_photo_path }}" alt="{{ Auth::user()->name }}" />
                                   @else 
-                                      <img class="h-8 w-8 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
+                                      <img class="h-9 w-9 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
                                   @endif
                               </button>
                           @else
@@ -213,7 +213,7 @@
 
       @auth
       <!-- Responsive Settings Options -->
-      <div class="pt-4 pb-1 border-t border-gray-200 ">
+      <div class="mt-2 pt-4 border-t border-gray-200 ">
           <a  href="{{ route('user', Auth::user()->slug)}}">
             <div class="flex items-center px-4">
                 @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
@@ -244,9 +244,18 @@
               <div class="block pt-2 px-4 text-xs text-gray-400">
                 {{ __('Manage Account') }}
               </div>
-              <x-responsive-nav-link href="{{ route('setting/account') }}" :active="request()->routeIs('setting/accountw')">
+
+              @if(Auth::user()->slug)
+                <x-responsive-nav-link href="{{ route('user', Auth::user()->slug) }}" :active="request()->routeIs('user')">
+                    {{ __('Profile') }}
+                </x-responsive-nav-link>
+              @endif
+
+              <x-responsive-nav-link href="{{ route('setting/account') }}" :active="request()->routeIs('setting/account')">
                   {{ __('Account Setting') }}
               </x-responsive-nav-link>
+
+              <div class="border-t my-2 border-gray-200"></div>
 
               @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
                   <x-jet-responsive-nav-link href="{{ route('api-tokens.index') }}" :active="request()->routeIs('api-tokens.index')">
