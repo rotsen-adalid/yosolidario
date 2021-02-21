@@ -2,11 +2,23 @@
     {{$user->name}} : YoSolidario
 </x-slot>
 <x-slot  name="seo">
-    <meta property="og:url"        content="http://www.nytimes.com/2015/02/19/arts/international/when-great-minds-dont-think-alike.html" />
-    <meta property="og:type"       content="article" />
-    <meta property="og:title"      content="{{$this->user->name}}" />
-    <meta property="og:description"  content="{{$this->user->profile[0]->biography}}" />
-    <meta property="og:image"      content="https://yosolidario.com{{$this->user->profile_photo_path}}" />
+    @if($this->user->profile->count() > 0)
+        <!-- facebook -->
+        <meta property="og:url"        content="http://www.yosolidario.com/user/{{$this->user->slug}}" />
+        <meta property="og:type"       content="article" />
+        <meta property="og:title"      content="{{$this->user->name}}" />
+        <meta property="og:description"  content="{{$this->user->profile[0]->biography}}" />
+        <meta property="og:image"      content="https://yosolidario.com{{$this->user->profile_photo_path}}" />
+        <meta property="fb:app_id" content="738141669970459" />
+
+        <!-- twitter -->
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:site" content="@yosolidariocom">
+        <meta name="twitter:title" content="{{$this->user->name}}l">
+        <meta name="twitter:creator" content="{{'@'.$this->user->profile[0]->twitter}}">
+        <meta name="twitter:description" content="{{$this->user->profile[0]->biography}}">
+        <meta name="twitter:image" content="https://yosolidario.com{{$this->user->profile_photo_path}}">
+    @endif
 </x-slot>
 <x-slot name="header">
     
