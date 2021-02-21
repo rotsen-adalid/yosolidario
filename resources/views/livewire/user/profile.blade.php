@@ -2,11 +2,11 @@
     {{$user->name}} : YoSolidario
 </x-slot>
 <x-slot  name="seo">
-    <meta property="og:url"                content="http://www.nytimes.com/2015/02/19/arts/international/when-great-minds-dont-think-alike.html" />
-    <meta property="og:type"               content="article" />
-    <meta property="og:title"              content="When Great Minds Don’t Think Alike" />
-    <meta property="og:description"        content="How much does culture influence creative thinking?" />
-    <meta property="og:image"              content="http://static01.nyt.com/images/2015/02/19/arts/international/19iht-btnumbers19A/19iht-btnumbers19A-facebookJumbo-v2.jpg" />
+    <meta property="og:url"        content="http://www.nytimes.com/2015/02/19/arts/international/when-great-minds-dont-think-alike.html" />
+    <meta property="og:type"       content="article" />
+    <meta property="og:title"      content="{{$this->user->name}}" />
+    <meta property="og:description"  content="{{$this->user->profile[0]->biography}}" />
+    <meta property="og:image"      content="{{$this->user->profile_photo_url}}" />
 </x-slot>
 <x-slot name="header">
     
