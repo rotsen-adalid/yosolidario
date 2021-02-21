@@ -6,7 +6,7 @@
     <meta property="og:type"       content="article" />
     <meta property="og:title"      content="{{$this->user->name}}" />
     <meta property="og:description"  content="{{$this->user->profile[0]->biography}}" />
-    <meta property="og:image"      content="{{$this->user->profile_photo_url}}" />
+    <meta property="og:image"      content="https://yosolidario.com{{$this->user->profile_photo_path}}" />
 </x-slot>
 <x-slot name="header">
     
