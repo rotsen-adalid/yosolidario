@@ -25,17 +25,17 @@
 </x-slot>
 <div class="bg-gray-50 py-6 sm:py-12 ">
 <div class=" flex items-center justify-center px-4 sm:px-6 lg:px-8">
-    <div class="max-w-md w-full space-y-2">
+    <div class=" w-full space-y-2">
         <div class="flex space-x-3 sm:space-x-6 items-center justify-center">
-            <div class="">
+            <div class="w-36 h-28 sm:w-60 sm:h-52 lg:w-52 lg:h-52 ">
                 @if($this->user->profile_photo_path)
                     <img class="w-24 h-24 sm:w-48 sm:h-48 mx-auto rounded-full object-cover object-center" src="{{ URL::to('/') }}{{ $this->user->profile_photo_path }}" alt="Workflow">
                 @else 
                 <img class="w-24 h-24 sm:w-48 sm:h-48 mx-auto rounded-full" src="{{ $this->user->profile_photo_url }}" alt="{{ $this->user->name }}" />
                 @endif
             </div>
-            <div class="">
-            <h2 class="text-center text-xl sm:text-3xl font-extrabold text-gray-900">
+            <div class="w-full h-full sm:w-auto sm:h-auto">
+            <h2 class="text-xl sm:text-3xl font-extrabold text-gray-900">
                 {{$this->user->name}}
             </h2>
             <p class="mt-0 text-justify text-sm text-gray-600">
@@ -46,8 +46,8 @@
             @if($this->user->profile->count() > 0)
                 @if($this->user->profile[0]->status == 'PRIVATE')
                 @auth
-                <div class="mt-3 space-y-2 flex items-center justify-center">
-                    <div class="flex item-center space-x-3">
+                <div class="mt-3 space-y-2 flex">
+                    <div class="flex space-x-3">
                         @if($this->user->profile[0]->facebook)
                         <a href="https://www.facebook.com/{{$this->user->profile[0]->facebook}}" target="_blank">
                             <svg class="h-6 sm:h-8" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -150,8 +150,8 @@
                 </div>
                 @endauth
                 @elseif($this->user->profile[0]->status == 'PUBLIC')
-                <div class="mt-3 space-y-2 flex items-center justify-center">
-                    <div class="flex item-center space-x-3">
+                <div class="mt-3 space-y-2 flex ">
+                    <div class="flex space-x-3">
                         @if($this->user->profile[0]->facebook)
                         <a href="https://www.facebook.com/{{$this->user->profile[0]->facebook}}" target="_blank">
                             <svg class="h-6 sm:h-8" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -257,6 +257,10 @@
             </div>
         </div>
         <!-- -->
+    </div>
+</div>
+<div class=" flex items-center justify-center px-4 sm:px-6 lg:px-8 pt-2">
+    <div class="max-w-lg w-full space-y-2">
         <div class="text-sm sm:text-base text-justify">
             @if($this->user->profile->count() > 0)
                 @if($this->user->profile[0]->status == 'PRIVATE')

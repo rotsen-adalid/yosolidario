@@ -10,7 +10,7 @@
         
         <!-- seo  -->
         {{$seo}}
-        
+
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
 
@@ -25,7 +25,7 @@
         <!-- pwa -->
         @laravelPWA
     </head>
-    <body class="font-sans antialiased">
+    <body class="font-sans antialiased text-base">
         <x-jet-banner />
 
         <div class="min-h-screen bg-gray-100">
