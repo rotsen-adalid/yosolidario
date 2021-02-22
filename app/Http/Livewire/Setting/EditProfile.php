@@ -20,10 +20,7 @@ class EditProfile extends Component
     public $countries_collection;
     public $user;
     public $message;
-    public $photo;
-    public $url;
-
-    public $photo_upload = false;
+    public $photoOne;
     
     protected $rules = [
         //'photo' => 'image|max:1024', // 1MB Max
@@ -69,7 +66,7 @@ class EditProfile extends Component
             $this->biography = $data->biography;
             $this->status_profile = $data->status;
         } else {
-            $this->slug = Str::slug($this->name);
+            // $this->slug = Str::slug($this->name);
         } 
     }
 
@@ -80,10 +77,20 @@ class EditProfile extends Component
             'name' => 'required|min:3|max:55',
             'slug' => "required|alpha_dash|unique:users,slug,$this->user_id",//['required', 'unique:users','alpha_dash', 'slug', $this->user_id],
             'email'=> "required|email|unique:users,email,$this->user_id",
-            'telephone_country_id' => 'required',
-            'telephone' => 'required|digits_between:7,15',
+            //'telephone_country_id' => 'required',
+            //'telephone' => 'required|digits_between:7,15',
             'status_profile' => 'required'
         ]);
+        
+        if($this->telephone) {
+            $this->validate([
+                'telephone_country_id' => 'required',
+                'telephone' => 'required|digits_between:7,15',
+            ]);
+        } else {
+            $this->telephone_country_id = null;
+            $this->telephone = null;
+        }
 
         if($this->whatsapp) {
             $this->validate([
@@ -172,21 +179,17 @@ class EditProfile extends Component
         $this->message = "Saved correctly";
     }
 
-    public function photoClick() {
-        $this->photo_upload = true;
-    }
-
     public function StoreOrUpdatePhoto() {
 
-        if($this->photo_upload) {
+        if($this->photoOne) {
             $this->validate([
-                'photo' => 'image|max:2048', // 2MB Max
+                'photoOne' => 'image|max:2048', // 2MB Max
             ]);
             $record = User::findOrFail($this->user_id);
-            $this->url = str_replace('storage', 'public', $record->profile_photo_path);
-            Storage::delete($this->url);
+            $photo = str_replace('storage', 'public', $record->profile_photo_path);
+            Storage::delete($photo);
             
-            $photo = $this->photo->store('public/profile-photos');
+            $photo = $this->photoOne->store('public/profile-photos');
             $profile_photo_path = Storage::url($photo);
 
             // user update
@@ -203,16 +206,16 @@ class EditProfile extends Component
 
     public function deleteProfilePhoto() {
         $record = User::findOrFail($this->user_id);
-        $this->url = str_replace('storage', 'public', $record->profile_photo_path);
-        Storage::delete($this->url);
+        $photo = str_replace('storage', 'public', $record->profile_photo_path);
+        Storage::delete($photo);
         $record->update([
             'profile_photo_path' => null
         ]);
         $this->profile_photo_path = null;
-        $this->photo = null;
-        $this->photo_upload = false;
+        $this->photoOne = null;
         $this->emit('messagePhoto');
         $this->message = "Was removed successfully";
+        $this->user = User::findOrFail($this->user_id);
         //return redirect()->route('setting/profile');
     }
 

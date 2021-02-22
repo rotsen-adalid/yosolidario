@@ -253,6 +253,17 @@
                     </div>
                 </div>
                 @endif
+                @endif
+                
+                @auth
+                @if($this->user->id == Auth::user()->id)
+                <div class="mt-2">
+                    <x-secondary-button wire:click="editProfile" wire:loading.attr="disabled">
+                        {{ __('Edit profile') }}
+                    </x-secondary-button>
+                </div>
+                @endauth
+                
             @endif
             </div>
         </div>

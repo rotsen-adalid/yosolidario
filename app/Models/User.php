@@ -71,11 +71,11 @@ class User extends Authenticatable // implements MustVerifyEmail
     protected $appends = [
         'profile_photo_url',
     ];
-    /*
+    
     public function getRouteKeyName()
     {
         return 'slug';
-    }*/
+    }
     
     // uno a uno
     public function personalInformation() {

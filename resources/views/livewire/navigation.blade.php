@@ -135,7 +135,7 @@
                           </div>
 
                           @if(Auth::user()->slug)
-                              <x-jet-dropdown-link href="{{ route('user', Auth::user()->slug) }}">
+                              <x-jet-dropdown-link href="{{ route('user', Auth::user()) }}">
                                   {{ __('Profile') }}
                               </x-jet-dropdown-link>
                           @endif

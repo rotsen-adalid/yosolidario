@@ -11,7 +11,6 @@
                 <h2 class="flex items-center font-semibold text-xl text-gray-800 leading-tight pt-4">
                     {{ __('My campaigns') }}
                 </h2>
-    
             </div>
         </header>
     </x-slot>

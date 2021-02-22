@@ -16,7 +16,7 @@ class Profile extends Component
     public function mount($slug)
     {
         $this->slug = $slug; //DB::table('users')->where('slug', $slug)->get();
-        $data = User::where('slug', $this->slug)->get();
+        $data = User::where('slug', '=', $this->slug)->get();
         if($data->count() == 1) {
             $this->user = $data[0];
             if($this->user->profile->count() == 1) {
@@ -33,5 +33,9 @@ class Profile extends Component
     public function render()
     {
         return view('livewire.user.profile');
+    }
+    
+    public function editProfile() {
+        return redirect()->route('setting/profile');
     }
 }

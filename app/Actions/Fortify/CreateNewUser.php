@@ -9,8 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Laravel\Jetstream\Jetstream;
-
-use App\Models\Access;
+use Illuminate\Support\Str as Str;
 
 class CreateNewUser implements CreatesNewUsers
 {
@@ -39,6 +38,7 @@ class CreateNewUser implements CreatesNewUsers
 
             $user = tap(User::create([
                 'name' => $input['name'],
+                'slug' => Str::slug($input['name']).'-'.time(),
                 'email' => $input['email'],
                 'password' => Hash::make($input['password']),
                 'search' => $search_all
