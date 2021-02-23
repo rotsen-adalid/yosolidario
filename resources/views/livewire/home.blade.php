@@ -3,11 +3,21 @@
 </x-slot>
 <x-slot  name="seo">
   
-  <meta property="og:url"                content="http://www.nytimes.com/2015/02/19/arts/international/when-great-minds-dont-think-alike.html" />
-  <meta property="og:type"               content="article" />
-  <meta property="og:title"              content="When Great Minds Don’t Think Alike" />
-  <meta property="og:description"        content="How much does culture influence creative thinking?" />
-  <meta property="og:image"              content="http://static01.nyt.com/images/2015/02/19/arts/international/19iht-btnumbers19A/19iht-btnumbers19A-facebookJumbo-v2.jpg" />
+  <!-- facebook -->
+  <meta property="og:url"        content="http://yosolidario.com" />
+  <meta property="og:type"       content="article" />
+  <meta property="og:title"      content="yosolidario - {{__('The crowdfunding platform')}}" />
+  <meta property="og:description"  content="{{__('YoSolidario: The most trusted online fundraising platform. Start a crowdfunding campaign. ✓ Read our guarantee!')}}" />
+  <meta property="og:image"      content="{{asset('images/logo2.png')}}" />
+  <meta property="fb:app_id" content="738141669970459" />
+
+  <!-- twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@yosolidariocom">
+  <meta name="twitter:title" content="yosolidario - {{__('The crowdfunding platform')}}}">
+  <meta name="twitter:creator" content="@yosolidariocom">
+  <meta name="twitter:description" content="{{__('YoSolidario: The most trusted online fundraising platform. Start a crowdfunding campaign. ✓ Read our guarantee!')}}">
+  <meta name="twitter:image" content="{{asset('images/logo2.png')}}">
   
 </x-slot>
 
