@@ -14,7 +14,7 @@
         <!-- twitter -->
         <meta name="twitter:card" content="summary_large_image">
         <meta name="twitter:site" content="@yosolidariocom">
-        <meta name="twitter:title" content="{{$this->user->name}}l">
+        <meta name="twitter:title" content="{{$this->user->name}}">
         <meta name="twitter:creator" content="{{'@'.$this->user->profile[0]->twitter}}">
         <meta name="twitter:description" content="{{$this->user->profile[0]->biography}}">
         <meta name="twitter:image" content="https://yosolidario.com{{$this->user->profile_photo_path}}">
