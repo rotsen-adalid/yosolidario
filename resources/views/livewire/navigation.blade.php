@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100 w-full ">
+<nav x-data="{ open: false }" class=" bg-white border-b border-gray-100 w-full ">
   <!-- Primary Navigation Menu -->
   <div class="max-w-7xl mx-auto px-4 sm:px-2">
       <div class="flex justify-between h-20">
@@ -168,7 +168,7 @@
               @else
               <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
 
-                  <a class="uppercase font-bold text-sm text-base text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
+                  <a class="uppercase font-bold text-sm text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
                       {{ __('Login') }}
                   </a>
 

@@ -30,6 +30,7 @@
         </x-slot>
 
         <x-slot name="form">
+
             <!-- Profile Photo -->
             @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
                 <div x-data="{photoName: null, photoPreview: null}" class="col-span-6 sm:col-span-4">
@@ -46,38 +47,36 @@
                                         reader.readAsDataURL($refs.photo.files[0]);
                                 " />
 
-                    <x-jet-label for="photo" value="{{ __('Photo') }}" />
-
+                    <div class="flex space-x-2">
+                        <x-jet-label for="photo" value="{{ __('Photo') }}" />
+                        <x-jet-action-message class="mr-3" on="messagePhoto">
+                            {{ __($message) }}
+                        </x-jet-action-message>
+                    </div>
                     <!-- Current Profile Photo -->
                     <div class="mt-2" x-show="! photoPreview">
                         @if($this->profile_photo_path)
-                            <x-icon-button wire:click="deleteProfilePhoto" class="absolute m-1 opacity-70">
-                                <i class="uil uil-trash text-base"></i>
-                            </x-icon-button>
                             <img src="{{ URL::to('/') }}{{$this->profile_photo_path}}" alt="{{ $this->user->name }}" class="rounded-full h-20 w-20 object-cover">
                         @else
                             <img src="{{ $this->user->profile_photo_url }}" alt="{{ $this->user->name }}" class="rounded-full h-20 w-20 object-cover">
                         @endif
                     </div>
-
                     <!-- New Profile Photo Preview -->
                     <div class="mt-2" x-show="photoPreview">
-                        @if($this->photoOne)
-                            <span class="block rounded-full w-20 h-20"
-                                x-bind:style="'background-size: cover; background-repeat: no-repeat; background-position: center center; background-image: url(\'' + photoPreview + '\');'">
-                                <x-icon-button wire:click="deleteProfilePhoto" class="m-1 opacity-70">
-                                    <i class="uil uil-trash text-base"></i>
-                                </x-icon-button>
-                            </span>
-                        @else
-                            <img src="{{ $this->user->profile_photo_url }}" alt="{{ $this->user->name }}" class="rounded-full h-20 w-20 object-cover">
-                        @endif
+                        <span class="block rounded-full w-20 h-20"
+                            x-bind:style="'background-size: cover; background-repeat: no-repeat; background-position: center center; background-image: url(\'' + photoPreview + '\');'">
+                        </span>
                     </div>
 
                     <x-jet-secondary-button class="mt-2 mr-2" type="button" x-on:click.prevent="$refs.photo.click()">
-                        {{ __('Select A New Photo') }}
+                        {{ __('New Photo') }}
                     </x-jet-secondary-button>
-                    
+
+                    @if ($this->user->profile_photo_path)
+                        <x-jet-secondary-button type="button" class="mt-2" wire:click="deleteProfilePhoto" @click="{photoPreview=null}">
+                            {{ __('Remove Photo') }}
+                        </x-jet-secondary-button>
+                    @endif
                     <x-jet-input-error for="photoOne" class="mt-2" />
                 </div>
             @endif
@@ -85,12 +84,14 @@
         </x-slot>
 
         <x-slot name="actions">
+            <!--
             <x-jet-action-message class="mr-3" on="messagePhoto">
-                {{ __($message) }}
+                { __($message) }}
             </x-jet-action-message>
             <x-button wire:loading.attr="disabled">
-                {{ __('save') }}
+                { __('save') }}
             </x-button>
+            -->
         </x-slot>
 
         </x-form-section>
@@ -118,7 +119,7 @@
             <!-- Name -->
             <div class="col-span-6 sm:col-span-4">
                 <x-jet-label for="name" value="{{ __('Name') }}" />
-                <x-jet-input id="name" type="text" class="mt-1 block w-full" wire:model.defer="name" autofocus autocomplete="off" />
+                <x-input id="name" type="text" class="mt-1 block w-full" wire:model.defer="name" autofocus autocomplete="off" />
                 <x-jet-input-error for="name" class="mt-2" />
             </div>
 

@@ -32,8 +32,13 @@ class EditProfile extends Component
         'status_profile' => 'required'
     ];
 
+    public function mount()
+    {
+        $this->photoOne = "";
+    }
     public function render()
     {
+        $this->StoreOrUpdatePhoto();
         $this->user_id = auth()->user()->id;
         $this->edit($this->user_id);
         $this->user = User::findOrFail($this->user_id);
@@ -185,6 +190,7 @@ class EditProfile extends Component
             $this->validate([
                 'photoOne' => 'image|max:2048', // 2MB Max
             ]);
+
             $record = User::findOrFail($this->user_id);
             $photo = str_replace('storage', 'public', $record->profile_photo_path);
             Storage::delete($photo);
@@ -222,4 +228,5 @@ class EditProfile extends Component
     public function slug() {
         $this->slug = Str::slug($this->name);
     }
-}
+
+ }
