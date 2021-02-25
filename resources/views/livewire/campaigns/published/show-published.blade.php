@@ -4,7 +4,7 @@
 <x-slot  name="seo">
     
         <!-- facebook -->
-        <meta property="og:url"        content="http://www.yosolidario.com/{{$campaign->slug}}" />
+        <meta property="og:url"        content="http://www.yosolidario.com/f/{{$campaign->slug}}" />
         <meta property="og:type"       content="article" />
         <meta property="og:title"      content="{{$campaign->title}}" />
         <meta property="og:description"  content="{{$campaign->extract}}" />
