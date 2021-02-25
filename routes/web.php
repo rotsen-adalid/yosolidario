@@ -34,12 +34,12 @@ Route::get('welcome', function () {
 // campaign
 
 use App\Http\Livewire\Campaigns\Published\ShowPublished;
-Route::get('/f/{slug}', ShowPublished::class)
-->name('f');
+Route::get('/{slug}', ShowPublished::class)
+->name('campaign-published');
 
 use App\Http\Livewire\Campaigns\MyCampaigns;
-Route::middleware(['auth:sanctum', 'verified'])->get('/my-campaigns', MyCampaigns::class)
-->name('my-campaigns');
+Route::middleware(['auth:sanctum', 'verified'])->get('/my/campaigns', MyCampaigns::class)
+->name('my/campaigns');
 
 use App\Http\Livewire\Campaigns\Create\Details;
 Route::middleware(['auth:sanctum', 'verified'])->get('/campaign/create', Details::class)

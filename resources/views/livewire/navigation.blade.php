@@ -120,7 +120,7 @@
                           </div>
 
                           <!-- My campaigns -->
-                          <x-dropdown-link href="{{ url('my-campaigns') }}">
+                          <x-dropdown-link href="{{ url('my/campaigns') }}">
                               {{ __('My campaigns') }}
                           </x-dropdown-link>
 
@@ -233,7 +233,7 @@
               <div class="block pt-2 pb-1 px-4 text-xs text-gray-400">
                 {{ __('Management Panel') }}
               </div>
-              <x-responsive-nav-link href="{{ route('my-campaigns') }}" :active="request()->routeIs('my-campaigns')">
+              <x-responsive-nav-link href="{{ route('my/campaigns') }}" :active="request()->routeIs('my-campaigns')">
                 {{ __('My campaigns') }}
               </x-responsive-nav-link>
 
