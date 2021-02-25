@@ -6,10 +6,11 @@
         <!-- facebook -->
         <meta property="og:locale" content="{{ str_replace('_', '-', app()->getLocale()) }}" />
         <meta property="og:url"        content="http://yosolidario.com/{{$campaign->slug}}" />
-        <meta property="og:type"       content="article" />
+        <meta property="og:type"       content="video" />
         <meta property="og:title"      content="{{$campaign->title}}" />
         <meta property="og:description"  content="{{$campaign->extract}}" />
         <meta property="og:image"      content="https://yosolidario.com{{$campaign->image->url}}" />
+        <meta property="og:video"      content="{{asset('video/1.mp4')}}" />
         <meta property="fb:app_id" content="738141669970459" />
 
         <!-- twitter -->
