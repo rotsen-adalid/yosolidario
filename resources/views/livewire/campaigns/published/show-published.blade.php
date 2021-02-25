@@ -9,7 +9,7 @@
         <meta property="og:title"      content="{{$this->campaign->title}}" />
         <meta property="og:description"  content="{{$this->campaign->extract}}" />
         <meta property="og:image"      content="https://yosolidario.com{{$this->campaign->image->url}}" />
-        <meta property="og:video"      content="{{$this->campaign->video->url}}" />
+       <!--  <meta property="og:video"      content="{$this->campaign->video->url}}" /> -->
         <meta property="fb:app_id" content="738141669970459" />
 
         <!-- twitter -->
