@@ -5,7 +5,7 @@
     
         <!-- facebook -->
         <meta property="og:locale" content="{{ str_replace('_', '-', app()->getLocale()) }}" />
-        <meta property="og:url"        content="http://www.yosolidario.com/f/{{$campaign->slug}}" />
+        <meta property="og:url"        content="http://yosolidario.com/{{$campaign->slug}}" />
         <meta property="og:type"       content="article" />
         <meta property="og:title"      content="{{$campaign->title}}" />
         <meta property="og:description"  content="{{$campaign->extract}}" />
