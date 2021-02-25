@@ -52,4 +52,9 @@ class PersonalInformation extends Model
     public function country() {
         return $this->belongsTo(Country::class);
     }
+
+    // relacion polimorfica uno a muchos
+    public function userHistories() {
+        return $this->morphMany(UserHistory::class, 'userhistoriesable');
+    }
 }

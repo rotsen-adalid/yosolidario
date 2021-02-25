@@ -14,9 +14,9 @@ class EditProfile extends Component
 {
     use WithFileUploads;
 
-    public $user_id, $name, $slug, $profile_photo_path,  $email, $country_id, $telephone_country_id, $telephone;
+    public $user_id, $name, $slug, $profile_photo_path,  $email, $country_id, $telephone;
     public $facebook, $twitter, $instagram, $biography, $status_profile;
-    public $whatsapp_country_id, $whatsapp, $telegram, $website;
+    public $whatsapp, $telegram, $website;
     public $countries_collection;
     public $user;
     public $message;
@@ -53,17 +53,15 @@ class EditProfile extends Component
         $this->name = $record->name;
         $this->slug = $record->slug;
         $this->email = $record->email;
+        $this->country_id = $record->country_id;
 
         if($record->profile->count() > 0) {
             $data = $record->profile[0];
-            $this->country_id = $data->country_id;
-            $this->telephone_country_id = $data->telephone_country_id;
             $this->telephone = $data->telephone;
 
             $this->facebook = $data->facebook;
             $this->twitter = $data->twitter;
             $this->instagram = $data->instagram;
-            $this->whatsapp_country_id = $data->whatsapp_country_id;
             $this->whatsapp = $data->whatsapp;
             $this->telegram = $data->telegram;
             $this->website = $data->website;
@@ -82,28 +80,19 @@ class EditProfile extends Component
             'name' => 'required|min:3|max:55',
             'slug' => "required|alpha_dash|unique:users,slug,$this->user_id",//['required', 'unique:users','alpha_dash', 'slug', $this->user_id],
             'email'=> "required|email|unique:users,email,$this->user_id",
-            //'telephone_country_id' => 'required',
             //'telephone' => 'required|digits_between:7,15',
             'status_profile' => 'required'
         ]);
         
-        if($this->telephone) {
+        if($this->country_id or $this->whatsapp) {
             $this->validate([
-                'telephone_country_id' => 'required',
-                'telephone' => 'required|digits_between:7,15',
-            ]);
-        } else {
-            $this->telephone_country_id = null;
-            $this->telephone = null;
-        }
-
-        if($this->whatsapp) {
-            $this->validate([
-                'whatsapp_country_id' => 'required',
+                'country_id' => 'required',
+                //'telephone' => 'required|digits_between:7,15',
                 'whatsapp' => 'required|digits_between:7,15',
             ]);
         } else {
-            $this->whatsapp_country_id = null;
+            $this->country_id = null;
+            $this->telephone = null;
             $this->whatsapp = null;
         }
 
@@ -124,8 +113,6 @@ class EditProfile extends Component
 
         $record = User::findOrFail($this->user_id);
 
-        $this->country_id = $this->telephone_country_id;
-
         if($record->profile->count() > 0) {
 
             // user update
@@ -141,13 +128,10 @@ class EditProfile extends Component
             $data = $record->profile[0];
             $record = Profile::find($data->id);
             $record->update([
-                'country_id' => $this->country_id,
-                'telephone_country_id' => $this->telephone_country_id,
                 'telephone' =>  addslashes($this->telephone),
                 'facebook' =>  addslashes($this->facebook),
                 'twitter'=>  addslashes($this->twitter),
                 'instagram' =>  addslashes($this->instagram),
-                'whatsapp_country_id' => $this->whatsapp_country_id,
                 'whatsapp' =>  addslashes($this->whatsapp),
                 'telegram' =>  addslashes($this->telegram),
                 'website' =>  addslashes($this->website),
@@ -167,12 +151,10 @@ class EditProfile extends Component
             // create profile
             $record = Profile::create([
                 'user_id' => auth()->user()->id,
-                'telephone_country_id' => $this->telephone_country_id,
                 'telephone' =>  addslashes($this->telephone),
                 'facebook' =>  addslashes($this->facebook),
                 'twitter'=>  addslashes($this->twitter),
                 'instagram' =>  addslashes($this->instagram),
-                'whatsapp_country_id' => $this->whatsapp_country_id,
                 'whatsapp' =>  addslashes($this->whatsapp),
                 'telegram' =>  addslashes($this->telegram),
                 'website' =>  addslashes($this->website),

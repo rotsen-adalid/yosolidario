@@ -89,4 +89,9 @@ class Campaign extends Model
     {
         return $this->belongsTo(Organization::class);
     }
+
+    // relacion polimorfica uno a muchos
+    public function userHistories() {
+        return $this->morphMany(UserHistory::class, 'userhistoriesable');
+    }
 }

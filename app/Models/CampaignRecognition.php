@@ -30,4 +30,9 @@ class CampaignRecognition extends Model
     public function campaign() {
         return $this->belongsTo(Campaign::class);
     }
+
+    // relacion polimorfica uno a muchos
+    public function userHistories() {
+        return $this->morphMany(UserHistory::class, 'userhistoriesable');
+    }
 }

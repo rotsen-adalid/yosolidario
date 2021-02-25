@@ -27,4 +27,9 @@ class CategoryCampaign extends Model
         return $this->hasMany(Campaign::class);
     }
 
+   // relacion polimorfica uno a muchos
+   public function userHistories() {
+        return $this->morphMany(UserHistory::class, 'userhistoriesable');
+    }
+ 
 }

@@ -162,6 +162,17 @@ class Details extends Component
             'status' => 'DRAFT'
         ]);
 
+        $extract = 'Create campaign: '.$record->id;
+        $record->userHistories()->create([
+            'photo_path' => null,
+            'extract' => $extract,
+            'data' => $record,
+            'action' =>  'CREATE',
+            'user_id' => auth()->user()->id,
+            'site_id' => 1,
+            //'agency_id' => 1
+            ]);
+
         $photo = $this->photoOne->store('public/campaign_image');
         $photo_url = Storage::url($photo);
 
@@ -181,7 +192,7 @@ class Details extends Component
         }
         $this->createQuestions($campaign_id);
         $this->createRewars($campaign_id);
-
+        
         return redirect()->route('campaign/create/questions', ['slug' => $record->slug]);
     }
 
@@ -282,6 +293,17 @@ class Details extends Component
             'status' => 'DRAFT',
             //'status_register' => 'INCOMPLETE'
         ]);
+
+        $extract = 'Update campaign: '.$record->id;
+        $record->userHistories()->create([
+            'photo_path' => null,
+            'extract' => $extract,
+            'data' => $record,
+            'action' =>  'UPDATE',
+            'user_id' => auth()->user()->id,
+            'site_id' => 1,
+            //'agency_id' => 1
+            ]);
 
         $this->emit('message');
         $this->message = "Saved correctly";
@@ -431,7 +453,18 @@ class Details extends Component
         $record->update([
             'status' => 'IN_REVIEW'
         ]);
+        $extract = 'Send to campaign review: '.$record->id;
+            $record->userHistories()->create([
+                'photo_path' => null,
+                'extract' => $extract,
+                'data' => $record,
+                'action' =>  'UPDATE',
+                'user_id' => auth()->user()->id,
+                'site_id' => 1,
+                //'agency_id' => 1
+                ]);
         $this->confirmingSendReview = false;
+        return redirect()->route('my-campaigns');
     }
 
     public function preview($id) {

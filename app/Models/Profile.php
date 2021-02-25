@@ -13,12 +13,10 @@ class Profile extends Model
 
     protected $fillable = [
         'biography', 
-        'telephone_country_id', 
         'telephone', 
         'facebook', 
         'twitter', 
         'instagram',
-        'whatsapp_country_id',
         'whatsapp',
         'telegram',
         'website',
@@ -31,5 +29,10 @@ class Profile extends Model
     // uno a uno inversa
     public function user() {
         return $this->belongsTo(user::class);
+    }
+
+    // relacion polimorfica uno a muchos
+    public function userHistories() {
+        return $this->morphMany(UserHistory::class, 'userhistoriesable');
     }
 }

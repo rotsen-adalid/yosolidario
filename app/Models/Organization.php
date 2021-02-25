@@ -60,4 +60,9 @@ class Organization extends Model
     public function campaigns() {
         return $this->hasMany(Campaign::class);
     }
+
+    // relacion polimorfica uno a muchos
+    public function userHistories() {
+        return $this->morphMany(UserHistory::class, 'userhistoriesable');
+    }
 }

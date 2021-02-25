@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Actions\Fortify;
-
+use App\Models\Site;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
@@ -47,7 +47,17 @@ class CreateNewUser implements CreatesNewUsers
             });
  
             $user->assignRole('organizer');
+            $user->sites()->attach(Site::where('name', 'yosolidario.com')->first());
 
+            $extract = 'Created user: '.$user->id;
+            $user->userHistories()->create([
+                'photo_path' => null,
+                'extract' => $extract,
+                'data' => $user,
+                'action' =>  'CREATE',
+                'user_id' => $user->id,
+                'site_id' => 1,
+                ]);
             return $user;
         });
     }

@@ -202,6 +202,16 @@ class Questions extends Component
             'question_url_add' => $this->question_url_add_upload,
             // 'campaign_id' =>  $this->campaign_id,
         ]);
+        $extract = 'Update campaign questions: '.$record->id;
+        $record->userHistories()->create([
+            'photo_path' => null,
+            'extract' => $extract,
+            'data' => $record,
+            'action' =>  'UPDATE',
+            'user_id' => auth()->user()->id,
+            'site_id' => 1,
+            //'agency_id' => 1
+            ]);
 
         if ($this->status_register == 'INCOMPLETE') {
             $record_campaign = Campaign::find($this->campaign_id);
@@ -284,7 +294,18 @@ class Questions extends Component
         $record->update([
             'status' => 'IN_REVIEW'
         ]);
+        $extract = 'Send to campaign review: '.$record->id;
+        $record->userHistories()->create([
+            'photo_path' => null,
+            'extract' => $extract,
+            'data' => $record,
+            'action' =>  'UPDATE',
+            'user_id' => auth()->user()->id,
+            'site_id' => 1,
+            //'agency_id' => 1
+            ]);
         $this->confirmingSendReview = false;
+        return redirect()->route('my-campaigns');
     }
 
     public function preview($id) {

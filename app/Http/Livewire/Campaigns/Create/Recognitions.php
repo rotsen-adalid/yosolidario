@@ -83,6 +83,17 @@ class Recognitions extends Component
                 'quantity' => $this->quantity,
                 'campaign_id' => $this->campaign_id
             ]);
+
+            $extract = 'Create campaign recognition: '.$record->id;
+            $record->userHistories()->create([
+                'photo_path' => null,
+                'extract' => $extract,
+                'data' => $record,
+                'action' =>  'CREATE',
+                'user_id' => auth()->user()->id,
+                'site_id' => 1,
+                //'agency_id' => 1
+                ]);
         } else {
             if($this->delivery_date == '') {
                 $this->delivery_date = null;
@@ -97,6 +108,16 @@ class Recognitions extends Component
                 'limiter' => $this->limiter,
                 'quantity' => $this->quantity,
             ]);
+            $extract = 'Update campaign recognition: '.$record->id;
+            $record->userHistories()->create([
+                'photo_path' => null,
+                'extract' => $extract,
+                'data' => $record,
+                'action' =>  'UPDATE',
+                'user_id' => auth()->user()->id,
+                'site_id' => 1,
+                //'agency_id' => 1
+                ]);
         }
         $this->resetInput();
         $this->addOrUpdateDialog = false;
@@ -139,6 +160,16 @@ class Recognitions extends Component
         if($id) {
             $record = CampaignRecognition::find($id);
             $record->delete();
+            $extract = 'Delete campaign recognition: '.$record->id;
+            $record->userHistories()->create([
+                'photo_path' => null,
+                'extract' => $extract,
+                'data' => $record,
+                'action' =>  'DELETE',
+                'user_id' => auth()->user()->id,
+                'site_id' => 1,
+                //'agency_id' => 1
+                ]);
         }
         $this->resetInput();
         $this->confirmingDeletion = false;
@@ -154,7 +185,18 @@ class Recognitions extends Component
         $record->update([
             'status' => 'IN_REVIEW'
         ]);
+        $extract = 'Send to campaign review: '.$record->id;
+        $record->userHistories()->create([
+            'photo_path' => null,
+            'extract' => $extract,
+            'data' => $record,
+            'action' =>  'UPDATE',
+            'user_id' => auth()->user()->id,
+            'site_id' => 1,
+            //'agency_id' => 1
+            ]);
         $this->confirmingSendReview = false;
+        return redirect()->route('my-campaigns');
     }
 
     public function preview($id) {

@@ -39,6 +39,7 @@ class User extends Authenticatable // implements MustVerifyEmail
         'profile_photo_path',
         'country_id',
         'status',
+
         'search'
     ];
 
@@ -103,9 +104,50 @@ class User extends Authenticatable // implements MustVerifyEmail
         return $this->morphOne(Image::class, 'imageable');
     }
     
-     // uno a muchos inversa
-     public function agency()
-     {
-         return $this->belongsTo(Agency::class);
-     }
+    // uno a muchos inversa
+    public function agency()
+    {
+        return $this->belongsTo(Agency::class);
+    }
+
+    // relacion polimorfica uno a muchos
+    public function userHistories() {
+        return $this->morphMany(UserHistory::class, 'userhistoriesable');
+    }
+
+    // relacion muchos a muchos
+    public function sites()
+    {
+        return $this->belongsToMany(Site::class)->withTimestamps();
+    }
+
+    // function autorize site
+    public function authorizeSites($sites)
+    {
+        abort_unless($this->hasAnySite($sites), 401);
+        return true;
+    }
+    public function hasAnySite($sites)
+    {
+        if (is_array($sites)) {
+            foreach ($sites as $role) {
+                if ($this->hasSite($role)) {
+                    return true;
+                }
+            }
+        } else {
+            if ($this->hasSite($sites)) {
+                 return true; 
+            }   
+        }
+        return false;
+    }
+    
+    public function hasSite($role)
+    {
+        if ($this->sites()->where('name', $role)->first()) {
+            return true;
+        }
+        return false;
+    }
 }

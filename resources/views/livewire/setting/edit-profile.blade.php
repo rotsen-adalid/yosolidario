@@ -136,24 +136,7 @@
                 <x-jet-input id="email" type="email" class="mt-1 block w-full" wire:model.defer="email"  autocomplete="off" />
                 <x-jet-input-error for="email" class="mt-2" />
             </div>
-            <!-- Telephone -->
-            <div class="col-span-6 sm:col-span-4">
-                <x-label for="telephone" value="{{ __('Phone number') }} ({{ __('optional') }})" />
-                <div class="flex">
-                    <x-select class="mt-1 block w-36" id="telephone_country_id" name="telephone_country_id" wire:model.defer="telephone_country_id">
-                        <x-slot name="option">
-                                <option value="">{{ __('Country') }}</option>
-                            @foreach ($countries_collection as $item)
-                                <option value="{{$item->id}}">{{ __($item->name) }}</option>
-                            @endforeach
-                        </x-slot>
-                    </x-select>
-                    <x-jet-input id="telephone" type="text" class="mt-1 ml-2 block w-full" wire:model.defer="telephone"  autocomplete="off" />
-                </div>
-                <x-input-error for="telephone_country_id" class="mt-2" />
-                <x-jet-input-error for="telephone" class="mt-2" />
-            </div>
-
+        
             <!-- Biography -->
             <div class="col-span-6 sm:col-span-4">
                 <x-jet-label for="biography" value="{{ __('Biography') }} ({{ __('optional') }})" />
@@ -184,20 +167,25 @@
 
             <!-- WhatsApp -->
             <div class="col-span-6 sm:col-span-4">
-                <x-label for="telephone" value="{{ __('WhatsApp') }} ({{ __('optional') }})" />
-                <div class="flex">
-                    <x-select class="mt-1 block w-36" id="whatsapp_country_id" name="whatsapp_country_id" wire:model.defer="whatsapp_country_id">
-                        <x-slot name="option">
-                                <option value="">{{ __('Country') }}</option>
-                            @foreach ($countries_collection as $item)
-                                <option value="{{$item->id}}">{{ __($item->name) }}</option>
-                            @endforeach
-                        </x-slot>
-                    </x-select>
-                    <x-jet-input id="whatsapp" type="text" class="mt-1 ml-2 block w-full" wire:model.defer="whatsapp"  autocomplete="off" />
+                <div class="flex space-x-1">
+                    <div class="w-36">
+                        <x-label for="country_id" value="{{ __('Country') }} ({{ __('optional') }})" />
+                        <x-select class="mt-1 block w-36" id="country_id" name="country_id" wire:model.defer="country_id">
+                            <x-slot name="option">
+                                    <option value="">{{ __('Country') }}</option>
+                                @foreach ($countries_collection as $item)
+                                    <option value="{{$item->id}}">{{ __($item->name) }}</option>
+                                @endforeach
+                            </x-slot>
+                        </x-select>
+                        <x-input-error for="country_id" class="mt-2" />
+                    </div>
+                    <div class="w-full">
+                        <x-label for="whatsApp" value="{{ __('WhatsApp') }} ({{ __('optional') }})" />
+                        <x-jet-input id="whatsapp" type="text" class="mt-1 ml-2 block w-full" wire:model.defer="whatsapp"  autocomplete="off" />
+                        <x-jet-input-error for="whatsapp" class="mt-2" />
+                    </div>
                 </div>
-                <x-input-error for="whatsapp_country_id" class="mt-2" />
-                <x-input-error for="whatsapp" class="mt-2" />
             </div>
 
             <!-- Telegram -->
