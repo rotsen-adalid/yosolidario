@@ -34,8 +34,8 @@ Route::get('welcome', function () {
 // campaign
 
 use App\Http\Livewire\Campaigns\Published\ShowPublished;
-Route::get('/{slug}', ShowPublished::class)
-->name('campaign-published');
+Route::get('/f/{slug}', ShowPublished::class)
+->name('f');
 
 use App\Http\Livewire\Campaigns\MyCampaigns;
 Route::middleware(['auth:sanctum', 'verified'])->get('/my-campaigns', MyCampaigns::class)
