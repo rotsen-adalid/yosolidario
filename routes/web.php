@@ -32,6 +32,11 @@ Route::get('welcome', function () {
 
 //Route::get('set_language/{lang}', 'Controller@set_language')->name('set_language');
 // campaign
+
+use App\Http\Livewire\Campaigns\Published\ShowPublished;
+Route::get('/{slug}', ShowPublished::class)
+->name('campaign-published');
+
 use App\Http\Livewire\Campaigns\MyCampaigns;
 Route::middleware(['auth:sanctum', 'verified'])->get('/my-campaigns', MyCampaigns::class)
 ->name('my-campaigns');
