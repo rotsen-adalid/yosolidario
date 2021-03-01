@@ -2,12 +2,12 @@
     {{$user->name}} : YoSolidario
 </x-slot>
 <x-slot  name="seo">
-    @if($this->user->profile->count() > 0)
+    @if($this->user->profile)
         <!-- facebook -->
         <meta property="og:url"        content="http://www.yosolidario.com/user/{{$this->user->slug}}" />
         <meta property="og:type"       content="article" />
         <meta property="og:title"      content="{{$this->user->name}}" />
-        <meta property="og:description"  content="{{$this->user->profile[0]->biography}}" />
+        <meta property="og:description"  content="{{$this->user->profile->biography}}" />
         <meta property="og:image"      content="https://yosolidario.com{{$this->user->profile_photo_path}}" />
         <meta property="fb:app_id" content="738141669970459" />
 
@@ -15,8 +15,8 @@
         <meta name="twitter:card" content="summary_large_image">
         <meta name="twitter:site" content="@yosolidariocom">
         <meta name="twitter:title" content="{{$this->user->name}}">
-        <meta name="twitter:creator" content="{{'@'.$this->user->profile[0]->twitter}}">
-        <meta name="twitter:description" content="{{$this->user->profile[0]->biography}}">
+        <meta name="twitter:creator" content="{{'@'.$this->user->profile->twitter}}">
+        <meta name="twitter:description" content="{{$this->user->profile->biography}}">
         <meta name="twitter:image" content="https://yosolidario.com{{$this->user->profile_photo_path}}">
     @endif
 </x-slot>
@@ -43,13 +43,13 @@
                     {{__('User since')}} {{$this->user->created_at->diffForHumans()}}
                 </span>
             </p>
-            @if($this->user->profile->count() > 0)
-                @if($this->user->profile[0]->status == 'PRIVATE')
+            @if($this->user->profile)
+                @if($this->user->profile->status == 'PRIVATE')
                 @auth
                 <div class="mt-3 space-y-2 flex">
                     <div class="flex space-x-3">
-                        @if($this->user->profile[0]->facebook)
-                        <a href="https://www.facebook.com/{{$this->user->profile[0]->facebook}}" target="_blank">
+                        @if($this->user->profile->facebook)
+                        <a href="https://www.facebook.com/{{$this->user->profile->facebook}}" target="_blank">
                             <svg class="h-6 sm:h-8" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                 viewBox="0 0 112.196 112.196" style="enable-background:new 0 0 112.196 112.196;" xml:space="preserve">
                                 <g>
@@ -60,8 +60,8 @@
                             </svg>
                         </a>
                         @endif
-                        @if($this->user->profile[0]->twitter)
-                        <a href="https://www.twitter.com/{{$this->user->profile[0]->twitter}}" target="_blank">
+                        @if($this->user->profile->twitter)
+                        <a href="https://www.twitter.com/{{$this->user->profile->twitter}}" target="_blank">
                             <svg class="h-6 sm:h-8" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                         viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
                                 <path style="fill:#03A9F4;" d="M512,97.248c-19.04,8.352-39.328,13.888-60.48,16.576c21.76-12.992,38.368-33.408,46.176-58.016
@@ -76,8 +76,8 @@
                             </svg>
                         </a>
                         @endif
-                        @if($this->user->profile[0]->instagram)
-                        <a href="https://www.instagram.com/{{$this->user->profile[0]->instagram}}" target="_blank">
+                        @if($this->user->profile->instagram)
+                        <a href="https://www.instagram.com/{{$this->user->profile->instagram}}" target="_blank">
                             <svg class="h-6 sm:h-8"  viewBox="0 0 24 24"  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                                 <linearGradient id="SVGID_1_" gradientTransform="matrix(0 -1.982 -1.844 0 -132.522 -51.077)" gradientUnits="userSpaceOnUse" x1="-37.106" x2="-26.555" y1="-72.705" y2="-84.047">
                                     <stop offset="0" stop-color="#fd5"/><stop offset=".5" stop-color="#ff543e"/><stop offset="1" stop-color="#c837ab"/></linearGradient>
@@ -86,8 +86,8 @@
                             </svg>
                         </a>
                         @endif
-                        @if($this->user->profile[0]->whatsapp)
-                        <a href="https://api.whatsapp.com/send?phone={{$this->user->country->telephone_prefix}}{{$this->user->profile[0]->whatsapp}}" target="_blank">
+                        @if($this->user->profile->whatsapp)
+                        <a href="https://api.whatsapp.com/send?phone={{$this->user->country->telephone_prefix}}{{$this->user->profile->whatsapp}}" target="_blank">
                             <svg  class="h-6 sm:h-8" viewBox="-1 0 512 512"  xmlns="http://www.w3.org/2000/svg"><path d="m10.894531 512c-2.875 0-5.671875-1.136719-7.746093-3.234375-2.734376-2.765625-3.789063-6.78125-2.761719-10.535156l33.285156-121.546875c-20.722656-37.472656-31.648437-79.863282-31.632813-122.894532.058594-139.941406 113.941407-253.789062 253.871094-253.789062 67.871094.0273438 131.644532 26.464844 179.578125 74.433594 47.925781 47.972656 74.308594 111.742187 74.289063 179.558594-.0625 139.945312-113.945313 253.800781-253.867188 253.800781 0 0-.105468 0-.109375 0-40.871093-.015625-81.390625-9.976563-117.46875-28.84375l-124.675781 32.695312c-.914062.238281-1.84375.355469-2.761719.355469zm0 0" fill="#e5e5e5"/>
                                 <path d="m10.894531 501.105469 34.46875-125.871094c-21.261719-36.839844-32.445312-78.628906-32.429687-121.441406.054687-133.933594 109.046875-242.898438 242.976562-242.898438 64.992188.027344 125.996094 25.324219 171.871094 71.238281 45.871094 45.914063 71.125 106.945313 71.101562 171.855469-.058593 133.929688-109.066406 242.910157-242.972656 242.910157-.007812 0 .003906 0 0 0h-.105468c-40.664063-.015626-80.617188-10.214844-116.105469-29.570313zm134.769531-77.75 7.378907 4.371093c31 18.398438 66.542969 28.128907 102.789062 28.148438h.078125c111.304688 0 201.898438-90.578125 201.945313-201.902344.019531-53.949218-20.964844-104.679687-59.09375-142.839844-38.132813-38.160156-88.832031-59.1875-142.777344-59.210937-111.394531 0-201.984375 90.566406-202.027344 201.886719-.015625 38.148437 10.65625 75.296875 30.875 107.445312l4.804688 7.640625-20.40625 74.5zm0 0" fill="#fff"/>
                                 <path d="m19.34375 492.625 33.277344-121.519531c-20.53125-35.5625-31.324219-75.910157-31.3125-117.234375.050781-129.296875 105.273437-234.488282 234.558594-234.488282 62.75.027344 121.644531 24.449219 165.921874 68.773438 44.289063 44.324219 68.664063 103.242188 68.640626 165.898438-.054688 129.300781-105.28125 234.503906-234.550782 234.503906-.011718 0 .003906 0 0 0h-.105468c-39.253907-.015625-77.828126-9.867188-112.085938-28.539063zm0 0" fill="#64b161"/><g fill="#fff">
@@ -95,14 +95,14 @@
                             </svg>
                         </a>
                         @endif
-                        @if($this->user->profile[0]->telegram)
-                        <a href="https://telegram.me/{{$this->user->profile[0]->telegram}}" target="_blank">
+                        @if($this->user->profile->telegram)
+                        <a href="https://telegram.me/{{$this->user->profile->telegram}}" target="_blank">
                             <svg class="h-6 sm:h-8" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" fill="#039be5" r="12"/><path d="m5.491 11.74 11.57-4.461c.537-.194 1.006.131.832.943l.001-.001-1.97 9.281c-.146.658-.537.818-1.084.508l-3-2.211-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.121l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953z" fill="#fff"/>
                             </svg>
                         </a>
                         @endif
-                        @if($this->user->profile[0]->website)
-                        <a href="{{$this->user->profile[0]->website}}" target="_blank">
+                        @if($this->user->profile->website)
+                        <a href="{{$this->user->profile->website}}" target="_blank">
                             <svg class="h-6 sm:h-8" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                     viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
                                 <path style="fill:#65B1FC;" d="M481.901,339.399C420.099,468.999,325,497,256,497c-77.701,0-150.901-38.8-195.901-102.1
@@ -149,11 +149,11 @@
                     </div>
                 </div>
                 @endauth
-                @elseif($this->user->profile[0]->status == 'PUBLIC')
+                @elseif($this->user->profile->status == 'PUBLIC')
                 <div class="mt-3 space-y-2 flex ">
                     <div class="flex space-x-3">
-                        @if($this->user->profile[0]->facebook)
-                        <a href="https://www.facebook.com/{{$this->user->profile[0]->facebook}}" target="_blank">
+                        @if($this->user->profile->facebook)
+                        <a href="https://www.facebook.com/{{$this->user->profile->facebook}}" target="_blank">
                             <svg class="h-6 sm:h-8" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                 viewBox="0 0 112.196 112.196" style="enable-background:new 0 0 112.196 112.196;" xml:space="preserve">
                                 <g>
@@ -164,8 +164,8 @@
                             </svg>
                         </a>
                         @endif
-                        @if($this->user->profile[0]->twitter)
-                        <a href="https://www.twitter.com/{{$this->user->profile[0]->twitter}}" target="_blank">
+                        @if($this->user->profile->twitter)
+                        <a href="https://www.twitter.com/{{$this->user->profile->twitter}}" target="_blank">
                             <svg class="h-6 sm:h-8" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                         viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
                                 <path style="fill:#03A9F4;" d="M512,97.248c-19.04,8.352-39.328,13.888-60.48,16.576c21.76-12.992,38.368-33.408,46.176-58.016
@@ -180,8 +180,8 @@
                             </svg>
                         </a>
                         @endif
-                        @if($this->user->profile[0]->instagram)
-                        <a href="https://www.instagram.com/{{$this->user->profile[0]->instagram}}" target="_blank">
+                        @if($this->user->profile->instagram)
+                        <a href="https://www.instagram.com/{{$this->user->profile->instagram}}" target="_blank">
                             <svg class="h-6 sm:h-8"  viewBox="0 0 24 24"  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                                 <linearGradient id="SVGID_1_" gradientTransform="matrix(0 -1.982 -1.844 0 -132.522 -51.077)" gradientUnits="userSpaceOnUse" x1="-37.106" x2="-26.555" y1="-72.705" y2="-84.047">
                                     <stop offset="0" stop-color="#fd5"/><stop offset=".5" stop-color="#ff543e"/><stop offset="1" stop-color="#c837ab"/></linearGradient>
@@ -190,8 +190,8 @@
                             </svg>
                         </a>
                         @endif
-                        @if($this->user->profile[0]->whatsapp)
-                        <a href="https://api.whatsapp.com/send?phone={{$this->user->country->telephone_prefix}}{{$this->user->profile[0]->whatsapp}}" target="_blank">
+                        @if($this->user->profile->whatsapp)
+                        <a href="https://api.whatsapp.com/send?phone={{$this->user->country->telephone_prefix}}{{$this->user->profile->whatsapp}}" target="_blank">
                             <svg  class="h-6 sm:h-8" viewBox="-1 0 512 512"  xmlns="http://www.w3.org/2000/svg"><path d="m10.894531 512c-2.875 0-5.671875-1.136719-7.746093-3.234375-2.734376-2.765625-3.789063-6.78125-2.761719-10.535156l33.285156-121.546875c-20.722656-37.472656-31.648437-79.863282-31.632813-122.894532.058594-139.941406 113.941407-253.789062 253.871094-253.789062 67.871094.0273438 131.644532 26.464844 179.578125 74.433594 47.925781 47.972656 74.308594 111.742187 74.289063 179.558594-.0625 139.945312-113.945313 253.800781-253.867188 253.800781 0 0-.105468 0-.109375 0-40.871093-.015625-81.390625-9.976563-117.46875-28.84375l-124.675781 32.695312c-.914062.238281-1.84375.355469-2.761719.355469zm0 0" fill="#e5e5e5"/>
                                 <path d="m10.894531 501.105469 34.46875-125.871094c-21.261719-36.839844-32.445312-78.628906-32.429687-121.441406.054687-133.933594 109.046875-242.898438 242.976562-242.898438 64.992188.027344 125.996094 25.324219 171.871094 71.238281 45.871094 45.914063 71.125 106.945313 71.101562 171.855469-.058593 133.929688-109.066406 242.910157-242.972656 242.910157-.007812 0 .003906 0 0 0h-.105468c-40.664063-.015626-80.617188-10.214844-116.105469-29.570313zm134.769531-77.75 7.378907 4.371093c31 18.398438 66.542969 28.128907 102.789062 28.148438h.078125c111.304688 0 201.898438-90.578125 201.945313-201.902344.019531-53.949218-20.964844-104.679687-59.09375-142.839844-38.132813-38.160156-88.832031-59.1875-142.777344-59.210937-111.394531 0-201.984375 90.566406-202.027344 201.886719-.015625 38.148437 10.65625 75.296875 30.875 107.445312l4.804688 7.640625-20.40625 74.5zm0 0" fill="#fff"/>
                                 <path d="m19.34375 492.625 33.277344-121.519531c-20.53125-35.5625-31.324219-75.910157-31.3125-117.234375.050781-129.296875 105.273437-234.488282 234.558594-234.488282 62.75.027344 121.644531 24.449219 165.921874 68.773438 44.289063 44.324219 68.664063 103.242188 68.640626 165.898438-.054688 129.300781-105.28125 234.503906-234.550782 234.503906-.011718 0 .003906 0 0 0h-.105468c-39.253907-.015625-77.828126-9.867188-112.085938-28.539063zm0 0" fill="#64b161"/><g fill="#fff">
@@ -199,14 +199,14 @@
                             </svg>
                         </a>
                         @endif
-                        @if($this->user->profile[0]->telegram)
-                        <a href="https://telegram.me/{{$this->user->profile[0]->telegram}}" target="_blank">
+                        @if($this->user->profile->telegram)
+                        <a href="https://telegram.me/{{$this->user->profile->telegram}}" target="_blank">
                             <svg class="h-6 sm:h-8" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" fill="#039be5" r="12"/><path d="m5.491 11.74 11.57-4.461c.537-.194 1.006.131.832.943l.001-.001-1.97 9.281c-.146.658-.537.818-1.084.508l-3-2.211-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.121l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953z" fill="#fff"/>
                             </svg>
                         </a>
                         @endif
-                        @if($this->user->profile[0]->website)
-                        <a href="{{$this->user->profile[0]->website}}" target="_blank">
+                        @if($this->user->profile->website)
+                        <a href="{{$this->user->profile->website}}" target="_blank">
                             <svg class="h-6 sm:h-8" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                     viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
                                 <path style="fill:#65B1FC;" d="M481.901,339.399C420.099,468.999,325,497,256,497c-77.701,0-150.901-38.8-195.901-102.1
@@ -273,13 +273,13 @@
 <div class=" flex items-center justify-center px-4 sm:px-6 lg:px-8 pt-2">
     <div class="max-w-lg w-full space-y-2">
         <div class="text-sm sm:text-base text-justify">
-            @if($this->user->profile->count() > 0)
-                @if($this->user->profile[0]->status == 'PRIVATE')
+            @if($this->user->profile)
+                @if($this->user->profile->status == 'PRIVATE')
                     @auth
-                    {{$this->user->profile[0]->biography}}
+                    {{$this->user->profile->biography}}
                     @endauth
-                @elseif($this->user->profile[0]->status == 'PUBLIC')
-                    {{$this->user->profile[0]->biography}}
+                @elseif($this->user->profile->status == 'PUBLIC')
+                    {{$this->user->profile->biography}}
                 @endif
             @endif
         </div>

@@ -19,8 +19,8 @@ class Profile extends Component
         $data = User::where('slug', '=', $this->slug)->get();
         if($data->count() == 1) {
             $this->user = $data[0];
-            if($this->user->profile->count() == 1) {
-                $this->country = Country::find($data[0]->profile[0]->whatsapp_country_id);
+            if($this->user->profile) {
+                $this->country = Country::find($data[0]->profile->whatsapp_country_id);
             } else {
                 //return redirect()->route('home');
             }

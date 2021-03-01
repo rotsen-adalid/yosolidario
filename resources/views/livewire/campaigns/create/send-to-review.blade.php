@@ -65,7 +65,7 @@
         <div class="my-5">
             <x-jet-label for="terms">
                 <div class="flex items-center">
-                    <x-jet-checkbox name="terms" id="terms"/>
+                    <x-jet-checkbox name="terms" id="terms" wire:model.defer="terms"/>
 
                     <div class="ml-2">
                         {!! __('I agree to the :terms_of_service and :privacy_policy', [
@@ -74,6 +74,7 @@
                         ]) !!}
                     </div>
                 </div>
+                <x-jet-input-error for="terms" class="mt-1" />
             </x-jet-label>
         </div>
         @endif

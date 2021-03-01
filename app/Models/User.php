@@ -80,12 +80,12 @@ class User extends Authenticatable // implements MustVerifyEmail
     
     // uno a uno
     public function personalInformation() {
-        return $this->hasMany(PersonalInformation::class);
+        return $this->hasOne(PersonalInformation::class);
     }
 
     // uno a uno
     public function profile() {
-        return $this->hasMany(Profile::class);
+        return $this->hasOne(Profile::class);
     }
 
     // uno a muchos

@@ -7,7 +7,8 @@
 <div class="bg-white">
 <x-section-content>
     <x-slot name="header">
-        @if($this->campaign->status == 'DRAFT')
+        @auth
+        @if($this->campaign->status == 'DRAFT' and Auth::user()->id == $this->campaign->user_id)
         <header class="bg-gray-50 shadow pt-2"> 
             <div class="sm:flex justify-between items-start max-w-7xl mx-auto px-4 sm:px-0 lg:px-0 pb-6 space-y-2">
                 <h2 class="flex items-center font-semibold text-xl text-black leading-tight pt-4 space-x-2">
@@ -25,13 +26,14 @@
             </div>
         </header>
         @endif
+        @endauth
     </x-slot>
     <x-slot  name="content">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-10 rounded-lg  pt-4 sm:pt-10">
             <div class="lg:col-span-2">
                 <livewire:preview.cover-page :slug="$slug"/>
             </div>
-            <div class="px-4">
+            <div class="px-4 sm:mt-10">
               <!-- organizer -->
                 <livewire:preview.organizer :slug="$slug"/>
                 <livewire:preview.counters :slug="$slug"/>
@@ -57,10 +59,10 @@
                             {{__('about')}}
                         </a>
                         </li>
-                        <li class="md:hidden" @click.prevent="openTab = 'recognitions'; window.location.hash = 'recognitions'" :class="{ '-mb-px': openTab === 'recognitions' }" class="mr-1">
-                            <a :class="openTab === 'recognitions' ? activeClasses : inactiveClasses" 
+                        <li class="md:hidden" @click.prevent="openTab = 'rewards'; window.location.hash = 'rewards'" :class="{ '-mb-px': openTab === 'rewards' }" class="mr-1">
+                            <a :class="openTab === 'rewards' ? activeClasses : inactiveClasses" 
                             class="bg-white inline-block py-3 px-5 font-semibold" href="#">
-                                {{__('recognitions')}}
+                                {{__('rewards')}}
                             </a>
                         </li>
                         <li @click.prevent="openTab = 'updates'; window.location.hash = 'updates'" :class="{ '-mb-px': openTab === 'updates' }" class="mr-1">
@@ -87,8 +89,8 @@
                         <div x-show="openTab === 'about'">
                         <livewire:preview.about :slug="$slug"/>
                         </div>
-                        <div class="md:hidden" x-show="openTab === 'recognitions'">
-                            <livewire:preview.recognitions :slug="$slug"/>
+                        <div class="md:hidden" x-show="openTab === 'rewards'">
+                            <livewire:preview.rewards :slug="$slug"/>
                         </div>
                         <div x-show="openTab === 'updates'">
                         <livewire:preview.updates :slug="$slug"/>
@@ -107,12 +109,12 @@
             <div>
               <!-- organizer -->
               <div class="hidden md:block">
-                <livewire:preview.recognitions :slug="$slug"/>
+                <livewire:preview.rewards :slug="$slug"/>
               </div>
             </div>
         </div>
         <!-- Send to review Modal -->
-        @include('livewire.campaigns.create.send-to-review')
+
     </x-slot>
 </x-section-content>
 </div>

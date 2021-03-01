@@ -46,7 +46,7 @@ class CreateNewUser implements CreatesNewUsers
                 $this->createTeam($user);
             });
  
-            $user->assignRole('organizer');
+            //$user->assignRole('organizer');
             $user->sites()->attach(Site::where('name', 'yosolidario.com')->first());
 
             $extract = 'Created user: '.$user->id;

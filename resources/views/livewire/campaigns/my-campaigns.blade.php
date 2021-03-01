@@ -20,7 +20,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mt-7 ">
     @foreach ($collection as $item)
     <div class="px-4 sm:px-0 @if($collection->count() == 1) sm:col-start-2 @endif">
-        <div wire:click="preview({{$item->id}})" wire:loading.attr="disabled" class="cursor-pointer bg-gray-300 h-56 w-full rounded-lg shadow-md bg-cover bg-center" 
+        <div wire:click="view({{$item->id}})" wire:loading.attr="disabled" class="cursor-pointer bg-gray-300 h-56 w-full rounded-lg shadow-md bg-cover bg-center" 
             style="background-image: url({{ URL::to('/').$item->image->url}})">
         </div>
 
@@ -52,33 +52,34 @@
                 <div>{{__('Published')}}</div>
             @endif
        </div>
-        <!-- percentage -->
+        <!-- percentage 
         <div class="flex justify-between items-start pt-3">
             <div class=" m-2 flex justify-between items-center text-sm">
                 <i class="uil uil-stopwatch"></i>
                 <div class="justify-between items-center">
-                    {{$item->period}} {{__('days')}}
+                    {$item->period}} {__('days')}}
                 </div>
             </div>
             <div class=" m-2 flex justify-between items-center text-sm">
                 <div class="justify-between items-center">
-                    {{$item->amount_percentage_collected}} %
+                    {$item->campaignCollected->amount_percentage_collected}} %
                 </div>
             </div>
         </div>
+      -->
       <!-- -->
-      <div class="h-1 relative max-w-xl rounded-full overflow-hidden">
+      <div class="h-1 relative max-w-xl rounded-full overflow-hidden mt-3">
         <div class="w-full h-full bg-gray-200 absolute"></div>
-        <div class="h-full bg-green-500 absolute" style="width:{{$item->amount_percentage_collected}}%"></div>
+        <div class="h-full bg-green-500 absolute" style="width:{{$item->campaignCollected->amount_percentage_collected}}%"></div>
       </div>
       <!-- -->
       <div class="flex mt-2 justify-between items-start">
           <div class=" m-2  text-sm">
-              <div class="text-center">{{$item->amount_collected}} {{$item->country->currency_symbol}}</div>
+              <div class="text-center">{{$item->campaignCollected->amount_collected}} {{$item->country->currency_symbol}}</div>
               <div>{{__('collected')}}</div>
           </div>
           <div class=" m-2 text-sm">
-              <div class="text-center">{{$item->collaborators}}</div>
+              <div class="text-center">{{$item->campaignCollected->collaborators}}</div>
               <div>{{__('collaborators')}}</div>
           </div>
       </div>

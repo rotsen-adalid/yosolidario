@@ -15,4 +15,9 @@ class Video extends Model
     public function videoable() {
         return $this->morphTo();
     }
+
+     // relacion polimorfica uno a muchos
+     public function userHistories() {
+        return $this->morphMany(UserHistory::class, 'userhistoriesable');
+    }
 }

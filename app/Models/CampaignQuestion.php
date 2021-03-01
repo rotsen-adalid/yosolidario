@@ -30,11 +30,11 @@ class CampaignQuestion extends Model
         'about_organizer_pt_BR',
         'about_organizer_url',
 
-        'delivery_of_awards',
-        'delivery_of_awards_es',
-        'delivery_of_awards_en',
-        'delivery_of_awards_pt_BR',
-        'delivery_of_awards_url',
+        'delivery_of_rewards',
+        'delivery_of_rewards_es',
+        'delivery_of_rewards_en',
+        'delivery_of_rewards_pt_BR',
+        'delivery_of_rewards_url',
 
         'contact_organizer',
         'contact_organizer_es',

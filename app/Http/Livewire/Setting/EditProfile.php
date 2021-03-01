@@ -55,8 +55,8 @@ class EditProfile extends Component
         $this->email = $record->email;
         $this->country_id = $record->country_id;
 
-        if($record->profile->count() > 0) {
-            $data = $record->profile[0];
+        if($record->profile) {
+            $data = $record->profile;
             $this->telephone = $data->telephone;
 
             $this->facebook = $data->facebook;
@@ -113,7 +113,7 @@ class EditProfile extends Component
 
         $record = User::findOrFail($this->user_id);
 
-        if($record->profile->count() > 0) {
+        if($record->profile) {
 
             // user update
             $record = User::findOrFail($this->user_id);;
@@ -125,7 +125,7 @@ class EditProfile extends Component
                  'search' =>  addslashes($search_all)
             ]);
             // profile update
-            $data = $record->profile[0];
+            $data = $record->profile;
             $record = Profile::find($data->id);
             $record->update([
                 'telephone' =>  addslashes($this->telephone),

@@ -24,12 +24,16 @@ class MyCampaigns extends Component
 
     public function editCampaign($id) {
         $record = Campaign::findOrFail($id);
-        return redirect()->route('campaign/update', ['slug' => $record->slug]);
+        return redirect()->route('campaign/update', ['campaign' => $record]);
     }
 
-    public function preview($id) {
+    public function view($id) {
         $record = Campaign::findOrFail($id);
-        return redirect()->route('preview', ['slug' => $record->slug]);
+        if($record->status == 'DRAFT' or $record->status == 'IN_REVIEW') {
+            return redirect()->route('preview', ['slug' => $record->slug]);
+        } else if($record->status == 'PUBLISHED') {
+            return redirect()->route('campaign-published', ['slug' => $record->slug]);
+        }
     }
 
     public function createCampaign() {

@@ -27,9 +27,6 @@ class Campaign extends Model
         'extract_pt_BR',
         'type_campaign',
         'period',
-        'amount_target',
-        'amount_collected',
-        'amount_percentage_collected',
 
         'views',
         'collaborators',
@@ -44,6 +41,7 @@ class Campaign extends Model
         'category_campaign_id',
         'country_id',
         'organization_id',
+        'agency_id',
 
         'search',
         
@@ -67,10 +65,29 @@ class Campaign extends Model
     public function country() {
         return $this->belongsTo(Country::class);
     }
-    // uno a uno 
+    // uno a muchos inversa
+    public function agency() {
+        return $this->belongsTo(Agency::class);
+    }
+    // uno a uno
+    public function campaignCollected() {
+        return $this->hasOne(CampaignCollected::class);
+    }
+    // uno a uno
     public function campaignQuestion() {
-        // return $this->hasMany(CampaignQuestion::class);
-        return $this->hasMany(CampaignQuestion::class);
+        return $this->hasOne(CampaignQuestion::class);
+    }
+    // uno a muchos 
+    public function campaignReward() {
+        return $this->hasMany(CampaignReward::class);
+    }
+    // uno a uno
+    public function campaignOpeningRequest() {
+        return $this->hasOne(CampaignOpeningRequest::class);
+    }
+     // uno a uno
+     public function campaignSetting() {
+        return $this->hasOne(CampaignSetting::class);
     }
     // relacion polimorfica uno a uno
     public function image() {
@@ -79,10 +96,6 @@ class Campaign extends Model
     // relacion polimorfica uno a uno
     public function video() {
         return $this->morphOne(Video::class, 'videoable');
-    }
-    // uno a muchos 
-    public function campaignRecognitios() {
-        return $this->hasMany(CampaignRecognition::class);
     }
     // uno a muchos inversa
     public function organization()

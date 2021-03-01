@@ -7,7 +7,7 @@
         </div>
 
         <div class="space-x-8 -my-px ml-2 sm:ml-10 flex">
-            <x-nav-link href="{{ url('setting/profile') }}" :active="request()->routeIs('setting/profile')">
+            <x-nav-link href="{{ route('setting/profile') }}" :active="request()->routeIs('setting/profile')">
                 {{ __('Edit profile') }}
             </x-nav-link>
         </div>

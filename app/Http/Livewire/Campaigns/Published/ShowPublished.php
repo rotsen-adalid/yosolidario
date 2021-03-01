@@ -7,7 +7,7 @@ use App\Models\Campaign;
 
 class ShowPublished extends Component
 {
-    public $slug_next;
+    public $slug;
     public $campaign_id;
     public $campaign;
     
@@ -20,7 +20,7 @@ class ShowPublished extends Component
             if($campaign->count() == 1) {
                 $this->campaign_id = $campaign[0]->id;
                 $this->campaign = Campaign::find($this->campaign_id);
-                $this->slug_next = $slug;
+                $this->slug = $slug;
             } else {
                 return redirect()->route('home');
             }

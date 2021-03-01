@@ -41,24 +41,24 @@ use App\Http\Livewire\Campaigns\MyCampaigns;
 Route::middleware(['auth:sanctum', 'verified'])->get('/my/campaigns', MyCampaigns::class)
 ->name('my/campaigns');
 
-use App\Http\Livewire\Campaigns\Create\Details;
-Route::middleware(['auth:sanctum', 'verified'])->get('/campaign/create', Details::class)
+use App\Http\Livewire\Campaigns\Create\CampaignDetails;
+Route::middleware(['auth:sanctum', 'verified'])->get('/campaign/create', CampaignDetails::class)
 ->name('campaign/create');
-Route::middleware(['auth:sanctum', 'verified'])->get('/campaign/update/{slug}', Details::class)
+Route::middleware(['auth:sanctum', 'verified'])->get('/campaign/update/{campaign}', CampaignDetails::class)
 ->name('campaign/update');
 
-use App\Http\Livewire\Campaigns\Create\Questions;
-Route::middleware(['auth:sanctum', 'verified'])->get('/campaign/create/questions/{slug}', Questions::class)
+use App\Http\Livewire\Campaigns\Create\CampaignQuestions;
+Route::middleware(['auth:sanctum', 'verified'])->get('/campaign/create/questions/{campaign}', CampaignQuestions::class)
 ->name('campaign/create/questions');
-Route::middleware(['auth:sanctum', 'verified'])->get('/campaign/update/questions/{slug}', Questions::class)
+Route::middleware(['auth:sanctum', 'verified'])->get('/campaign/update/questions/{campaign}', CampaignQuestions::class)
 ->name('campaign/update/questions');
 
-use App\Http\Livewire\Campaigns\Create\Recognitions;
-Route::middleware(['auth:sanctum', 'verified'])->get('/campaign/update/recognitions/{slug}', Recognitions::class)
-->name('campaign/update/recognitions');
+use App\Http\Livewire\Campaigns\Create\CampaignRewards;
+Route::middleware(['auth:sanctum', 'verified'])->get('/campaign/update/rewards/{campaign}', CampaignRewards::class)
+->name('campaign/update/rewards');
 
 use App\Http\Livewire\Preview\Show;
-Route::middleware(['auth:sanctum', 'verified'])->get('/preview/{slug}', Show::class)
+Route::get('/preview/{slug}', Show::class)
 ->name('preview');
 
 // profile 

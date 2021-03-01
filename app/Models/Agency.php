@@ -35,4 +35,14 @@ class Agency extends Model
     public function userHistories() {
         return $this->morphMany(UserHistory::class, 'userhistoriesable');
     }
+
+     // uno a muchos inversa
+     public function country() {
+        return $this->belongsTo(Country::class);
+    }
+
+    // uno a muchos 
+    public function campaigns() {
+        return $this->hasMany(Campaign::class);
+    }
 }
