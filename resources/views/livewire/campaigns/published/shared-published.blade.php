@@ -25,7 +25,7 @@
 </script>
 <script> 
     function windowFacebook(URL){ 
-       window.open("https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fyosolidario.com%2F{{$campaign->slug}}%2F&src=sdkpreparse",
+       window.open("https://www.facebook.com/sharer/sharer.php?u=https://www.yosolidario.com/{{$campaign->slug}}&src=sdkpreparse",
        "ventana1","width=720,height=500,scrollbars=NO") 
     } 
 </script>
