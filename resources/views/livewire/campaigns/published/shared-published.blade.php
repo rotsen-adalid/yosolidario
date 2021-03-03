@@ -9,24 +9,26 @@
     </button>
 </div>
 
-<div class="inline-block mr4">
-    <a href="https://twitter.com/intent/tweet?text={{$campaign->title}}%20en%20%40yosolidariocom&amp;url=https://www.kickstarter.com/projects/coralisland/coral-island-reimagining-the-farm-sim-game?ref=project_tweet" class="keyboard-focusable">
-        <span class="hide">Tweet</span>
-    </a>
-</div>
+
 <div class="inline-block mr4">
     <a href="mailto:?subject=Coral%20Island%20%E2%80%94%20reimagining%20the%20farm%20sim%20game%20en%20Kickstarter&amp;body=http://kck.st/2L6P7hq" class="keyboard-focusable">
         <span class="hide">Correo</span>
     </a>
 </div>
-<a href="javascript:ventanaSecundaria(1)"> Pincha en este enlace para abrir la ventana secundaria</a>
+<a href="javascript:windowFacebook(1)">facebook</a>
+<a href="javascript:windowTwitter(1)">twitter</a>
 <script> 
-    function ventanaSecundaria (URL){ 
+    function windowTwitter (URL){ 
        window.open("https://twitter.com/intent/tweet?text={{$campaign->title}} https://www.yosolidario.com/{{$campaign->slug}}",
        "ventana1","width=720,height=500,scrollbars=NO") 
     } 
 </script>
-
+<script> 
+    function windowFacebook(URL){ 
+       window.open("https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fyosolidario.com%2F{{$campaign->slug}}%2F&src=sdkpreparse",
+       "ventana1","width=720,height=500,scrollbars=NO") 
+    } 
+</script>
 <x-dialog-modal wire:model="shared">
     <x-slot name="title">
         <div class="font-semibold text-2xl">
