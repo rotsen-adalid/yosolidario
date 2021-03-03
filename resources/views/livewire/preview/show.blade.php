@@ -10,7 +10,7 @@
         @auth
         @if($this->campaign->status == 'DRAFT' and Auth::user()->id == $this->campaign->user_id)
         <header class="bg-gray-50 shadow pt-2"> 
-            <div class="sm:flex justify-between items-start max-w-7xl mx-auto px-4 sm:px-0 lg:px-0 pb-6 space-y-2">
+            <div class="sm:flex justify-between items-start max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 space-y-2">
                 <h2 class="flex items-center font-semibold text-xl text-black leading-tight pt-4 space-x-2">
                     <x-secondary-button wire:click="editCampaign" wire:loading.attr="disabled">
                         {{ __('Edit campaign') }}

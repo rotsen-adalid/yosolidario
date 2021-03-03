@@ -1,4 +1,4 @@
-<div class="text-base sm:text-lg">
+<div class="text-base sm:text-base">
 
     <div class="border-b mt-4 mb-5 font-bold py-1">
         {{__('What is it about?')}}

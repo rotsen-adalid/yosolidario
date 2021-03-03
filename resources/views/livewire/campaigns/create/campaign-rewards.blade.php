@@ -10,7 +10,7 @@
 <x-section-content>
     <x-slot name="header">
         <header class="bg-white shadow pt-2 mb-10"> 
-            <div class="sm:flex justify-between items-start max-w-7xl mx-auto px-4 sm:px-4 lg:px-0 pb-6 space-y-2">
+            <div class="sm:flex justify-between items-start max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 space-y-2">
                 <h2 class="flex items-center font-semibold text-xl text-gray-800 leading-tight pt-4">
                     <a class="underline hover:text-gray-900" href="{{ route('campaign/update', $this->campaign) }}">
                         {{ __('Details') }}

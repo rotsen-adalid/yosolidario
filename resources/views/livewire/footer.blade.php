@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@iconscout/unicons@3.0.6/css/line.css">
 <footer class="footer bg-white relative pt-1 border-t border-gray-150 h-full">
-    <div class="max-w-7xl mx-auto px-4">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <div class="sm:flex sm:mt-8">
             <div class="mt-8 sm:mt-0 sm:w-full flex flex-col md:flex-row justify-between">

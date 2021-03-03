@@ -29,19 +29,13 @@
             
     </x-slot>
     <x-slot  name="content">
-        <div class="px-4 sm:mx-4 pt-4 sm:pt-10 ">
-            <h1 class="text-2xl sm:text-4xl font-bold text-black text-center">
+        <div class="pb-1 sm:p-6 sm:px-20 bg-white">
+        
+            <div class="mt-4 text-2xl text-2xl sm:text-4xl font-bold text-black text-center">
                 {!! nl2br(e($this->campaign->title), false) !!}
-            </h1>
-            <div class="hidden md:block my-2 mb-4 space-y-2 text-base sm:text-lg text-center">
-                <span class="text-ys1 font-bold ">
-                    {!! nl2br(e($this->campaign->locality), false) !!} - 
-                </span>
-                <span class="text-black text-black">
-                    {!! nl2br(e($this->campaign->extract), false) !!}
-                </span>
             </div>
-            <div class="md:hidden my-2 mb-4 space-y-2 text-base sm:text-lg text-justify ">
+        
+            <div class="mt-4 text-gray-500 text-base">
                 <span class="text-ys1 font-bold ">
                     {!! nl2br(e($this->campaign->locality), false) !!} - 
                 </span>
@@ -50,11 +44,12 @@
                 </span>
             </div>
         </div>
+            
         <div class="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-10 rounded-lg sm:pt-2">
             <div class="lg:col-span-2">
                 <livewire:campaigns.published.cover-page-published :campaign="$campaign"/>
             </div>
-            <div class="px-4 sm:mt-0">
+            <div class="">
                 <!-- organizer -->
                 <livewire:campaigns.published.organizer-published :campaign="$campaign"/>
                 <livewire:campaigns.published.counters-published :campaign="$campaign"/>
@@ -65,7 +60,7 @@
         <div class=" grid grid-cols-1 md:grid-cols-3 md:gap-10 rounded-lg">
             <div class="lg:col-span-2">
                 <!-- -->
-                <div class="text-base text-black px-4 sm:px-0"> <!--  activeClasses: 'border-l border-t border-r rounded-t text-ys1 font-bold capitalize', -->
+                <div class="text-base text-black"> <!--  activeClasses: 'border-l border-t border-r rounded-t text-ys1 font-bold capitalize', -->
                     <div 
                         x-data="{
                         openTab: window.location.hash ? window.location.hash.substring(1) : 'about',
