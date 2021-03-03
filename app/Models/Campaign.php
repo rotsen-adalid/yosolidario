@@ -30,7 +30,7 @@ class Campaign extends Model
 
         'views',
         'collaborators',
-        'shared',
+        'shareds',
         'followers',
 
         'locality',

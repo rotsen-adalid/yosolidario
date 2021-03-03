@@ -11,23 +11,12 @@ class CoverPagePublished extends Component
     public $video_url;
     public $campaign;
     
-    public function mount($slug = null)
+    public function mount(Campaign $campaign)
     {
-        $this->slug = $slug;
-        
-        if($slug != null) {
-            $campaign = Campaign::
-                        where('slug', $slug)
-                        ->where('status', 'PUBLISHED')
-                        ->get();
-            if($campaign->count() > 0) {
-                $this->campaign_id = $campaign[0]->id;
-                $this->campaign =  Campaign::find($this->campaign_id);
-                $video_array = explode("/",$this->campaign->video->url);
-                if($video_array[2] == 'youtu.be') {
-                    $this->video_url =  $video_array[3];
-                }
-            } 
+        $this->campaign =  $campaign;
+        $video_array = explode("/",$this->campaign->video->url);
+        if($video_array[2] == 'youtu.be') {
+            $this->video_url =  $video_array[3];
         }
     } 
 

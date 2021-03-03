@@ -5,7 +5,7 @@
     
 </x-slot>
 <x-slot  name="menu">
-    <livewire:navigation/>
+    @livewire('navigation')
 </x-slot>
 <x-section-content>
     <x-slot name="header">

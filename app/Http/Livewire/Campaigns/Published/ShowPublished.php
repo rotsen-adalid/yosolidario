@@ -10,6 +10,7 @@ class ShowPublished extends Component
     public $slug;
     public $campaign_id;
     public $campaign;
+    public $shared;
     
     public function mount($slug = null)
     {
@@ -19,7 +20,7 @@ class ShowPublished extends Component
                         ->get();
             if($campaign->count() == 1) {
                 $this->campaign_id = $campaign[0]->id;
-                $this->campaign = Campaign::find($this->campaign_id);
+                //$this->campaign = Campaign::find($this->campaign_id);
                 $this->slug = $slug;
             } else {
                 return redirect()->route('home');
@@ -28,6 +29,10 @@ class ShowPublished extends Component
     } 
     public function render()
     {
+        $this->campaign = Campaign::find($this->campaign_id);
         return view('livewire.campaigns.published.show-published');
+    }
+    public function shared() {
+        $this->shared = true;
     }
 }

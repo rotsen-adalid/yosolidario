@@ -9,33 +9,18 @@ use App\Models\Country;
 
 class RewardsPublished extends Component
 {
-    public $slug;
     public $campaign;
-    public $campaign_id;
-    public $country;
     public $collection;
 
-    public function mount($slug = null)
+    public function mount(Campaign $campaign)
     {
-        $this->slug = $slug;
-        
-        if($slug != null) {
-            $campaign = Campaign::
-                        where('slug', $slug)
-                        ->where('status', 'PUBLISHED')
-                        ->get();
-            if($campaign->count() > 0) {
-                $this->campaign_id = $campaign[0]->id;
-                $this->campaign =  Campaign::find($this->campaign_id);
-                $this->country = Country::find($campaign[0]->telephone_country_id);
-            } 
-        }
+        $this->campaign =  $campaign;
     } 
 
     public function render()
     {
         $this->collection = CampaignReward::
-                    where('campaign_id', $this->campaign_id)
+                    where('campaign_id', $this->campaign->id)
                     ->orderBy('amount', 'asc')->get();
                     
         return view('livewire.campaigns.published.rewards-published');

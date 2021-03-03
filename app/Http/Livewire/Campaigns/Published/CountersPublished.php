@@ -7,24 +7,11 @@ use App\Models\Campaign;
 
 class CountersPublished extends Component
 {
-    public $slug;
-    public $campaign_id;
     public $campaign;
-    
-    public function mount($slug = null)
+    public $shared;
+    public function mount(Campaign $campaign)
     {
-        $this->slug = $slug;
-        
-        if($slug != null) {
-            $campaign = Campaign::
-                        where('slug', $slug)
-                        ->where('status', 'PUBLISHED')
-                        ->get();
-            if($campaign->count() > 0) {
-                $this->campaign_id = $campaign[0]->id;
-                $this->campaign =  Campaign::find($this->campaign_id);
-            } 
-        }
+        $this->campaign =  $campaign;
     } 
 
     public function render()

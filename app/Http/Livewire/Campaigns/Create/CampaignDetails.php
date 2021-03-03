@@ -140,7 +140,7 @@ class CampaignDetails extends Component
             'organization_id' => $this->organization_id,
             //'period' => $this->period,
             'views' => 0,
-            'shared' => 0,
+            'shareds' => 0,
             'followers' => 0,
             'locality' => addslashes($this->locality),
             'telephone' => $this->telephone,

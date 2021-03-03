@@ -4,6 +4,9 @@
 <x-slot  name="seo">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@iconscout/unicons@3.0.6/css/line.css">
 </x-slot>
+<x-slot  name="menu">
+    @livewire('navigation')
+</x-slot>
 <x-section-content>
     <x-slot name="header">
         <header class="bg-white shadow pt-2 mb-10"> 
