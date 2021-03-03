@@ -23,6 +23,9 @@
 <x-slot name="header">
     
 </x-slot>
+<x-slot  name="menu">
+    @livewire('navigation')
+</x-slot>
 <div class="bg-gray-50 py-6 sm:py-12 ">
 <div class=" flex items-center justify-center px-4 sm:px-6 lg:px-8">
     <div class=" w-full space-y-2">

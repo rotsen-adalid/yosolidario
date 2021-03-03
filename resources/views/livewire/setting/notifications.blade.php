@@ -4,6 +4,9 @@
 <x-slot  name="seo">
     
 </x-slot>
+<x-slot  name="menu">
+    @livewire('navigation')
+</x-slot>
 <x-section-content>
     <x-slot name="header">
         <header class="bg-white shadow pt-2 mb-10"> 

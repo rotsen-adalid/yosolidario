@@ -20,7 +20,9 @@
         <meta name="twitter:image" content="{{asset('images/logo-ceo.png')}}">
   
 </x-slot>
-
+<x-slot  name="menu">
+    @livewire('navigation')
+</x-slot>
 
 <div class=" bg-gray-50 py-16 sm:py-20">
  
