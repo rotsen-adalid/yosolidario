@@ -18,4 +18,7 @@ class CountersPublished extends Component
     {
         return view('livewire.campaigns.published.counters-published');
     }
+    public function sharedDialog() {
+        $this->shared = true;
+    }
 }

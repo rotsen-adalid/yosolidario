@@ -52,5 +52,4 @@
             <span>{{__('Back this campaign')}}</span>
         </button>
     </div>
-    
 </div>

@@ -25,7 +25,7 @@
         <!-- pwa -->
         @laravelPWA
     </head>
-    <body class="font-sans antialiased text-base">
+    <body class="font-sans antialiased text-sm">
         <x-jet-banner />
 
         <div class="min-h-screen bg-gray-50">
