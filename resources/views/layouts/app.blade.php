@@ -28,7 +28,7 @@
     <body class="font-sans antialiased text-sm">
         <x-jet-banner />
 
-        <div class="min-h-screen bg-gray-50">
+        <div class="min-h-screen">
            {{$menu}}
             <!-- Page Content -->
             <main>

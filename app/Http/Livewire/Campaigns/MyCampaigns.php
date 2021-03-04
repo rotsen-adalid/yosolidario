@@ -32,7 +32,7 @@ class MyCampaigns extends Component
         if($record->status == 'DRAFT' or $record->status == 'IN_REVIEW') {
             return redirect()->route('preview', ['slug' => $record->slug]);
         } else if($record->status == 'PUBLISHED') {
-            return redirect()->route('campaign-published', ['slug' => $record->slug]);
+            return redirect()->route('campaign/published', ['slug' => $record->slug]);
         }
     }
 

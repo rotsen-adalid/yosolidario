@@ -36,7 +36,7 @@
             </div>
         
             <div class="mt-4 text-gray-500 text-base">
-                <span class="text-ys1 font-bold ">
+                <span class="text-ys1 font-bold capitalize">
                     {!! nl2br(e($this->campaign->locality), false) !!} - 
                 </span>
                 <span class="text-black text-black">
@@ -44,7 +44,6 @@
                 </span>
             </div>
         </div>
-            
         <div class="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-10 rounded-lg sm:pt-2">
             <div class="lg:col-span-2">
                 <livewire:campaigns.published.cover-page-published :campaign="$campaign"/>

@@ -31,11 +31,19 @@ Route::get('welcome', function () {
 });
 
 //Route::get('set_language/{lang}', 'Controller@set_language')->name('set_language');
-// campaign
-
+// ++++++++++++ campaign
+// publish 
 use App\Http\Livewire\Campaigns\Published\ShowPublished;
 Route::get('/{slug}', ShowPublished::class)
-->name('campaign-published');
+->name('campaign/published');
+// widget
+use App\Http\Livewire\Campaigns\Published\Widget\LargeWidget;
+Route::get('/{slug}/widget/large', LargeWidget::class)
+->name('campaign/widget/large');
+
+use App\Http\Livewire\Campaigns\Published\Widget\MediumWidget;
+Route::get('/{slug}/widget/medium', MediumWidget::class)
+->name('campaign/widget/medium');
 
 use App\Http\Livewire\Campaigns\MyCampaigns;
 Route::middleware(['auth:sanctum', 'verified'])->get('/my/campaigns', MyCampaigns::class)

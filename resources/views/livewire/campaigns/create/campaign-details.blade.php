@@ -79,8 +79,8 @@
                         <div class="col-span-6 sm:col-span-4">
                             <x-label for="amount_target" value="{{ __('Amount to raise') }}" />
                             <div class="flex">
-                                <x-jet-input id="amount_target" type="number" class="h-14 mt-1 block w-full font-bold text-xl" wire:model.defer="amount_target"  autocomplete="off"  minlength="3" Number maxlength="8"/>
-                                <x-jet-input id="amount_target" disabled type="text" class="h-14 mt-1 ml-1 block w-16 font-bold text-xl" placeholder="{{$this->currency_symbol}}" autocomplete="off"/>
+                                <x-jet-input id="amount_target" type="number" class="mt-1 block w-full font-bold text-xl" wire:model.defer="amount_target"  autocomplete="off"  minlength="3" Number maxlength="8"/>
+                                <x-jet-input id="amount_target" disabled type="text" class="mt-1 ml-1 block w-16 font-bold text-xl" placeholder="{{$this->currency_symbol}}" autocomplete="off"/>
                                 <!-- 
                                 <x-select class="mt-1 ml-2 block w-36" id="period" wire:model.defer="period">
                                     <x-slot name="option">
