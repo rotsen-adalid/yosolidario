@@ -234,6 +234,10 @@
                     <input wire:model="widget" name="widget" type="radio" value="medium" />
                     <span class="ml-1">{{__('medium')}}</span>
                 </div>
+                <div class="mt-4">
+                    <input wire:model="widget" name="widget" type="radio" value="small" />
+                    <span class="ml-1">{{__('small')}}</span>
+                </div>
                 <x-jet-section-border />
                 <div class="w-full mt-3 sm:mt-0">
                     <x-jet-label for="copyLarge" value="{{ __('Copy and paste the following embed code') }}" />
@@ -241,15 +245,19 @@
                         <x-textarea class="mt-1 block w-full"  rows="5" wire:model.defer="copyLarge"/>
                     @elseif($widget == 'medium')
                         <x-textarea class="mt-1 block w-full"  rows="5" wire:model.defer="copyMedium"/>
+                    @elseif($widget == 'small')
+                        <x-textarea class="mt-1 block w-full"  rows="5" wire:model.defer="copySmall"/>
                     @endif
                 </div>
             </div>
             <div class="">
                 <div class="text-center font-bold my-2">{{__("PREVIEW")}}</div>
                 @if($widget == 'large')
-                    <iframe src="{{ $host}}{{$campaign->slug}}/widget/large/?iframe=true" height="400" width="380"></iframe>
+                    <iframe src="{{ $host}}{{$campaign->slug}}/widget/large/?iframe=true" height="420"></iframe>
                 @elseif($widget == 'medium')
-                    <iframe src="{{ $host}}{{$campaign->slug}}/widget/medium/?iframe=true" height="220" width="380"></iframe>
+                    <iframe src="{{ $host}}{{$campaign->slug}}/widget/medium/?iframe=true" height="245"></iframe>
+                @elseif($widget == 'small')
+                    <iframe src="{{ $host}}{{$campaign->slug}}/widget/small/?iframe=true" height="60"></iframe>
                 @endif
             </div>
         </div>

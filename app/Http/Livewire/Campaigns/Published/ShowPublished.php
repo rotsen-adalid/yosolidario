@@ -13,6 +13,7 @@ class ShowPublished extends Component
     public $widget = 'large';
     public $copyLarge;
     public $copyMedium;
+    public $copySmall;
     public $host;
     public $message;
 
@@ -24,8 +25,9 @@ class ShowPublished extends Component
                         ->get();
             if($campaign->count() == 1) {
                 $this->campaign = Campaign::find($campaign[0]->id);
-                $this->copyLarge = '<iframe src="http://yosolidario.com/'.$slug.'/widget/large/?iframe=true" height="400></iframe>';
-                $this->copyMedium = '<iframe src="http://yosolidario.com/'.$slug.'/widget/medium/?iframe=true" height="220"></iframe>';
+                $this->copyLarge = '<iframe src="http://yosolidario.com/'.$slug.'/widget/large/?iframe=true" height="420></iframe>';
+                $this->copyMedium = '<iframe src="http://yosolidario.com/'.$slug.'/widget/medium/?iframe=true" height="245"></iframe>';
+                $this->copySmall = '<iframe src="http://yosolidario.com/'.$slug.'/widget/small/?iframe=true" height="60"></iframe>';
             } else {
                 return redirect()->route('home');
             }

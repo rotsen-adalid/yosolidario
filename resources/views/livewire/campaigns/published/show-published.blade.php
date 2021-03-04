@@ -44,7 +44,7 @@
                 </span>
             </div>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-10 rounded-lg sm:pt-2">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-10 rounded-lg sm:pt-2">
             <div class="lg:col-span-2">
                 <livewire:campaigns.published.cover-page-published :campaign="$campaign"/>
             </div>
@@ -56,7 +56,7 @@
             </div>
         </div>
         <!-- --> 
-        <div class=" grid grid-cols-1 md:grid-cols-3 md:gap-10 rounded-lg">
+        <div class=" grid grid-cols-1 lg:grid-cols-3 md:gap-10 rounded-lg">
             <div class="lg:col-span-2">
                 <!-- -->
                 <div class="text-base text-black"> <!--  activeClasses: 'border-l border-t border-r rounded-t text-ys1 font-bold capitalize', -->
@@ -105,7 +105,7 @@
                         <div x-show="openTab === 'about'">
                         <livewire:campaigns.published.about-published :campaign="$campaign"/>
                         </div>
-                        <div class="md:hidden" x-show="openTab === 'rewards'">
+                        <div class="sm:hidden" x-show="openTab === 'rewards'">
                             <livewire:campaigns.published.rewards-published :campaign="$campaign"/>
                         </div>
                         <div x-show="openTab === 'updates'">
@@ -125,7 +125,7 @@
             <div>
                 <!-- organizer -->
                 <div class="hidden md:block">
-                <livewire:campaigns.published.rewards-published :campaign="$campaign"/>
+                    <livewire:campaigns.published.rewards-published :campaign="$campaign"/>
                 </div>
             </div>
         </div>

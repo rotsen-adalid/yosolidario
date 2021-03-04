@@ -33,9 +33,11 @@
           </div>
 
           <div class="hidden sm:flex sm:items-center sm:ml-6">
+            <!-- 
             <div class="w-80">
-                <x-input-rounded id="search" class="block mt-1 w-full" type="text" name="search" placeholder="{{ __('Search Campaigns') }}" />
+                <x-input-rounded id="search" class="block mt-1 w-full" type="text" name="search" placeholder="{ __('Search Campaigns') }}" />
             </div>
+            -->
               @auth
               <!-- Teams Dropdown -->
               @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())

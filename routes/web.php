@@ -45,6 +45,11 @@ use App\Http\Livewire\Campaigns\Published\Widget\MediumWidget;
 Route::get('/{slug}/widget/medium', MediumWidget::class)
 ->name('campaign/widget/medium');
 
+use App\Http\Livewire\Campaigns\Published\Widget\SmallWidget;
+Route::get('/{slug}/widget/small', SmallWidget::class)
+->name('campaign/widget/small');
+
+// MyCampaigns
 use App\Http\Livewire\Campaigns\MyCampaigns;
 Route::middleware(['auth:sanctum', 'verified'])->get('/my/campaigns', MyCampaigns::class)
 ->name('my/campaigns');

@@ -23,17 +23,5 @@ class DatabaseSeeder extends Seeder
         Storage::deleteDirectory('public/organization');
         Storage::deleteDirectory('public/campaign_question_image');
         Storage::deleteDirectory('public/profile-photos');
-        Storage::makeDirectory('public/campaign_image');
-        $this->call(RoleSeeder::class);
-        $this->call(SiteSeeder::class);
-        $this->call([
-            CountrySeeder::class,
-            BankSeeder::class,
-            AgencySeeder::class,
-            CategoryCampaignSeeder::class
-        ]);
-        $this->call(UserSeeder::class);
-        Organization::factory(1)->create();
-        Profile::factory(1)->create();
     }
 }

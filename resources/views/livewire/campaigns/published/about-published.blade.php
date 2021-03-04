@@ -21,7 +21,7 @@
     @endif
     <!-- -->
     <div class="border-b mt-4 mb-5 font-bold py-1">
-        {{__('About the promoter')}}
+        {{__('About the organizer')}}
     </div>
     <div class="text-justify">
      {!! nl2br(e($this->campaign->campaignQuestion->about_organizer), false) !!}
