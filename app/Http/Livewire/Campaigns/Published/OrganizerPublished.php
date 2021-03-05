@@ -4,7 +4,7 @@ namespace App\Http\Livewire\Campaigns\Published;
 use Livewire\Component;
 
 use App\Models\Campaign;
-use App\Models\Country;
+use App\Models\User;
 
 class OrganizerPublished extends Component
 {
@@ -18,5 +18,11 @@ class OrganizerPublished extends Component
     public function render()
     {
         return view('livewire.campaigns.published.organizer-published');
+    }
+
+    public function viewUser($user_id) 
+    {
+        $record = User::find($user_id);
+        return redirect()->route('user', ['slug' => $record->slug]);
     }
 }

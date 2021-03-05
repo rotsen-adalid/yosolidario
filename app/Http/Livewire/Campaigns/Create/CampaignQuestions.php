@@ -331,7 +331,7 @@ class CampaignQuestions extends Component
 
     public function preview($id) {
         $record = Campaign::findOrFail($id);
-        return redirect()->route('preview', ['slug' => $record->slug]);
+        return redirect()->route('campaigns/preview', ['slug' => $record->slug]);
     }
 
     public function editProfile() {

@@ -1,19 +1,19 @@
-<div class="flex justify-end sm:mt-5">
+<div class="flex justify-end sm:mt-0">
     <div class="flex items-center ">
         @if($this->campaign->user->profile_photo_path)
-        <div class="flex-shrink-0 w-12 h-12">
+        <div wire:click="viewUser({{$this->campaign->user->id}})" wire:loading.attr="disabled" class="flex-shrink-0 w-12 h-12 cursor-pointer">
             <img class="w-full h-full rounded-full"
                 src="{{ URL::to('/') }}{{$this->campaign->user->profile_photo_path}}"
                 alt="" />
         </div>
         @else 
-        <div class="flex-shrink-0 w-12 h-12">
+        <div wire:click="viewUser({{$this->campaign->user->id}})" class="flex-shrink-0 w-12 h-12 cursor-pointer">
             <img class="w-full h-full rounded-full"
                 src="{{ $this->campaign->user->profile_photo_url }}" alt="{{ $this->campaign->user->name }}" />
         </div>
         @endif
         <div class="ml-3 space-y-2">
-            <div class="text-gray-700"> 
+            <div wire:click="viewUser({{$this->campaign->user->id}})" class="text-gray-700 text-sm sm:text-base cursor-pointer"> 
                 <span class="font-bold">{{__('Organizator')}}: </span>
                 {{$this->campaign->user->name}}
             </div>
@@ -58,7 +58,7 @@
                 </a>
                 @endif
                 @if($this->campaign->user->profile->whatsapp)
-                <a href="https://api.whatsapp.com/send?phone={{$this->campaign->user->country->telephone_prefix}} {{$this->campaign->user->profile->whatsapp}}" target="_blank">
+                <a href="https://api.whatsapp.com/send?phone={{$this->campaign->user->country->telephone_prefix}}{{$this->campaign->user->profile->whatsapp}}" target="_blank">
                     <svg  class="h-6" viewBox="-1 0 512 512"  xmlns="http://www.w3.org/2000/svg"><path d="m10.894531 512c-2.875 0-5.671875-1.136719-7.746093-3.234375-2.734376-2.765625-3.789063-6.78125-2.761719-10.535156l33.285156-121.546875c-20.722656-37.472656-31.648437-79.863282-31.632813-122.894532.058594-139.941406 113.941407-253.789062 253.871094-253.789062 67.871094.0273438 131.644532 26.464844 179.578125 74.433594 47.925781 47.972656 74.308594 111.742187 74.289063 179.558594-.0625 139.945312-113.945313 253.800781-253.867188 253.800781 0 0-.105468 0-.109375 0-40.871093-.015625-81.390625-9.976563-117.46875-28.84375l-124.675781 32.695312c-.914062.238281-1.84375.355469-2.761719.355469zm0 0" fill="#e5e5e5"/>
                         <path d="m10.894531 501.105469 34.46875-125.871094c-21.261719-36.839844-32.445312-78.628906-32.429687-121.441406.054687-133.933594 109.046875-242.898438 242.976562-242.898438 64.992188.027344 125.996094 25.324219 171.871094 71.238281 45.871094 45.914063 71.125 106.945313 71.101562 171.855469-.058593 133.929688-109.066406 242.910157-242.972656 242.910157-.007812 0 .003906 0 0 0h-.105468c-40.664063-.015626-80.617188-10.214844-116.105469-29.570313zm134.769531-77.75 7.378907 4.371093c31 18.398438 66.542969 28.128907 102.789062 28.148438h.078125c111.304688 0 201.898438-90.578125 201.945313-201.902344.019531-53.949218-20.964844-104.679687-59.09375-142.839844-38.132813-38.160156-88.832031-59.1875-142.777344-59.210937-111.394531 0-201.984375 90.566406-202.027344 201.886719-.015625 38.148437 10.65625 75.296875 30.875 107.445312l4.804688 7.640625-20.40625 74.5zm0 0" fill="#fff"/>
                         <path d="m19.34375 492.625 33.277344-121.519531c-20.53125-35.5625-31.324219-75.910157-31.3125-117.234375.050781-129.296875 105.273437-234.488282 234.558594-234.488282 62.75.027344 121.644531 24.449219 165.921874 68.773438 44.289063 44.324219 68.664063 103.242188 68.640626 165.898438-.054688 129.300781-105.28125 234.503906-234.550782 234.503906-.011718 0 .003906 0 0 0h-.105468c-39.253907-.015625-77.828126-9.867188-112.085938-28.539063zm0 0" fill="#64b161"/><g fill="#fff">

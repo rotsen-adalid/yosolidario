@@ -23,5 +23,6 @@ class DatabaseSeeder extends Seeder
         Storage::deleteDirectory('public/organization');
         Storage::deleteDirectory('public/campaign_question_image');
         Storage::deleteDirectory('public/profile-photos');
+        Storage::deleteDirectory('public/campaign_updates_image');
     }
 }

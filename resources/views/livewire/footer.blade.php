@@ -1,4 +1,3 @@
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@iconscout/unicons@3.0.6/css/line.css">
 <footer class="footer bg-white relative pt-1 border-t border-gray-150 h-full">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 

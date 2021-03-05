@@ -1,19 +1,19 @@
 <div class="flex justify-end sm:mt-0">
     <div class="flex items-center ">
         @if($this->campaign->user->profile_photo_path)
-        <div class="flex-shrink-0 w-12 h-12">
+        <div wire:click="viewUser({{$this->campaign->user->id}})" wire:loading.attr="disabled" class="flex-shrink-0 w-12 h-12 cursor-pointer">
             <img class="w-full h-full rounded-full"
                 src="{{ URL::to('/') }}{{$this->campaign->user->profile_photo_path}}"
                 alt="" />
         </div>
         @else 
-        <div class="flex-shrink-0 w-12 h-12">
+        <div wire:click="viewUser({{$this->campaign->user->id}})" class="flex-shrink-0 w-12 h-12 cursor-pointer">
             <img class="w-full h-full rounded-full"
                 src="{{ $this->campaign->user->profile_photo_url }}" alt="{{ $this->campaign->user->name }}" />
         </div>
         @endif
         <div class="ml-3 space-y-2">
-            <div class="text-gray-700 text-sm sm:text-base"> 
+            <div wire:click="viewUser({{$this->campaign->user->id}})" class="text-gray-700 text-sm sm:text-base cursor-pointer"> 
                 <span class="font-bold">{{__('Organizator')}}: </span>
                 {{$this->campaign->user->name}}
             </div>

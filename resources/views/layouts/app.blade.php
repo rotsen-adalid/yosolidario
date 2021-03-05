@@ -13,6 +13,7 @@
 
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@iconscout/unicons@3.0.6/css/line.css">
 
         <!-- Styles -->
         <link rel="stylesheet" href="{{ mix('css/app.css') }}">
@@ -27,7 +28,6 @@
     </head>
     <body class="font-sans antialiased text-sm">
         <x-jet-banner />
-
         <div class="min-h-screen">
            {{$menu}}
             <!-- Page Content -->

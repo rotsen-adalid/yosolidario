@@ -7,6 +7,7 @@
 <x-slot  name="menu">
     @livewire('navigation')
 </x-slot>
+<div class="bg-gray-50">
 <x-section-content>
     <x-slot name="header">
         <header class="bg-white shadow pt-2 mb-10"> 
@@ -228,4 +229,5 @@
         </x-form-section>
     </x-slot>
 </x-section-content>
+</div>
 <livewire:footer/>

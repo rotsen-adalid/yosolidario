@@ -1,14 +1,3 @@
-<div class="flex mt-2 space-x-2">
-    <button class="w-full text-center px-4 py-1 sm:py-3 bg-white border border-gray-300 rounded-md font-bold text-sm text-black uppercase tracking-widest shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">
-        <i class="text-black uil uil-bookmark"></i>
-        {{__('Remind me')}}
-    </button>
-    <button  wire:click="shared" class="w-full text-center px-4  py-1 sm:py-3 bg-white border border-gray-300 rounded-md font-bold text-sm text-black uppercase tracking-widest shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">
-        <i class="text-black uil uil-share-alt"></i>
-        {{__('Share')}}
-    </button>
-</div>
-
 <x-dialog-modal wire:model="shared">
     <x-slot name="title">
         @if(!$embed)
@@ -253,11 +242,11 @@
             <div class="">
                 <div class="text-center font-bold my-2">{{__("PREVIEW")}}</div>
                 @if($widget == 'large')
-                    <iframe src="{{ $host}}{{$campaign->slug}}/widget/large/?iframe=true" height="420"></iframe>
+                    <iframe src="{{ $host}}/{{$campaign->slug}}/widget/large/?iframe=true" height="420"></iframe>
                 @elseif($widget == 'medium')
-                    <iframe src="{{ $host}}{{$campaign->slug}}/widget/medium/?iframe=true" height="245"></iframe>
+                    <iframe src="{{ $host}}/{{$campaign->slug}}/widget/medium/?iframe=true" height="245"></iframe>
                 @elseif($widget == 'small')
-                    <iframe src="{{ $host}}{{$campaign->slug}}/widget/small/?iframe=true" height="60"></iframe>
+                    <iframe src="{{ $host}}/{{$campaign->slug}}/widget/small/?iframe=true" height="60"></iframe>
                 @endif
             </div>
         </div>

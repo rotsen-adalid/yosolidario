@@ -7,6 +7,7 @@
 <x-slot  name="menu">
     @livewire('navigation')
 </x-slot>
+<div class="bg-gray-50">
 <x-section-content>
     <x-slot name="header">
         <header class="bg-white shadow pt-2 mb-10"> 
@@ -53,9 +54,9 @@
             </x-slot>
             <x-slot name="form">
                  <!-- about -->
-                 <div class="col-span-6 sm:col-span-4">
+                 <div class="col-span-6 sm:col-span-6">
                     <x-jet-label for="about" value="{{ __('What is it about?') }}" />
-                    <x-textarea id="about" class="mt-1 block w-full h-48 sm:h-44" wire:model.defer="about" autocomplete="off"/>
+                    <x-textarea id="about" class="mt-1 block w-full h-48 sm:h-44" wire:model.defer="about" autofocus autocomplete="off"/>
                     <x-jet-input-error for="about" class="mt-2"/>
                 </div>
                 <!-- Photo -->
@@ -121,7 +122,7 @@
             </x-slot>
             <x-slot name="form">
                 <!-- use_of_money -->
-                <div class="col-span-6 sm:col-span-4">
+                <div class="col-span-6 sm:col-span-6">
                     <x-jet-label for="use_of_money" value="{{ __('How will I use the money?') }}" />
                     <x-textarea id="use_of_money" class="mt-1 block w-full h-48 sm:h-44" wire:model.defer="use_of_money" autocomplete="off"/>
                     <x-jet-input-error for="use_of_money" class="mt-2" />
@@ -189,7 +190,7 @@
             </x-slot>
             <x-slot name="form">
                 <!-- about_organizer -->
-                <div class="col-span-6 sm:col-span-4">
+                <div class="col-span-6 sm:col-span-6">
                     <x-jet-label for="about_organizer" value="{{ __('About the organizer') }}" />
                     <x-textarea id="about_organizer" class="mt-1 block w-full h-48 sm:h-36" wire:model.defer="about_organizer" autocomplete="off"/>
                     <x-jet-input-error for="about_organizer" class="mt-2"/>
@@ -257,7 +258,7 @@
             </x-slot>
             <x-slot name="form">
                <!-- delivery_of_rewards -->
-               <div class="col-span-6 sm:col-span-4">
+               <div class="col-span-6 sm:col-span-6">
                     <x-jet-label for="delivery_of_rewards" value="{{ __('How and when are the rewards delivered?') }}" />
                     <x-textarea id="delivery_of_rewards" class="mt-1 block w-full h-36 sm:h-36" wire:model.defer="delivery_of_rewards" autocomplete="off"/>
                     <x-jet-input-error for="delivery_of_rewards" class="mt-2" />
@@ -325,7 +326,7 @@
             </x-slot>
             <x-slot name="form">
                 <!-- contact_organizer -->
-                <div class="col-span-6 sm:col-span-4">
+                <div class="col-span-6 sm:col-span-6">
                     <x-jet-label for="contact_organizer" value="{{ __('Organizers contact details') }}" />
                     <x-textarea id="contact_organizer" class="mt-1 block w-full h-36 sm:h-36" wire:model.defer="contact_organizer" autocomplete="off"/>
                     <x-jet-input-error for="contact_organizer" class="mt-2" />
@@ -399,7 +400,7 @@
                     <x-jet-input-error for="question_title_add" class="mt-2" />
                 </div>
                 <!-- Body -->
-                <div class="col-span-6 sm:col-span-4">
+                <div class="col-span-6 sm:col-span-6">
                     <x-jet-label for="question_body_add" value="{{ __('Answer to the question') }} ({{ __('optional') }})" />
                     <x-textarea id="question_body_add" class="mt-1 block w-full h-36 sm:h-36" wire:model.defer="question_body_add" autocomplete="off"/>
                     <x-jet-input-error for="question_body_add" class="mt-2" />
@@ -459,7 +460,7 @@
                 {{ __($this->message) }}
             </x-jet-action-message>
             <x-button wire:loading.attr="disabled">
-                {{ __('save') }}
+                <span class="py-1 px-1"> {{ __('next') }}</span>
             </x-button>
         </x-slot>
         </x-form-section-multiple>
@@ -467,4 +468,5 @@
         @include('livewire.campaigns.create.send-to-review')
     </x-slot>
 </x-section-content>
+</div>
 <livewire:footer/>

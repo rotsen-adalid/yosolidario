@@ -30,7 +30,7 @@ class MyCampaigns extends Component
     public function view($id) {
         $record = Campaign::findOrFail($id);
         if($record->status == 'DRAFT' or $record->status == 'IN_REVIEW') {
-            return redirect()->route('preview', ['slug' => $record->slug]);
+            return redirect()->route('campaigns/preview', ['slug' => $record->slug]);
         } else if($record->status == 'PUBLISHED') {
             return redirect()->route('campaign/published', ['slug' => $record->slug]);
         }
@@ -40,4 +40,8 @@ class MyCampaigns extends Component
        return redirect()->route('campaign/create');
     }
     
+    public function manage($id) {
+        $record = Campaign::find($id);
+        return redirect()->route('campaign/manage/collaborations', ['campaign' => $record]);
+    }
 }

@@ -55,9 +55,9 @@
         <div class="mt-5">
             @if (! $this->enabled)
                 <x-jet-confirms-password wire:then="enableTwoFactorAuthentication">
-                    <x-jet-button type="button" wire:loading.attr="disabled">
+                    <x-button type="button" wire:loading.attr="disabled">
                         {{ __('Enable') }}
-                    </x-jet-button>
+                    </x-button>
                 </x-jet-confirms-password>
             @else
                 @if ($showingRecoveryCodes)

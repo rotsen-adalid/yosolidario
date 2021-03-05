@@ -1,20 +1,21 @@
 <?php
 
-namespace App\Http\Livewire\Preview;
+namespace App\Http\Livewire\Campaigns\Preview;
 use Livewire\Component;
-use Illuminate\Support\Facades\DB;
+
 use App\Models\Campaign;
 
-class CoverPage extends Component
+class ShowPreview extends Component
 {
     public $slug;
-    public $video_url;
+    public $campaign_id;
     public $campaign;
-    
+    public $confirmingSendReview = false;
+
     public function mount($slug = null)
     {
         $this->slug = $slug;
-        
+
         if($slug != null) {
             $campaign = Campaign::
                         where('slug', $slug)
@@ -23,17 +24,17 @@ class CoverPage extends Component
                         ->get();
             if($campaign->count() > 0) {
                 $this->campaign_id = $campaign[0]->id;
-                $this->campaign =  Campaign::find($this->campaign_id);
-                $video_array = explode("/",$this->campaign->video->url);
-                if($video_array[2] == 'youtu.be') {
-                    $this->video_url =  $video_array[3];
-                }
-            } 
-        }
+                $this->campaign = Campaign::find($this->campaign_id);
+            }  else {
+                return redirect()->route('campaign/create');
+            }
+        } 
     } 
-
     public function render()
     {
-        return view('livewire.preview.cover-page');
+        return view('livewire.campaigns.preview.show-preview');
+    }
+    public function shared() {
+        //$this->shared = true;
     }
 }

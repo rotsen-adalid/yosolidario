@@ -85,9 +85,13 @@ class Campaign extends Model
     public function campaignOpeningRequest() {
         return $this->hasOne(CampaignOpeningRequest::class);
     }
-     // uno a uno
-     public function campaignSetting() {
+    // uno a uno
+    public function campaignSetting() {
         return $this->hasOne(CampaignSetting::class);
+    }
+    // uno a muchos 
+    public function campaignUpdates() {
+        return $this->hasMany(CampaignUpdate::class);
     }
     // relacion polimorfica uno a uno
     public function image() {

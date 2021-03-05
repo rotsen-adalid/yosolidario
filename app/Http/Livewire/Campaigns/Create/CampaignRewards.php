@@ -8,13 +8,18 @@ use App\Models\Campaign;
 use App\Models\CampaignReward;
 use Carbon\Carbon;
 use Laravel\Jetstream\Jetstream;
+use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Storage;
 
 class CampaignRewards extends Component
-{
+{   
+    use WithFileUploads;
+
     public $status_register;
     public $slug_next;
     // public $collection;
-    public  $campaign_reward_id, $reward_id, $amount, $description, $delivery_date, $limiter, $quantity, $campaign_id;
+    public $campaign_reward_id, $image_url, $amount, $description, $delivery_date, $limiter, $quantity, $campaign_id;
+    public $photoOne;
     public $recognition_currency_symbol;
     public $campaign;
     public $confirmingDeletion = false;
@@ -49,71 +54,111 @@ class CampaignRewards extends Component
     }
     
     public function StoreOrUpdate() {
-
         if ($this->limiter == 'YES') {
             $this->validate([
                 'amount' => 'required|numeric',
-                'description' => 'required|min:30|max:400',
+                'description' => 'required|min:10|max:250',
                 'limiter' => 'required',
                 'quantity' => 'required|numeric',
             ]);
         } else {    
             $this->validate([
                 'amount' => 'required|numeric',
-                'description' => 'required|min:30|max:400',
+                'description' => 'required|min:10|max:400',
                 'limiter' => 'required',
             ]);
             $this->quantity = 0;
         }
 
-        if($this->campaign_reward_id <= 0) {
-            // create
-            $record = CampaignReward::create([
-                'amount' => addslashes($this->amount),
-                'description' => addslashes($this->description),
-                'delivery_date' =>  $this->delivery_date,
-                'limiter' => $this->limiter,
-                'quantity' => $this->quantity,
-                'campaign_id' => $this->campaign_id
-            ]);
-
-            $extract = 'Create campaign recognition: '.$record->id;
-            $record->userHistories()->create([
-                'photo_path' => null,
-                'extract' => $extract,
-                'data' => $record,
-                'action' =>  'CREATE',
-                'user_id' => auth()->user()->id,
-                'site_id' => 1,
-                //'agency_id' => 1
-                ]);
-        } else {
-            if($this->delivery_date == '') {
-                $this->delivery_date = null;
-            }
-            // we look for the record
-            $record = CampaignReward::find($this->campaign_reward_id);
-            // we update the info
-            $record->update([
-                'amount' => addslashes($this->amount),
-                'description' => addslashes($this->description),
-                'delivery_date' =>  $this->delivery_date,
-                'limiter' => $this->limiter,
-                'quantity' => $this->quantity,
-            ]);
-            $extract = 'Update campaign recognition: '.$record->id;
-            $record->userHistories()->create([
-                'photo_path' => null,
-                'extract' => $extract,
-                'data' => $record,
-                'action' =>  'UPDATE',
-                'user_id' => auth()->user()->id,
-                'site_id' => 1,
-                //'agency_id' => 1
-                ]);
+        if($this->delivery_date == '') {
+            $this->delivery_date = null;
         }
+
+        if($this->campaign_reward_id <= 0) {
+            $this->add();
+        } else {
+            $this->update();
+        }
+
         $this->resetInput();
         $this->addOrUpdateDialog = false;
+    }
+
+    public function add() {
+        
+        if($this->photoOne) {
+            $this->validate([
+                'photoOne' => 'image|max:2048',
+            ]);
+            
+            $photo = $this->photoOne->store('public/campaign_rewards_image');
+            $this->image_url = Storage::url($photo);
+
+        } else {
+            $this->image_url = null;
+        }
+
+        // create
+        $record = CampaignReward::create([
+            'image_url' => $this->image_url,
+            'amount' => addslashes($this->amount),
+            'description' => addslashes($this->description),
+            'delivery_date' =>  $this->delivery_date,
+            'limiter' => $this->limiter,
+            'quantity' => $this->quantity,
+            'campaign_id' => $this->campaign_id
+        ]);
+
+        $extract = 'Create campaign recognition: '.$record->id;
+        $record->userHistories()->create([
+            'photo_path' => null,
+            'extract' => $extract,
+            'data' => $record,
+            'action' =>  'CREATE',
+            'user_id' => auth()->user()->id,
+            'site_id' => 1,
+            //'agency_id' => 1
+            ]);
+  
+    }
+
+    public function update() {
+
+        if($this->photoOne) {
+            $this->validate([
+                'photoOne' => 'image|max:2048',
+            ]);
+            $record = CampaignReward::findOrFail($this->campaign_reward_id);
+            $url = str_replace('storage', 'public', $record->image_url);
+            Storage::delete($url);
+            $record->update([
+                'image_url' => null
+            ]);
+            $photo = $this->photoOne->store('public/campaign_rewards_image');
+            $this->image_url = Storage::url($photo);
+        }
+
+        // we look for the record
+        $record = CampaignReward::find($this->campaign_reward_id);
+        // we update the info
+        $record->update([
+            'image_url' => $this->image_url,
+            'amount' => addslashes($this->amount),
+            'description' => addslashes($this->description),
+            'delivery_date' =>  $this->delivery_date,
+            'limiter' => $this->limiter,
+            'quantity' => $this->quantity,
+        ]);
+        $extract = 'Update campaign recognition: '.$record->id;
+        $record->userHistories()->create([
+            'photo_path' => null,
+            'extract' => $extract,
+            'data' => $record,
+            'action' =>  'UPDATE',
+            'user_id' => auth()->user()->id,
+            'site_id' => 1,
+            //'agency_id' => 1
+            ]);
     }
 
     public function resetInput() {
@@ -127,6 +172,7 @@ class CampaignRewards extends Component
     public function editDialog($id) {
         $record = CampaignReward::find($id);
         $this->campaign_reward_id = $record->id;
+        $this->image_url = $record->image_url;
         $this->amount = $record->amount;
         $this->description = $record->description;
         $this->recognition_currency_symbol = $record->campaign->country->currency_symbol;
@@ -136,12 +182,21 @@ class CampaignRewards extends Component
         $this->addOrUpdateDialog = true;
     }
 
-    public function update() {
-
+    public function deleteOne() {
+        if($this->campaign_reward_id) {
+            $record = CampaignReward::findOrFail($this->campaign_reward_id);
+            $url = str_replace('storage', 'public', $record->image_url);
+            Storage::delete($url);
+            $record->update([
+                'image_url' => null
+            ]);
+        }
+        $this->photoOne = null;
+        $this->image_url = null;
     }
 
     public function deleteDialog($id) {
-        $this->reward_id = $id;
+        $this->campaign_reward_id = $id;
         $record = CampaignReward::find($id);
         $this->amount = $record->amount;
         $this->description = $record->description;
@@ -219,7 +274,7 @@ class CampaignRewards extends Component
 
     public function preview($id) {
         $record = Campaign::findOrFail($id);
-        return redirect()->route('preview', ['slug' => $record->slug]);
+        return redirect()->route('campaigns/preview', ['slug' => $record->slug]);
     }
 
     public function editProfile() {

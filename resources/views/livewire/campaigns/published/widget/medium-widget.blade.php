@@ -49,7 +49,7 @@
             </div>
             <!-- -->
             <div class="flex mt-4 space-x-2 justify-beetwen items-center">
-                <a href="https://www.yosolidario.com/{{$this->campaign->slug}}" target="_blank" class="flex justify-beetwen w-full px-4 py-2 sm:py-3 text-center bg-ys1 border border-ys2 rounded-md font-bold text-sm text-white uppercase tracking-widest hover:bg-yellow-500 active:bg-yellow-500 focus:outline-none focus:border-gray-100 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
+                <a href="https://www.yosolidario.com/{{$this->campaign->slug}}" target="_blank" class="flex justify-beetwen w-full px-4 py-2 sm:py-3 text-center bg-ys1 border border-ys2 rounded-md font-bold text-sm text-white uppercase tracking-widest hover:bg-ys2 active:bg-ys2 focus:outline-none focus:border-gray-100 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
                     <span><img src="{{asset('images/icono.png')}}" class="h-5" alt=""></span>
                     <span>&nbsp;{{__('Back this campaign')}}</span>
                 </a>

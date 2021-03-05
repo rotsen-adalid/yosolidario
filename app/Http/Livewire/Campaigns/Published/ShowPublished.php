@@ -33,9 +33,9 @@ class ShowPublished extends Component
             }
         }
         $host= $_SERVER["HTTP_HOST"];
-        if($host == 'yosolidario-adm.test') {
+        if($host == 'yosolidario.test') {
             $this->host = 'http://yosolidario.test';
-        } elseif($host == 'admin.yosolidario.com') {
+        } elseif($host == 'yosolidario.com') {
             $this->host = 'https://yosolidario.com';
         }
     } 

@@ -34,8 +34,8 @@
             {{ __('Updated successfully.') }}
         </x-jet-action-message>
 
-        <x-jet-button>
+        <x-button>
             {{ __('Save') }}
-        </x-jet-button>
+        </x-button>
     </x-slot>
 </x-jet-form-section>

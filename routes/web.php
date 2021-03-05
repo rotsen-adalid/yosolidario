@@ -54,6 +54,7 @@ use App\Http\Livewire\Campaigns\MyCampaigns;
 Route::middleware(['auth:sanctum', 'verified'])->get('/my/campaigns', MyCampaigns::class)
 ->name('my/campaigns');
 
+// Campaign create
 use App\Http\Livewire\Campaigns\Create\CampaignDetails;
 Route::middleware(['auth:sanctum', 'verified'])->get('/campaign/create', CampaignDetails::class)
 ->name('campaign/create');
@@ -70,9 +71,27 @@ use App\Http\Livewire\Campaigns\Create\CampaignRewards;
 Route::middleware(['auth:sanctum', 'verified'])->get('/campaign/update/rewards/{campaign}', CampaignRewards::class)
 ->name('campaign/update/rewards');
 
-use App\Http\Livewire\Preview\Show;
-Route::get('/preview/{slug}', Show::class)
-->name('preview');
+use App\Http\Livewire\Campaigns\Preview\ShowPreview;
+Route::get('/campaigns/preview/{slug}', ShowPreview::class)
+->name('campaigns/preview');
+
+// Campaign Manage
+use App\Http\Livewire\Campaigns\Manage\Collaborations\ShowCollaborations;
+Route::middleware(['auth:sanctum', 'verified'])->get('/campaign/manage/collaborations/{campaign}', ShowCollaborations::class)
+->name('campaign/manage/collaborations');
+
+use App\Http\Livewire\Campaigns\Manage\Updates\ShowUpdates;
+Route::middleware(['auth:sanctum', 'verified'])->get('/campaign/manage/updates/{campaign}', ShowUpdates::class)
+->name('campaign/manage/updates');
+
+use App\Http\Livewire\Campaigns\Manage\Comments\ShowComments;
+Route::middleware(['auth:sanctum', 'verified'])->get('/campaign/manage/comments/{campaign}', ShowComments::class)
+->name('campaign/manage/comments');
+
+
+use App\Http\Livewire\Campaigns\Manage\Teams\ShowTeams;
+Route::middleware(['auth:sanctum', 'verified'])->get('/campaign/manage/teams/{campaign}', ShowTeams::class)
+->name('campaign/manage/teams');
 
 // profile 
 use App\Http\Livewire\User\Profile;

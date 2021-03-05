@@ -202,7 +202,7 @@ class CampaignDetails extends Component
                 'title' => 'required|min:10|max:60',
                 'category_campaign_id' => 'required',
                 'slug' => "required|min:3|max:200|alpha_dash|unique:campaigns,slug,$this->campaign_id",
-                //'photo' => 'image|max:2048',
+                //'photoOne' => 'image|max:2048',
                 'extract' => 'required|min:60|max:170',
                 'type_campaign' => 'required',
                 'organization_id' => 'required',
@@ -221,7 +221,7 @@ class CampaignDetails extends Component
                 'title' => 'required|min:10|max:60',
                 'category_campaign_id' => 'required',
                 'slug' => "required|min:3|max:200|alpha_dash|unique:campaigns,slug,$this->campaign_id",
-                //'photo' => 'image|max:2048',
+                //'photoOne' => 'image|max:2048',
                 'extract' => 'required|min:60|max:170',
                 'type_campaign' => 'required',
                 'locality' => 'required|min:3|max:100',
@@ -244,7 +244,7 @@ class CampaignDetails extends Component
         $search_lower = strtolower($search_upper);
         $search_all =  $search_upper.' '.$search_lower;
 
-        if ($this->photoOne) {
+        if ($this->photoOne and $this->photo_url == null) {
 
             $this->validate([
                 'photoOne' => 'image|max:2048',
@@ -260,8 +260,27 @@ class CampaignDetails extends Component
             $record_image->image()->update([
                 'url' => $photo_url
             ]);
+        } elseif($this->photoOne == null and $this->photo_url == null) {
+            $this->validate([
+                'photoOne' => 'image|max:2048',
+            ]);
+        } elseif ($this->photoOne) {
+            $this->validate([
+                'photoOne' => 'image|max:2048',
+            ]);
 
+            $record_image = Campaign::findOrFail($this->campaign_id);
+            $url = str_replace('storage', 'public', $record_image->image->url);
+            Storage::delete($url);
+
+            $photo = $this->photoOne->store('public/campaign_image');
+            $photo_url = Storage::url($photo);
+
+            $record_image->image()->update([
+                'url' => $photo_url
+            ]);
         }
+
         $record = Campaign::find($this->campaign_id);
         // we update the info
         $record->update([
@@ -334,7 +353,7 @@ class CampaignDetails extends Component
     }
 
     public function deleteOne() {
-        if($this->campaign_id > 0) {
+        if($this->campaign_id) {
             $record = Campaign::findOrFail($this->campaign_id);
             $url = str_replace('storage', 'public', $record->image->url);
             Storage::delete($url);
@@ -343,6 +362,7 @@ class CampaignDetails extends Component
             ]);
         }
         $this->photoOne = null;
+        $this->photo_url = null;
     }
 
     public function generateSlug() {
@@ -502,7 +522,7 @@ class CampaignDetails extends Component
 
     public function preview($id) {
         $record = Campaign::findOrFail($id);
-        return redirect()->route('preview', ['slug' => $record->slug]);
+        return redirect()->route('campaigns/preview', ['slug' => $record->slug]);
     }
 
     public function editProfile() {

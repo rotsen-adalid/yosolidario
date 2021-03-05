@@ -12,6 +12,7 @@
 <x-slot  name="menu">
     @livewire('navigation')
 </x-slot>
+<div class="bg-gray-50">
 <x-section-content>
     <x-slot name="header">
         <header class="bg-white shadow pt-2 mb-10"> 
@@ -64,7 +65,7 @@
                         <div class="col-span-6 sm:col-span-4">
                             <x-label for="agency_id" value="{{ __('Tell us where you mainly reside.') }}" />
                             <div class="flex">
-                                <x-select class="mt-1 block w-full" id="agency_id" name="agency_id" wire:model.defer="agency_id" wire:change="agency">
+                                <x-select class="mt-1 block w-full" id="agency_id" name="agency_id" wire:model.defer="agency_id" wire:change="agency" autofocus>
                                     <x-slot name="option">
                                             <option value="">{{ __('Select your country') }}</option>
                                         @foreach ($collection_agencies as $item)
@@ -101,7 +102,7 @@
                        <!-- title -->
                         <div class="col-span-6 sm:col-span-4">
                             <x-jet-label for="title" value="{{ __('Title') }}" />
-                            <x-jet-input id="title" type="text" class="mt-1 block w-full" wire:model.defer="title"   autofocus autocomplete="off" minlength="10" maxlength="60" wire:keyup="generateSlug" /> <!-- wire:keyup="generateSlug"  -->
+                            <x-jet-input id="title" type="text" class="mt-1 block w-full" wire:model.defer="title"  autocomplete="off" minlength="10" maxlength="60" wire:keyup="generateSlug" /> <!-- wire:keyup="generateSlug"  -->
                             <x-jet-input-error for="title" class="mt-2" />
                         </div>
                         <!-- extract -->
@@ -249,22 +250,31 @@
                             <!-- Current Profile Photo -->
                             <div class="mt-2" x-show="!photoPreview">
                                 @if( $this->photo_url)
+                                    <x-icon-button wire:click="deleteOne" class="absolute m-1 opacity-70">
+                                        <i class="uil uil-trash text-base"></i>
+                                    </x-icon-button>
                                     <img src="{{ URL::to('/') }}{{$this->photo_url}}" alt="" class="rounded-sm h-60 w-full object-cover">
                                 @else 
-                                    <img src="{{asset('images/photo_upload.png')}}" alt="" class="rounded-sm h-60 w-full object-cover">
+                                    <img src="{{asset('images/photo_upload.png')}}" alt="" class="rounded-sm h-60 w-full object-cover ">
                                 @endif
                             </div>
             
                             <!-- Image Preview -->
                             <div class="mt-2" x-show="photoPreview">
-                                <span class="block rounded-sm w-full h-60"
-                                    x-bind:style="'background-size: cover; background-repeat: no-repeat; background-position: center center; background-image: url(\'' + photoPreview + '\');'">
-                                </span>
+                                @if($this->photoOne)
+                                    <span class="block rounded-sm w-full h-60 sm:h-64"
+                                        x-bind:style="'background-size: cover; background-repeat: no-repeat; background-position: center center; background-image: url(\'' + photoPreview + '\');'">
+                                        <x-icon-button wire:click="deleteOne" class="m-1 opacity-70">
+                                            <i class="uil uil-trash text-base"></i>
+                                        </x-icon-button>
+                                    </span>
+                                @else 
+                                    <img src="{{asset('images/photo_upload.png')}}" alt="" class="rounded-sm h-60 sm:h-64 w-full object-cover">
+                                @endif
                             </div>
-                            <x-jet-secondary-button class="mt-2 mr-2" type="button" x-on:click.prevent="$refs.photo.click()">
-                                {{ __('Select A Image') }}
-                            </x-jet-secondary-button>
-                            
+                                <x-jet-secondary-button class="mt-2 mr-2" type="button" x-on:click.prevent="$refs.photo.click()">
+                                    {{ __('Select A Image') }}
+                                </x-jet-secondary-button> 
                             <x-jet-input-error for="photoOne" class="mt-2" />
                         </div>
 
@@ -282,7 +292,7 @@
                     {{ __($this->message) }}
                 </x-jet-action-message>
                 <x-button wire:loading.attr="disabled">
-                    {{ __('save') }}
+                   <span class="py-1 px-1"> {{ __('next') }}</span>
                 </x-button>
             </x-slot>
         </x-form-section-multiple>
@@ -292,5 +302,5 @@
         @endif
     </x-slot>
 </x-section-content>
-
+</div>
 <livewire:footer/>

@@ -52,6 +52,16 @@
                 <!-- organizer -->
                 <livewire:campaigns.published.organizer-published :campaign="$campaign"/>
                 <livewire:campaigns.published.counters-published :campaign="$campaign"/>
+                <div class="flex mt-2 space-x-2">
+                    <button class="w-full text-center px-4 py-1 sm:py-3 bg-white border border-gray-300 rounded-md font-bold text-sm text-black uppercase tracking-widest shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">
+                        <i class="text-black uil uil-bookmark"></i>
+                        {{__('Remind me')}}
+                    </button>
+                    <button  wire:click="shared" class="w-full text-center px-4  py-1 sm:py-3 bg-white border border-gray-300 rounded-md font-bold text-sm text-black uppercase tracking-widest shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">
+                        <i class="text-black uil uil-share-alt"></i>
+                        {{__('Share')}}
+                    </button>
+                </div>
                 @include('livewire.campaigns.published.shared-published')
             </div>
         </div>

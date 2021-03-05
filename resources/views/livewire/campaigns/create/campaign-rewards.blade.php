@@ -7,6 +7,7 @@
 <x-slot  name="menu">
     @livewire('navigation')
 </x-slot>
+<div class="bg-gray-50">
 <x-section-content>
     <x-slot name="header">
         <header class="bg-white shadow pt-2 mb-10"> 
@@ -41,7 +42,10 @@
         <x-section-title>
             <x-slot name="title">
                 <x-button wire:click="addDialog" wire:loading.attr="disabled">
-                    {{ __('Add reward') }}
+                    <i class="uil uil-plus text-base"></i>
+                    <span class="py-1 px-1"> 
+                        {{ __('Add reward') }}
+                    </span>
                 </x-button>
             </x-slot>
             <x-slot name="description">
@@ -54,23 +58,45 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mt-7">
             @foreach ($collection as $item)
             <div class="px-4 sm:px-0 @if($collection->count() == 1) sm:col-start-2 @endif">
-                <!--
-                <div class="bg-gray-300 h-56 w-full rounded-lg shadow-md bg-cover bg-center" 
-                    style="background-image: url()">
-                </div>
-                -->
-                <div class=" w-full bg-white shadow-lg rounded-lg overflow-hidden p-5">
+            
+                @if($item->image_url)
+                    <div class="cursor-pointer bg-gray-300 h-56 w-full rounded-lg shadow-md bg-cover bg-center" 
+                        style="background-image: url({{ URL::to('/').$item->image_url}})">
+                    </div>
+                @else
+                    <div class="cursor-pointer bg-gray-300 h-56 w-full rounded-lg shadow-md bg-cover bg-center" 
+                        style="background-image: url({{asset('images/photo_upload.png')}})">
+                    </div>
+                @endif
+                
+                <div class=" w-full bg-white -mt-10 shadow-lg rounded-lg overflow-hidden p-5">
                 
                     <div class="title-post font-semibold text-xl">{{$item->amount}} {{$item->campaign->country->currency_symbol}}</div>
               
-                    <!-- collaboratos -->
-                    <div class="header-content inline-flex ">
-                      <div class="category-title flex-1 text-sm">0 {{__('Collaborators')}}</div>
-                    </div>
                     <!-- description -->
                     <div class="summary-post text-base text-justify mt-4">
                         {{$item->description}}
                     </div>
+                    <!-- collaboratos -->
+                    <div class="header-content inline-flex mt-4">
+                        <div class="category-title flex-1 text-sm">
+                            @if ($item->limiter == 'YES')
+                                <span> 0 / {{$item->quantity}}</span>
+                                {{__('Collaborators')}} 
+                            @elseif ($item->limiter == 'NO')
+                                0 {{__('Collaborators')}} 
+                            @endif
+                        </div>
+                    </div>
+                    <!-- delivery_date -->
+                    @if ($item->delivery_date)
+                        <div class="text-sm text-justify mt-1">
+                            {{__('Estimated delivery date')}}
+                            <span class="font-semibold">
+                                {{ \Carbon\Carbon::parse($item->delivery_date)->toFormattedDateString() }}
+                            </span>
+                        </div>
+                    @endif
                     <!-- options -->
                     <hr class="mt-2 mb-5">
                     <div class="flex justify-between items-start mt-5 sm:mt-0">
@@ -100,7 +126,7 @@
                 <x-secondary-button wire:click="$toggle('confirmingDeletion')" wire:loading.attr="disabled">
                     {{ __('Nevermind') }}
                 </x-secondary-button>
-                <x-danger-button class="ml-2" wire:click="delete({{ $this->reward_id }})" wire:loading.attr="disabled">
+                <x-danger-button class="ml-2" wire:click="delete({{ $this->campaign_reward_id }})" wire:loading.attr="disabled">
                     {{ __('Delete') }}
                 </x-danger-button>
             </x-slot>
@@ -119,24 +145,28 @@
                 <x-slot name="content">
                     <!-- amount -->
                     <div class="col-span-6 sm:col-span-4">
-                        <x-label for="amount" class="text-base" value="{{ __('Amount') }} ({{__('required')}})" />
-                        <div class="flex">
-                            <x-jet-input id="amount" type="number" class="mt-1 block w-50" wire:model.defer="amount"  autocomplete="off"  minlength="3" maxlength="8"/>
-                            <x-jet-input id="amount" disabled type="text" class="mt-1 ml-1 block w-16" placeholder="{{$this->recognition_currency_symbol}}" autocomplete="off"/>
+                        <div class="sm:flex sm:space-x-2">
+                            <div>
+                                <x-label for="amount" class="text-base" value="{{ __('Amount') }} ({{__('required')}})" />
+                                <div class="flex">
+                                    <x-jet-input id="amount" type="number" class="mt-1 block w-50" wire:model.defer="amount"  autocomplete="off"  minlength="3" maxlength="8"/>
+                                    <x-jet-input id="amount" disabled type="text" class="mt-1 ml-1 block w-16" placeholder="{{$this->recognition_currency_symbol}}" autocomplete="off"/>
+                                </div>
+                                <x-input-error for="amount" class="mt-2" />
+                            </div>
+                            <div class="mt-4 sm:mt-0">
+                                <!-- delivery_date -->
+                                <x-jet-label for="delivery_date" class="text-base" value="{{ __('Estimated delivery date') }} ({{ __('optional') }})" />
+                                <x-jet-input id="delivery_date" type="date" class="mt-1 block w-50" wire:model.defer="delivery_date" autocomplete="off" />
+                                <x-jet-input-error for="delivery_date" class="mt-2" />
+                            </div>
                         </div>
-                        <x-input-error for="amount" class="mt-2" />
                     </div>
                     <!-- description -->
                     <div class="col-span-6 sm:col-span-4 mt-4">
                         <x-jet-label for="description" class="text-base" value="{{ __('Description') }} ({{__('required')}})" />
                         <x-textarea id="description" class="mt-1 block w-full" wire:model.defer="description" autocomplete="off"/>
                         <x-jet-input-error for="description" class="mt-2" />
-                    </div>
-                     <!-- delivery_date -->
-                     <div class="col-span-6 sm:col-span-4 mt-4">
-                        <x-jet-label for="delivery_date" class="text-base" value="{{ __('Estimated delivery date ( dd / mm / yyyy)') }}" />
-                        <x-jet-input id="delivery_date" type="date" class="mt-1 block w-50" wire:model.defer="delivery_date" autocomplete="off" />
-                        <x-jet-input-error for="delivery_date" class="mt-2" />
                     </div>
                     <!-- limiter -->
                     <div class="col-span-6 sm:col-span-4 mt-4">
@@ -161,7 +191,52 @@
                             </div>
                         </div>
                     </div>
-               
+                    <!-- Photo -->
+                    <div x-data="{photoName: null, photoPreview: null}" class="col-span-6 sm:col-span-4 mt-4">
+                        <!-- Profile Photo File Input -->
+                        <input type="file" class="hidden" accept="image/*"
+                            wire:model="photoOne"
+                            x-ref="photo"
+                            x-on:change="
+                                    photoName = $refs.photo.files[0].name;
+                                    const reader = new FileReader();
+                                    reader.onload = (e) => {
+                                        photoPreview = e.target.result;
+                                    };
+                                    reader.readAsDataURL($refs.photo.files[0]);
+                            " />
+
+                        <x-jet-secondary-button class="mt-2 mr-2 w-60" type="button" x-on:click.prevent="$refs.photo.click()">
+                            {{ __('Select A Image') }} ({{ __('optional') }})
+                        </x-jet-secondary-button>
+
+                        <!-- Current Profile Photo -->
+                        <div class="mt-2" x-show="!photoPreview">
+                            @if( $this->image_url)
+                            <x-icon-button wire:click="deleteOne" class="absolute m-1 opacity-70">
+                                <i class="uil uil-trash text-base"></i>
+                            </x-icon-button>
+                                <img src="{{ URL::to('/') }}{{$this->image_url}}" alt="" class="rounded-sm h-48 sm:h-full w-56 object-cover">
+                            @else 
+                                <img src="{{asset('images/photo_upload.png')}}" alt="" class="rounded-sm h-48 sm:h-full w-56 object-cover">
+                            @endif
+                        </div>
+                        <!-- Image Preview -->
+                        <div class="mt-2" x-show="photoPreview">
+                            @if($this->photoOne)
+                                <span class="block rounded-sm h-48 sm:h-full w-56"
+                                    x-bind:style="'background-size: cover; background-repeat: no-repeat; background-position: center center; background-image: url(\'' + photoPreview + '\');'">
+                                    <x-icon-button wire:click="deleteOne" class="m-1 opacity-70">
+                                        <i class="uil uil-trash text-base"></i>
+                                    </x-icon-button>
+                                </span>
+                            @else 
+                                <img src="{{asset('images/photo_upload.png')}}" alt="" class="rounded-sm h-48 sm:h-full w-56 object-cover">
+                            @endif
+                        </div>
+
+                        <x-jet-input-error for="photoOne" class="mt-2" />
+                    </div>
                 </x-slot>
                 <x-slot name="footer">
                     <x-secondary-button wire:click="$toggle('addOrUpdateDialog')" wire:loading.attr="disabled">
@@ -182,4 +257,5 @@
        @include('livewire.campaigns.create.send-to-review')
     </x-slot>
 </x-section-content>
+</div>
 <livewire:footer/>
