@@ -1,7 +1,7 @@
 <x-dialog-modal wire:model="confirmingSendReview">
     <x-slot name="title">
         <div class="text-red-500 font-semibold text-xl">
-            {{ __('Send for review?') }}
+            {{ __('Publish campaign') }}
         </div>
     </x-slot>
     <x-slot name="content">
@@ -16,7 +16,10 @@
         </div>
 
         <div class="summary-post text-base text-justify mt-5">
-            {{ __('It will be sent for review, we will contact you in less than 48 hours and your campaign will be published.') }}
+            {{ __('You can start fundraising now.') }}
+        </div>
+        <div class="summary-post text-base text-justify mt-2">
+            {{ __('We will contact you in less than 24 hours to verify the authenticity of your campaign.') }}
         </div>
 
         <div class="flex items-center pt-3">
@@ -128,11 +131,11 @@
     </x-slot>
     <x-slot name="footer">
         <x-secondary-button wire:click="$toggle('confirmingSendReview')" wire:loading.attr="disabled">
-            {{ __('Nevermind') }}
+            <span class="uppercase">{{ __('Nevermind') }}</span>
         </x-secondary-button>
         @if(Auth::user()->profile->count() > 0 )
             <x-button class="ml-2" wire:click="sendReview" wire:loading.attr="disabled">
-                {{ __('Send') }}
+               <span class="uppercase"> {{ __('Publish campaign') }}</span>
             </x-button>
         @endif
     </x-slot>

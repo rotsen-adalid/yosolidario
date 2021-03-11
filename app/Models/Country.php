@@ -14,17 +14,25 @@ class Country extends Model
     protected $fillable = [
         'name',
         'slug',
-        'code_coi',
+        'code',
         'telephone_prefix',
-        'currency_symbol',
-        'currency_iso',
         'status_published_campaign',
         'search'
     ];
     
+    // uno a uno
+    public function money() {
+        return $this->hasOne(Money::class);
+    }
+
     // uno a muchos 
     public function campaigns() {
         return $this->hasMany(Campaign::class);
+    }
+
+    // uno a muchos 
+    public function organizations() {
+        return $this->hasMany(Organization::class);
     }
 
     // uno a muchos

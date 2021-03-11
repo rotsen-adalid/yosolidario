@@ -1,5 +1,5 @@
 <div>
-    <div class="mt-3 sm:mt-5 text-3xl sm:text-4xl text-ys1 font-bold">
+    <div class="mt-3 sm:mt-7 text-3xl sm:text-4xl text-ys1 font-bold">
         <span>{{ number_format($this->campaign->campaignCollected->amount_collected, 2 ) }}</span>
         <span class="ml-1">{{$this->campaign->agency->country->currency_symbol}}</span>
     </div>

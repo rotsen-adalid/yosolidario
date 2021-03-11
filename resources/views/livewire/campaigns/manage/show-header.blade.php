@@ -58,12 +58,13 @@
                 </x-nav-link>
             </div>
     
-            <div class="space-x-8 -my-px  ml-2 sm:ml-10 flex">
-                <x-nav-link href="{{ route('campaign/manage/teams', $campaign) }}" :active="request()->routeIs('campaign/manage/teams')">
-                    {{ __('Teams') }}
+           <!-- 
+             <div class="space-x-8 -my-px  ml-2 sm:ml-10 flex">
+                <x-nav-link href="{ route('campaign/manage/teams', $campaign) }}" :active="request()->routeIs('campaign/manage/teams')">
+                    { __('Teams') }}
                 </x-nav-link>
             </div>
-
+            -->
         </div>
     </div>
     @include('livewire.campaigns.published.shared-published')

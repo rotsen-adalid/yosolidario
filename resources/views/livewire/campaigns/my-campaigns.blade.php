@@ -2,7 +2,7 @@
     {{__('My campaigns')}} : YoSolidario
 </x-slot>
 <x-slot  name="seo">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@iconscout/unicons@3.0.6/css/line.css">
+   
 </x-slot>
 <x-slot  name="menu">
     @livewire('navigation')
@@ -35,7 +35,7 @@
         </div>
 
         <div class=" w-full bg-white -mt-10 shadow-lg rounded-lg overflow-hidden p-5">
-            <div class="text-xl font-bold">
+            <div class="text-xl font-bold h-16">
                 {{$item->title}}
             </div>
 
@@ -110,15 +110,15 @@
       <div class="flex justify-between items-start mt-5 sm:mt-3">
         @if ($item->status == 'DRAFT')
             <x-button wire:click="editCampaign({{$item->id}})" wire:loading.attr="disabled">
-                {{ __('Edit') }}
+                <span class="text-base capitalize">{{ __('Edit') }}</span>
             </x-button>
             <x-secondary-button wire:click="view({{$item->id}})" wire:loading.attr="disabled">
-                {{ __('preview') }}
+                <span class="text-base capitalize">{{ __('preview') }}</span>
             </x-secondary-button>
         @elseif ($item->status == 'IN_REVIEW')
-            <x-button wire:click="view({{$item->id}})" wire:loading.attr="disabled">
-                {{ __('preview') }}
-            </x-button>
+            <button wire:click="view({{$item->id}})" wire:loading.attr="disabled" class="w-full px-4 py-2 text-center border border-ys1 rounded-md font-bold text-base  text-ys1 tracking-widest hover:text-ys2 hover:border-ys2 focus:border-bg-ys2 active:bg-ys2 focus:outline-none focus:border-bg-ys2 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
+                <span>{{ __('See publication') }}</span>
+            </button>
         @elseif ($item->status == 'PUBLISHED')
             <button wire:click="manage({{$item->id}})" wire:loading.attr="disabled" class="w-full px-4 py-2 text-center border border-ys1 rounded-md font-bold text-base  text-ys1 tracking-widest hover:text-ys2 hover:border-ys2 focus:border-bg-ys2 active:bg-ys2 focus:outline-none focus:border-bg-ys2 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
                 <span>{{__('Manage')}}</span>

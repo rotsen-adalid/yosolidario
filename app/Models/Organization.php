@@ -17,12 +17,12 @@ class Organization extends Model
     protected $fillable = [
         'name',
         'slug',
-        'logo',
+        'logo_path',
         'identification',
-        'identification_image',
+        'identification_path',
         'type',
-
         'country_id',
+        'agency_id',
         'address',
         'longitude',
         'latigude',
@@ -35,10 +35,9 @@ class Organization extends Model
         'references_contact',
 
         'about',
-        'note',
+        'observations',
 
-        'status_organization',
-        'status_agreement',
+        'status',
 
         'search'
     ];
@@ -46,15 +45,20 @@ class Organization extends Model
     {
         return 'slug';
     }
+
     // uno a muchos inversa
-    public function country()
+    public function agency()
     {
+        return $this->belongsTo(Agency::class);
+    }
+    // uno a muchos inversa
+    public function country() {
         return $this->belongsTo(Country::class);
     }
     // uno a uno 
-    public function agreement()
+    public function organizationAgreement()
     {
-        return $this->hasOne(Agreement::class);
+        return $this->hasOne(OrganizationAgreement::class);
     }
     // uno a muchos 
     public function campaigns() {

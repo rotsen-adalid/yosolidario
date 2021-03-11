@@ -27,10 +27,10 @@
                 @if ($this->status_register == 'COMPLETE')
                 <div class="flex items-center leading-tight space-x-2">
                     <x-button wire:click="reviewConfirm" wire:loading.attr="disabled">
-                        {{ __('Send to review') }}
+                         <span class="uppercase">{{ __('Publish campaign') }}</span>
                     </x-button>
                     <x-secondary-button wire:click="preview({{$this->campaign_id}})" wire:loading.attr="disabled">
-                        {{ __('Preview') }}
+                        <span class="uppercase">{{ __('Preview') }}</span>
                     </x-secondary-button>
                 </div>
                 @endif
@@ -43,7 +43,7 @@
             <x-slot name="title">
                 <x-button wire:click="addDialog" wire:loading.attr="disabled">
                     <i class="uil uil-plus text-base"></i>
-                    <span class="py-1 px-1"> 
+                    <span class="py-1 px-1  text-base"> 
                         {{ __('Add reward') }}
                     </span>
                 </x-button>
@@ -54,7 +54,8 @@
                 </span>
             </x-slot>
         </x-section-title>
-
+        @if ($collection->count() > 0)
+            
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mt-7">
             @foreach ($collection as $item)
             <div class="px-4 sm:px-0 @if($collection->count() == 1) sm:col-start-2 @endif">
@@ -98,19 +99,31 @@
                         </div>
                     @endif
                     <!-- options -->
-                    <hr class="mt-2 mb-5">
+                    <hr class="mt-2 mb-3">
                     <div class="flex justify-between items-start mt-5 sm:mt-0">
-                      <x-button wire:click="editDialog({{$item->id}})" wire:loading.attr="disabled">
-                          {{ __('Edit') }}
-                      </x-button>
-                      <x-danger-button wire:click="deleteDialog({{$item->id}})" wire:loading.attr="disabled">
-                          {{ __('Delete') }}
-                      </x-danger-button>
+                        <i class="uil uil-edit text-xl font-bold cursor-pointer" 
+                        wire:click="editDialog({{$item->id}})" wire:loading.attr="disabled"></i>
+
+                        <i class="uil uil-trash text-xl text-red-500 cursor-pointer" 
+                        wire:click="deleteDialog({{$item->id}})" wire:loading.attr="disabled"></i>
+
                     </div>
                 </div>
             </div>
             @endforeach
         </div>
+        @else
+        <div class="flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-md w-full space-y-8">
+          <div> 
+            <h2 class="mt-6 text-center text-xl font-light">
+                {{ __('Campaign without reward') }}
+            </h2>
+          </div>
+    
+        </div>
+    </div>
+        @endif
         <!-- Delete Confirmation Modal -->
         <x-dialog-modal wire:model="confirmingDeletion">
             <x-slot name="title">

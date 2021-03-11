@@ -43,9 +43,9 @@
                 <a class="underline text-base text-gray-600 hover:text-gray-900" href="{{ route('register') }}">
                     {{ __('Create Account') }}
                 </a>
-                <x-jet-button class="ml-4">
+                <x-button class="ml-4">
                     {{ __('Login') }}
-                </x-jet-button>
+                </x-button>
             </div>
         </form>
     </x-jet-authentication-card>

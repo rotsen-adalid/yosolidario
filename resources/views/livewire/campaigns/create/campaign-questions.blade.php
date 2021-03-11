@@ -27,10 +27,10 @@
                 @if ($this->status_register == 'COMPLETE')
                 <div class="flex items-center leading-tight space-x-2">
                     <x-button wire:click="reviewConfirm" wire:loading.attr="disabled">
-                        {{ __('Send to review') }}
+                        <span class="uppercase">{{ __('Publish campaign') }}</span>
                     </x-button>
                     <x-secondary-button wire:click="preview({{$this->campaign_id}})" wire:loading.attr="disabled">
-                        {{ __('Preview') }}
+                        <span class="uppercase">{{ __('Preview') }}</span>
                     </x-secondary-button>
                 </div>
                 @endif
@@ -460,7 +460,8 @@
                 {{ __($this->message) }}
             </x-jet-action-message>
             <x-button wire:loading.attr="disabled">
-                <span class="py-1 px-1"> {{ __('next') }}</span>
+                <span class="px-2 uppercase font-bold text-base"> {{ __('next') }}</span>
+                <i class="uil uil-angle-right-b text-base"></i>
             </x-button>
         </x-slot>
         </x-form-section-multiple>

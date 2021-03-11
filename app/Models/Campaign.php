@@ -17,14 +17,14 @@ class Campaign extends Model
 
     protected $fillable = [
         'title',
-        'title_es',
-        'title_en',
-        'title_pt_BR',
+        //'title_es',
+        //'title_en',
+        //'title_pt_BR',
         'slug',
         'extract',
-        'extract_es',
-        'extract_en',
-        'extract_pt_BR',
+        //'extract_es',
+        //'extract_en',
+        //'extract_pt_BR',
         'type_campaign',
         'period',
 
@@ -92,6 +92,10 @@ class Campaign extends Model
     // uno a muchos 
     public function campaignUpdates() {
         return $this->hasMany(CampaignUpdate::class);
+    }
+    // uno a muchos 
+    public function campaignTeam() {
+        return $this->hasMany(CampaignTeam::class);
     }
     // relacion polimorfica uno a uno
     public function image() {

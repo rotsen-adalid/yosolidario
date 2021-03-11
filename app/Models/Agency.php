@@ -13,13 +13,10 @@ class Agency extends Model
 
     protected $fillable = [
         'denomination',
-        'slug',
         'identification',
-        'identification_image',
-        'addresses',
-        'email_contact',
+        'identification_path',
+        'addres',
         'representative',
-        'user_id',
         'country_id',
         'type',
         'status',
@@ -31,18 +28,43 @@ class Agency extends Model
         return $this->hasMany(User::class);
     }
 
-    // relacion polimorfica uno a muchos
-    public function userHistories() {
-        return $this->morphMany(UserHistory::class, 'userhistoriesable');
-    }
-
-     // uno a muchos inversa
-     public function country() {
+    // uno a muchos inversa
+    public function country() {
         return $this->belongsTo(Country::class);
     }
 
     // uno a muchos 
     public function campaigns() {
         return $this->hasMany(Campaign::class);
+    }
+
+    // uno a muchos 
+    public function agencyPps() {
+        return $this->hasMany(AgencyPp::class);
+    }
+
+    // uno a muchos 
+    public function agencyPpms() {
+        return $this->hasMany(AgencyPpm::class);
+    }
+
+    // uno a muchos 
+    public function agencyPms() {
+        return $this->hasMany(AgencyPm::class);
+    }
+
+     // uno a uno
+     public function agencySetting() {
+        return $this->hasOne(AgencySetting::class);
+    }
+
+    // uno a muchos 
+    public function organizations() {
+        return $this->hasMany(Organization::class);
+    }
+
+    // relacion polimorfica uno a muchos
+    public function userHistories() {
+        return $this->morphMany(UserHistory::class, 'userhistoriesable');
     }
 }

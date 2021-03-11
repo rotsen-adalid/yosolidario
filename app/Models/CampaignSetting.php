@@ -13,7 +13,6 @@ class CampaignSetting extends Model
     
     protected $fillable = [
         'seo_keywords',
-        'multilenguage',
         'campaign_id',
     ];
     // uno a uno inversa

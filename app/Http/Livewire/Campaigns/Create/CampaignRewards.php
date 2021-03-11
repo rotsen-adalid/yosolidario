@@ -50,6 +50,7 @@ class CampaignRewards extends Component
     public function addDialog() {
         $record = Campaign::find($this->campaign_id);
         $this->recognition_currency_symbol = $record->country->currency_symbol;
+        $this->resetInput();
         $this->addOrUpdateDialog = true;
     }
     
@@ -75,16 +76,16 @@ class CampaignRewards extends Component
         }
 
         if($this->campaign_reward_id <= 0) {
-            $this->add();
+            $this->addData();
         } else {
-            $this->update();
+            $this->updateData();
         }
 
         $this->resetInput();
         $this->addOrUpdateDialog = false;
     }
 
-    public function add() {
+    public function addData() {
         
         if($this->photoOne) {
             $this->validate([
@@ -119,10 +120,10 @@ class CampaignRewards extends Component
             'site_id' => 1,
             //'agency_id' => 1
             ]);
-  
+        $this->resetInput();
     }
 
-    public function update() {
+    public function updateData() {
 
         if($this->photoOne) {
             $this->validate([
@@ -159,6 +160,7 @@ class CampaignRewards extends Component
             'site_id' => 1,
             //'agency_id' => 1
             ]);
+        $this->resetInput();
     }
 
     public function resetInput() {

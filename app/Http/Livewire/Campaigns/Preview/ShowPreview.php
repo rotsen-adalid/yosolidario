@@ -20,7 +20,7 @@ class ShowPreview extends Component
             $campaign = Campaign::
                         where('slug', $slug)
                         ->where('status', 'DRAFT')
-                        ->orWhere('status', 'IN_REVIEW')
+                        // ->orWhere('status', 'IN_REVIEW')
                         ->get();
             if($campaign->count() > 0) {
                 $this->campaign_id = $campaign[0]->id;

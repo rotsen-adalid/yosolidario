@@ -36,10 +36,10 @@
                 @if ($this->status_register == 'COMPLETE')
                 <div class="flex items-center leading-tight space-x-2">
                     <x-button wire:click="reviewConfirm" wire:loading.attr="disabled">
-                        {{ __('Send to review') }}
+                        <span class="uppercase">{{ __('Publish campaign') }}</span>
                     </x-button>
                     <x-secondary-button wire:click="preview({{$this->campaign_id}})" wire:loading.attr="disabled">
-                        {{ __('Preview') }}
+                        <span class="uppercase">{{ __('Preview') }}</span>
                     </x-secondary-button>
                 </div>
                 @endif
@@ -154,20 +154,22 @@
                         </div>
                         <!-- Organization -->
                         @if($this->type_campaign == 'ORGANIZATION')
-                        <div class="col-span-6 sm:col-span-4">
-                            <x-label for="organization_id" value="{{ __('Foundation, ONG or Company') }}" />
-                            <div class="flex">
-                                <x-select class="mt-1 block w-full" id="organization_id" name="organization_id" wire:model.defer="organization_id">
-                                    <x-slot name="option">
-                                            <option value="">{{ __('Choose Foundation, ONG or Company') }}</option>
-                                        @foreach ($collection_organization as $item)
-                                            <option value="{{$item->id}}">{{ __($item->name) }}</option>
-                                        @endforeach
-                                    </x-slot>
-                                </x-select>
+                          @if ($collection_organization)
+                          <div class="col-span-6 sm:col-span-4">
+                              <x-label for="organization_id" value="{{ __('Foundation, ONG, Company or Social Organization') }}" />
+                              <div class="flex">
+                                  <x-select class="mt-1 block w-full" id="organization_id" name="organization_id" wire:model.defer="organization_id">
+                                      <x-slot name="option">
+                                              <option value="">{{ __('Choose Foundation, ONG or Company') }}</option>
+                                          @foreach ($collection_organization as $item)
+                                              <option value="{{ ($item->id) }}">{{ __($item->name) }}</option>
+                                          @endforeach
+                                      </x-slot>
+                                  </x-select>
+                              </div>
+                              <x-jet-input-error for="organization_id" class="mt-2" />
                             </div>
-                            <x-jet-input-error for="organization_id" class="mt-2" />
-                        </div>
+                            @endif
                         @endif
                         <!-- locality -->
                         <div class="col-span-6 sm:col-span-4">
@@ -292,7 +294,8 @@
                     {{ __($this->message) }}
                 </x-jet-action-message>
                 <x-button wire:loading.attr="disabled">
-                   <span class="py-1 px-1"> {{ __('next') }}</span>
+                   <span class="px-2 uppercase font-bold text-base"> {{ __('next') }}</span>
+                   <i class="uil uil-angle-right-b text-base"></i>
                 </x-button>
             </x-slot>
         </x-form-section-multiple>

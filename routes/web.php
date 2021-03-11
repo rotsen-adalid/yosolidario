@@ -72,8 +72,8 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/campaign/update/rewards/{
 ->name('campaign/update/rewards');
 
 use App\Http\Livewire\Campaigns\Preview\ShowPreview;
-Route::get('/campaigns/preview/{slug}', ShowPreview::class)
-->name('campaigns/preview');
+Route::get('/preview/{slug}', ShowPreview::class)
+->name('campaign/preview');
 
 // Campaign Manage
 use App\Http\Livewire\Campaigns\Manage\Collaborations\ShowCollaborations;

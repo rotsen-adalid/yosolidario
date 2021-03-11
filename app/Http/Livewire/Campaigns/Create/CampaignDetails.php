@@ -4,18 +4,18 @@ namespace App\Http\Livewire\Campaigns\Create;
 use Livewire\Component;
 
 use App\Models\Agency;
-
-use App\Models\Country;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str as Str;
 use App\Models\Campaign;
 use App\Models\CampaignQuestion;
 use App\Models\CampaignReward;
+use App\Models\Organization;
 use Carbon\Carbon;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Storage;
 
 use Laravel\Jetstream\Jetstream;
+use Illuminate\Support\Facades\Http;
 
 class CampaignDetails extends Component
 {
@@ -46,6 +46,8 @@ class CampaignDetails extends Component
     public $amountFive;
 
     public $terms;
+    public $ipapi;
+    public $country_code;
 
     public function mount(Campaign $campaign)
     {
@@ -57,6 +59,11 @@ class CampaignDetails extends Component
         } else {
             //return redirect()->route('campaign/create');
         }
+
+        // general values
+        $response = Http::get('http://api.ipapi.com/179.58.47.20?access_key=c161289d6c8bc62e50f1abad0c4846aa');
+        $this->ipapi = $response->json();
+        $this->country_code = $this->ipapi['country_code'];
     } 
 
     public function render()
@@ -69,15 +76,11 @@ class CampaignDetails extends Component
                                         ->orderBy('name', 'asc')
                                         ->get();
         $this->collection_category_campaign = DB::table('category_campaigns')->where('status', 'ACTIVE')->get();
-        $this->collection_organization = DB::table('organizations')
-                                        ->where('status_agreement', 'ACTIVE')
-                                        ->where('country_id', $this->country_id)
-                                        ->get();
         return view('livewire.campaigns.create.campaign-details');
     }
 
+    // create or update
     public function StoreOrUpdate() {
-
         if($this->campaign_id <= 0) {
             $this->Store();
         } else {
@@ -85,6 +88,7 @@ class CampaignDetails extends Component
         }
     }
 
+    // create
     public function Store() {
         if ($this->type_campaign == 'ORGANIZATION')
             $this->validate([
@@ -373,12 +377,22 @@ class CampaignDetails extends Component
     public function agency() {
         if($this->agency_id) {
             $record = Agency::find($this->agency_id);
-            $this->currency_symbol = $record->country->currency_symbol;
+            $this->currency_symbol = $record->agencySetting->money->currency_symbol;
             $this->telephone_prefix = $record->country->telephone_prefix;
+
+            $this->collection_organization = Organization::
+            join('organization_agreements', 'organizations.id', '=', 'organization_agreements.organization_id')
+            ->where('organization_agreements.status', '=', 'ACTIVE')
+            ->where('organizations.country_id', '=' , $record->country_id)
+            ->get();
+
         } else {
             $this->currency_symbol = null;
             $this->telephone_prefix = null;
+
+            $this->collection_organization = null;
         }
+
     }
 
     public function createQuestions($id) {
