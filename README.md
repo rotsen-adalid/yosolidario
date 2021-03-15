@@ -66,3 +66,7 @@ php artisan db:seed
 
 # cambiando idioma de login 
 vendor/laravel/fortify/routes
+
+
+# link storage
+php artisan storage:link

@@ -26,4 +26,8 @@ class HeroHome extends Component
     {
         return view('livewire.home.hero-home');
     }
+
+    public function createCampaign() {
+        return redirect()->route('campaign/create');
+    }
 }
