@@ -10,4 +10,8 @@ class CommentsPreview extends Component
     {
         return view('livewire.campaigns.preview.comments-preview');
     }
+
+    public function shared() {
+
+    }
 }

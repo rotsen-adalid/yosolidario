@@ -13,6 +13,7 @@
         <livewire:campaigns.manage.show-header :campaign="$campaign"/>
     </x-slot>
     <x-slot  name="content">
+        @include('livewire.campaigns.manage.updates.modal-updates')
         <x-section-title>
             <x-slot name="title">
                 <x-button class="ml-2 font-bold text-base" wire:click="addUpdates" wire:loading.attr="disabled">
@@ -23,8 +24,28 @@
             <x-slot name="description">
             </x-slot>
         </x-section-title>
-        @php ($i = $collection->count())
+
+        <div x-data="{ imgModalUpdates : false, imgModalSrcUpdates : '', imgModalDescUpdates : '' }">
+            <template @imgu-modal.window="imgModalUpdates = true; imgModalSrcUpdates = $event.detail.imgModalSrcUpdates; imgModalDescUpdates = $event.detail.imgModalDescUpdates;" x-if="imgModalUpdates">
+              <div x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-90" x-transition:enter-end="opacity-100 transform scale-100" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-90" x-on:click.away="imgModalSrcUpdates = ''" class="p-2 fixed w-full h-100 inset-0 z-50 overflow-hidden flex justify-center items-center bg-black bg-opacity-75">
+                <div @click.away="imgModalUpdates = ''" class="flex flex-col max-w-3xl max-h-full overflow-auto">
+                  <div class="z-50">
+                    <button @click="imgModalUpdates = ''" class="float-right pt-2 pr-2 outline-none focus:outline-none">
+                        <i class=" text-white uil uil-times-circle text-3xl"></i>
+                    </button>
+                  </div>
+                  <div class="p-2">
+                    <img :alt="imgModalSrcUpdates" class="object-contain h-1/2-screen" :src="imgModalSrcUpdates">
+                    <p x-text="imgModalDescUpdates" class="text-center text-white"></p>
+                  </div>
+                </div>
+              </div>
+            </template>
+        </div>
+    
         @if ($collection->count() > 0)
+        <div x-data="{}">
+        @php ($i = $collection->count())
         
         <div class="relative mt-8"> <!-- w-1/2 -->
             <div class="border-r-2 border-green-500 absolute h-full top-0" style="left: 15px"></div>
@@ -49,22 +70,35 @@
                             </div>
                             <div class="flex space-x-2">
                                 <i class="uil uil-edit text-lg font-bold cursor-pointer" 
-                                    wire:click="updateDialog({{$item->id}})" wire:loading.attr="disabled"></i>
+                                    wire:click="editUpdates({{$item->id}})" wire:loading.attr="disabled"></i>
                                 <i class="uil uil-trash text-lg text-red-500 cursor-pointer" 
                                     wire:click="deleteConfirm({{$item->id}})" wire:loading.attr="disabled"></i>
                             </div>
-                            <p class="my-5 text-sm leading-snug tracking-wide text-gray-900 text-opacity-100 text-justify">
-                                {!! nl2br(e($item->body), false) !!}
-                            </p>
-                            @if ($item->update_photo_path)
-                                <img src="{{ URL::to('/').$item->update_photo_path}}" alt="">
-                            @endif
+    
+                            <div class="mt-4 pb-10 sm:pb-5 flex flex-col-reverse sm:flex-col sm:block">
+                                @if ($item->image)
+                                    <div @click="$dispatch('imgu-modal', {  imgModalSrcUpdates: '{{URL::to('/').$item->image->url}}', imgModalDescUpdates: '' })" class="flex justify-center sm:block">
+                                        @if ($item->image->url)
+                                            <img class="h-auto w-80 mt-3 sm:mt-0 sm:mr-4 rounded cursor-pointer" src="{{URL::to('/').$item->image->url}}" 
+                                            hspace="2" vspace="2" style="float: left;" />
+                                        @endif
+                                    </div>
+                                @endif
+
+                                 <div>
+                                     <div class="text-justify text-base">
+                                        {!! nl2br(e($item->body), false) !!}
+                                     </div>
+                                 </div>
+                             </div>
+    
                         </div>
                     </div>
                 </li>
             @php ($i--)
             @endforeach
             </ul>
+        </div>
         </div>
         @else
             <div class="flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -77,114 +111,7 @@
                 </div>
             </div>
         @endif
-        <!-- -->
-        <x-dialog-modal wire:model="updatesDialog">
-            <x-slot name="title">
-              <div class="font-bold">
-                @if ($campaign_update_id)
-                    {{ __('Update data') }}
-                @else
-                    {{ __('New update') }}
-                @endif
-               
-              </div>
-            </x-slot>
-                <x-slot name="content">
-                    <!-- Title -->
-                    <div class="col-span-6 sm:col-span-4">
-                        <x-jet-label for="title" value="{{ __('Title') }}" />
-                        <x-jet-input id="title" type="text" class="mt-1 block w-full" wire:model.defer="title" autocomplete="off" />
-                        <x-jet-input-error for="title" class="mt-2" />
-                    </div>
-                    <!-- Body -->
-                    <div class="mt-2 col-span-6 sm:col-span-4">
-                        <x-jet-label for="body" value="{{ __('Contents') }}" />
-                        <x-textarea id="body" class="mt-1 block w-full h-36 sm:h-36" wire:model.defer="body" autocomplete="off"/>
-                        <x-jet-input-error for="body" class="mt-2" />
-                    </div>
-                    <!-- Photo -->
-                    <div x-data="{photoName: null, photoPreview: null}" class="mt-2 col-span-6 sm:col-span-4">
-                        <!-- Profile Photo File Input -->
-                        <input type="file" class="hidden" accept="image/*"
-                            wire:model="photoOne"
-                            x-ref="photo"
-                            x-on:change="
-                                    photoName = $refs.photo.files[0].name;
-                                    const reader = new FileReader();
-                                    reader.onload = (e) => {
-                                        photoPreview = e.target.result;
-                                    };
-                                    reader.readAsDataURL($refs.photo.files[0]);
-                            " />
-
-                        <x-jet-label for="photoOne" value="{{ __('Image') }} ({{ __('optional') }})" />
-                        <!-- Current Profile Photo -->
-                        <div class="mt-2" x-show="!photoPreview">
-                            @if( $this->update_photo_path)
-                                <x-icon-button wire:click="deleteOne" class="absolute m-1 opacity-70">
-                                    <i class="uil uil-trash text-base"></i>
-                                </x-icon-button>
-                                <img src="{{ URL::to('/') }}{{$this->update_photo_path}}" alt="" class="rounded-sm h-60 sm:h-64 w-full object-cover">
-                            @else 
-                                <img src="{{asset('images/photo_upload.png')}}" alt="" class="rounded-sm h-60 sm:h-64 w-full object-cover">
-                            @endif
-                        </div>
-
-                        <!-- Image Preview -->
-                        <div class="mt-2" x-show="photoPreview">
-                            @if($this->photoOne)
-                                <span class="block rounded-sm w-full h-60 sm:h-64"
-                                    x-bind:style="'background-size: cover; background-repeat: no-repeat; background-position: center center; background-image: url(\'' + photoPreview + '\');'">
-                                    <x-icon-button wire:click="deleteOne" class="m-1 opacity-70">
-                                        <i class="uil uil-trash text-base"></i>
-                                    </x-icon-button>
-                                </span>
-                            @else 
-                                <img src="{{asset('images/photo_upload.png')}}" alt="" class="rounded-sm h-60 sm:h-64 w-full object-cover">
-                            @endif
-                        </div>
- 
-                        <x-jet-secondary-button class="mt-2 mr-2" type="button" x-on:click.prevent="$refs.photo.click()">
-                            {{ __('Select A Image') }}
-                        </x-jet-secondary-button>
-
-                        <x-jet-input-error for="photoOne" class="mt-2" />
-                    </div>
-                </x-slot>
-                <x-slot name="footer">
-                    <x-secondary-button wire:click="$toggle('updatesDialog')" wire:loading.attr="disabled">
-                        {{ __('Nevermind') }}
-                    </x-secondary-button>
-                    @if ($campaign_update_id)
-                        <x-button class="ml-2" wire:click="StoreOrUpdate" wire:loading.attr="disabled">
-                            {{ __('Save') }}
-                        </x-button>
-                    @else
-                        <x-button class="ml-2 uppercase" wire:click="StoreOrUpdate" wire:loading.attr="disabled">
-                            {{ __('Add') }}
-                        </x-button>
-                    @endif
-
-                </x-slot>
-        </x-dialog-modal>
-        <!-- delete -->
-        <x-dialog-modal wire:model="deleterDialog">
-            <x-slot name="title">
-              <div class="font-bold">
-                    {{ __('Do you want to delete?') }}
-              </div>
-            </x-slot>
-            <x-slot name="content">
-                <x-slot name="footer">
-                    <x-secondary-button wire:click="$toggle('deleterDialog')" wire:loading.attr="disabled">
-                        {{ __('Nevermind') }}
-                    </x-secondary-button>
-                    <x-button class="ml-2" wire:click="delete" wire:loading.attr="disabled">
-                        {{ __('Delete') }}
-                    </x-button>
-                </x-slot>
-            </x-slot>
-        </x-dialog-modal>
+        
     </x-slot>
 </x-section-content>
 </div>

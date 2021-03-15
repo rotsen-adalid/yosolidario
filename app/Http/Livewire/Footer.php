@@ -8,7 +8,7 @@ class Footer extends Component
     public $language;
 
     public function mount() {
-        $this->language = 'ENGLISH';
+        $this->language = session()->get('locale');
     }
     
     public function render()
@@ -16,7 +16,7 @@ class Footer extends Component
         return view('livewire.footer');
     }
     
-    public function changeLanguage() {
-        //return redirect()->route('campaign/update/rewards', []);
+    public function languageSelect() {
+        return redirect()->route('set_language', ['lang' => $this->language]);
     } 
 }

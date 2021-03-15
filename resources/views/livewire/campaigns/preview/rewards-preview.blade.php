@@ -39,6 +39,15 @@
                         </span>
                     </div>
                 @endif
+                <!-- delivery_date -->
+                @if ($item->delivery_date)
+                    <div class="text-sm text-justify mt-1">
+                        {{__('Estimated delivery date')}}
+                        <span class="font-semibold">
+                            {{ \Carbon\Carbon::parse($item->delivery_date)->toFormattedDateString() }}
+                        </span>
+                    </div>
+                @endif
                 <!-- options -->
                 <hr class="mt-4 mb-5">
                 <div class="flex justify-center items-center mt-5 sm:mt-0">

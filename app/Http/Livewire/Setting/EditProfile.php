@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Livewire\Setting;
+
+use App\Models\Country;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Storage;
@@ -14,14 +16,14 @@ class EditProfile extends Component
 {
     use WithFileUploads;
 
-    public $user_id, $name, $slug, $profile_photo_path,  $email, $country_id, $telephone;
+    public $user_id, $profile_id, $name, $slug, $profile_photo_path,  $email, $country_id, $locality, $telephone;
     public $facebook, $twitter, $instagram, $biography, $status_profile;
     public $whatsapp, $telegram, $website;
-    public $countries_collection;
-    public $user;
+    public $collection_countries;
+    public $user, $telephone_prefix;
     public $message;
     public $photoOne;
-    
+
     protected $rules = [
         //'photo' => 'image|max:1024', // 1MB Max
         'name' => 'required',
@@ -34,16 +36,19 @@ class EditProfile extends Component
 
     public function mount()
     {
-        $this->photoOne = "";
+       
+        $this->user_id = auth()->user()->id;
+        $this->edit($this->user_id);
+        
     }
+
     public function render()
     {
         $this->StoreOrUpdatePhoto();
-        $this->user_id = auth()->user()->id;
-        $this->edit($this->user_id);
         $this->user = User::findOrFail($this->user_id);
         $this->profile_photo_path = $this->user->profile_photo_path;
-        $this->countries_collection = DB::table('countries')->orderBy('name', 'asc')->get();
+        $this->photoOne = "";
+        $this->collection_countries = Country::orderBy('name', 'asc')->get();
 
         return view('livewire.setting.edit-profile');
     }
@@ -53,10 +58,12 @@ class EditProfile extends Component
         $this->name = $record->name;
         $this->slug = $record->slug;
         $this->email = $record->email;
-        $this->country_id = $record->country_id;
 
         if($record->profile) {
             $data = $record->profile;
+            $this->profile_id = $data->id;
+            $this->country_id = $data->country_id;
+            $this->locality = $data->locality;
             $this->telephone = $data->telephone;
 
             $this->facebook = $data->facebook;
@@ -68,11 +75,14 @@ class EditProfile extends Component
 
             $this->biography = $data->biography;
             $this->status_profile = $data->status;
+
+            $this->country();
         } else {
             // $this->slug = Str::slug($this->name);
         } 
     }
 
+    // create or update
     public function StoreOrUpdate() {
         
         //$this->validate();
@@ -81,18 +91,18 @@ class EditProfile extends Component
             'slug' => "required|alpha_dash|unique:users,slug,$this->user_id",//['required', 'unique:users','alpha_dash', 'slug', $this->user_id],
             'email'=> "required|email|unique:users,email,$this->user_id",
             //'telephone' => 'required|digits_between:7,15',
+            'country_id' => 'required',
             'status_profile' => 'required'
         ]);
         
-        if($this->country_id or $this->whatsapp) {
+        if($this->whatsapp) {
             $this->validate([
-                'country_id' => 'required',
                 //'telephone' => 'required|digits_between:7,15',
                 'whatsapp' => 'required|digits_between:7,15',
             ]);
         } else {
-            $this->country_id = null;
-            $this->telephone = null;
+            //$this->country_id = null;
+            //$this->telephone = null;
             $this->whatsapp = null;
         }
 
@@ -102,6 +112,16 @@ class EditProfile extends Component
             ]);
         }
 
+        if($this->profile_id <= 0) {
+            $this->StoreData();
+        } else {
+            $this->UpdateData();
+        }
+    }
+    
+    public function StoreData(){
+
+        // gererate search
         $search_upper =  strtoupper(
             $this->name.' '.
             Str::slug($this->name). ' '.
@@ -113,59 +133,80 @@ class EditProfile extends Component
 
         $record = User::findOrFail($this->user_id);
 
-        if($record->profile) {
+        // insert profile
+        // user update
+        $record = User::findOrFail($this->user_id);
+        $record->update([
+            'slug' =>  addslashes($this->slug),
+            'name' => addslashes($this->name),
+            'email' => addslashes($this->email),
+            'search' => addslashes($search_all)
+        ]);
 
-            // user update
-            $record = User::findOrFail($this->user_id);;
-            $record->update([
-                 'name' =>  addslashes($this->name),
-                 'slug' =>  addslashes($this->slug),
-                 'email' =>  addslashes($this->email),
-                 'country_id' => $this->country_id,
-                 'search' =>  addslashes($search_all)
-            ]);
-            // profile update
-            $data = $record->profile;
-            $record = Profile::find($data->id);
-            $record->update([
-                'telephone' =>  addslashes($this->telephone),
-                'facebook' =>  addslashes($this->facebook),
-                'twitter'=>  addslashes($this->twitter),
-                'instagram' =>  addslashes($this->instagram),
-                'whatsapp' =>  addslashes($this->whatsapp),
-                'telegram' =>  addslashes($this->telegram),
-                'website' =>  addslashes($this->website),
-                'biography' =>  addslashes($this->biography),
-                'status' => $this->status_profile
-            ]);   
-        } else {
-            // user update
-            $record = User::findOrFail($this->user_id);
-            $record->update([
-                'slug' =>  addslashes($this->slug),
-                'name' => addslashes($this->name),
-                'email' => addslashes($this->email),
-                'country_id' => $this->country_id,
-                'search' => addslashes($search_all)
-            ]);
-            // create profile
-            $record = Profile::create([
-                'user_id' => auth()->user()->id,
-                'telephone' =>  addslashes($this->telephone),
-                'facebook' =>  addslashes($this->facebook),
-                'twitter'=>  addslashes($this->twitter),
-                'instagram' =>  addslashes($this->instagram),
-                'whatsapp' =>  addslashes($this->whatsapp),
-                'telegram' =>  addslashes($this->telegram),
-                'website' =>  addslashes($this->website),
-                'biography' =>  addslashes($this->biography),
-                'status' => $this->status_profile
-            ]);
-        }
+        // create profile
+        $record->profile()->create([
+            'country_id' => $this->country_id,
+            'locality' => addslashes($this->locality),
+            'telephone' =>  addslashes($this->telephone),
+            'facebook' =>  addslashes($this->facebook),
+            'twitter'=>  addslashes($this->twitter),
+            'instagram' =>  addslashes($this->instagram),
+            'whatsapp' =>  addslashes($this->whatsapp),
+            'telegram' =>  addslashes($this->telegram),
+            'website' =>  addslashes($this->website),
+            'biography' =>  addslashes($this->biography),
+            'status' => $this->status_profile
+        ]);
+
         $this->emit('message');
         $this->message = "Saved correctly";
     }
 
+    public function UpdateData() {
+
+         // gererate search
+         $search_upper =  strtoupper(
+            $this->name.' '.
+            Str::slug($this->name). ' '.
+            $this->email
+            );
+
+        $search_lower = strtolower($search_upper);
+        $search_all =  $search_upper.' '.$search_lower;
+
+        $record = User::findOrFail($this->user_id);
+
+        // user update
+        $record = User::findOrFail($this->user_id);;
+        $record->update([
+                'name' =>  addslashes($this->name),
+                'slug' =>  addslashes($this->slug),
+                'email' =>  addslashes($this->email),
+                'search' =>  addslashes($search_all)
+        ]);
+
+        // profile update
+        $data = $record->profile;
+        $record = Profile::find($data->id);
+        $record->update([
+            'country_id' => $this->country_id,
+            'locality' => addslashes( $this->locality),
+            'telephone' =>  addslashes($this->telephone),
+            'facebook' =>  addslashes($this->facebook),
+            'twitter'=>  addslashes($this->twitter),
+            'instagram' =>  addslashes($this->instagram),
+            'whatsapp' =>  addslashes($this->whatsapp),
+            'telegram' =>  addslashes($this->telegram),
+            'website' =>  addslashes($this->website),
+            'biography' =>  addslashes($this->biography),
+            'status' => $this->status_profile
+        ]);  
+        
+        $this->emit('message');
+        $this->message = "Saved correctly";
+    }
+    
+    // upload photo
     public function StoreOrUpdatePhoto() {
 
         if($this->photoOne) {
@@ -192,6 +233,7 @@ class EditProfile extends Component
         }
     }
 
+    // delete photo
     public function deleteProfilePhoto() {
         $record = User::findOrFail($this->user_id);
         $photo = str_replace('storage', 'public', $record->profile_photo_path);
@@ -207,6 +249,14 @@ class EditProfile extends Component
         //return redirect()->route('setting/profile');
     }
 
+    public function country() {
+        if($this->country_id) {
+            $record = Country::find($this->country_id);
+            $this->telephone_prefix = $record->telephone_prefix;
+        }else {
+            $this->telephone_prefix = null;
+        }
+    }
     public function slug() {
         $this->slug = Str::slug($this->name);
     }

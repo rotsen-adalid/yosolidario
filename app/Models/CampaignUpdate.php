@@ -14,7 +14,6 @@ class CampaignUpdate extends Model
     protected $fillable = [
         'title',
         'body',
-        'update_photo_path',
         'campaign_id',
         'user_id',
     ];
@@ -22,6 +21,10 @@ class CampaignUpdate extends Model
     // uno a muchos inversa
     public function campaign() {
         return $this->belongsTo(Campaign::class);
+    }
+    // relacion polimorfica uno a uno
+    public function image() {
+        return $this->morphOne(Image::class, 'imageable');
     }
     // relacion polimorfica uno a muchos
     public function userHistories() {

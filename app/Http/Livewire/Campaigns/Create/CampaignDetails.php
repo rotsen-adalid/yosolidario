@@ -46,8 +46,12 @@ class CampaignDetails extends Component
     public $amountFive;
 
     public $terms;
+    public $amount_min;
+    public $amount_max;
+
     public $ipapi;
     public $country_code;
+    public $languaje_code;
 
     public function mount(Campaign $campaign)
     {
@@ -64,12 +68,11 @@ class CampaignDetails extends Component
         $response = Http::get('http://api.ipapi.com/179.58.47.20?access_key=c161289d6c8bc62e50f1abad0c4846aa');
         $this->ipapi = $response->json();
         $this->country_code = $this->ipapi['country_code'];
+        $this->languaje_code = $this->ipapi['location']['languages'][0]['code'];
     } 
 
     public function render()
     { 
-        //App::setLocale('es'); 
-        //session()->put('locale', 'es');
         $this->collection_agencies = Agency::All();
         $this->collection_countries = DB::table('countries')
                                         ->where('status_published_campaign', 'ACTIVE')
@@ -102,7 +105,7 @@ class CampaignDetails extends Component
                 'locality' => 'required|min:3|max:100',
                 'agency_id' => 'required',
                 'country_id' => 'required',
-                'amount_target' => 'required|numeric|between:3000,200000',
+                'amount_target' => "required|numeric|between:$this->amount_min,$this->amount_max",
                 //'period' => 'required',
                 'telephone' => 'required|digits_between:7,15',
                 'video_url' => 'required|url'
@@ -118,7 +121,7 @@ class CampaignDetails extends Component
                 'locality' => 'required|min:3|max:100',
                 'agency_id' => 'required',
                 'country_id' => 'required',
-                'amount_target' => 'required|numeric|between:3000,200000',
+                'amount_target' => "required|numeric|between:$this->amount_min,$this->amount_max",
                 //'period' => 'required',
 
                 'telephone' => 'required|digits_between:7,15',
@@ -134,7 +137,8 @@ class CampaignDetails extends Component
 
         $search_lower = strtolower($search_upper);
         $search_all =  $search_upper.' '.$search_lower;
-
+        
+        // insert data
         $record = Campaign::create([
 
             'title' => addslashes($this->title),
@@ -176,18 +180,20 @@ class CampaignDetails extends Component
             //'agency_id' => 1
             ]);
 
-        $photo = $this->photoOne->store('public/campaign_image');
-        $photo_url = Storage::url($photo);
-
         if($record->id) {
 
             $campaign_id = $record->id;
             $this->emit('message');
             $this->message = "Saved correctly";
             
-            $record->image()->create([
-                'url' => $photo_url
-            ]);
+            if($this->photoOne) {
+                // upload photo
+                $photo = $this->photoOne->store('public/campaign_image');
+                $photo_url = Storage::url($photo);
+                $record->image()->create([
+                    'url' => $photo_url
+                ]);
+            }
     
             $record->video()->create([
                 'url' => $this->video_url
@@ -195,10 +201,10 @@ class CampaignDetails extends Component
         }
         $this->createQuestions($campaign_id);
         $this->createRewars($campaign_id);
-        
         return redirect()->route('campaign/create/questions', ['campaign' => $record]);
     }
 
+    // updatign data
     public function Update() {
         
         if ($this->type_campaign == 'ORGANIZATION')
@@ -213,7 +219,7 @@ class CampaignDetails extends Component
                 'locality' => 'required|min:3|max:100',
                 'agency_id' => 'required',
                 'country_id' => 'required',
-                'amount_target' => 'required|numeric|between:3000,200000',
+                'amount_target' => "required|numeric|between:$this->amount_min,$this->amount_max",
                 //'period' => 'required',
 
                 'telephone' => 'required|digits_between:7,15',
@@ -231,7 +237,7 @@ class CampaignDetails extends Component
                 'locality' => 'required|min:3|max:100',
                 'agency_id' => 'required',
                 'country_id' => 'required',
-                'amount_target' => 'required|numeric|between:3000,200000',
+                'amount_target' => "required|numeric|between:$this->amount_min,$this->amount_max",
                 //'period' => 'required',
 
                 'telephone' => 'required|digits_between:7,15',
@@ -248,6 +254,7 @@ class CampaignDetails extends Component
         $search_lower = strtolower($search_upper);
         $search_all =  $search_upper.' '.$search_lower;
 
+        // if upload photo
         if ($this->photoOne and $this->photo_url == null) {
 
             $this->validate([
@@ -307,7 +314,7 @@ class CampaignDetails extends Component
             
             'search' => addslashes($search_all),
             
-            'status' => 'DRAFT',
+            //'status' => 'DRAFT',
             //'status_register' => 'INCOMPLETE'
         ]);
         $record->campaignCollected()->update([
@@ -334,6 +341,7 @@ class CampaignDetails extends Component
         return redirect()->route('campaign/update/questions', ['campaign' => $record]);
     }
 
+    // edit 
     public function edit($id) {
         $record = Campaign::findOrFail($id);
         $this->title = $record->title;
@@ -356,6 +364,7 @@ class CampaignDetails extends Component
         $this->agency($this->agency_id);
     }
 
+    // delete photo one
     public function deleteOne() {
         if($this->campaign_id) {
             $record = Campaign::findOrFail($this->campaign_id);
@@ -369,16 +378,21 @@ class CampaignDetails extends Component
         $this->photo_url = null;
     }
 
+    // generate slug
     public function generateSlug() {
         if($this->campaign_id <= 0) {
             $this->slug = Str::slug($this->title);
         }
     }
+
+    // select agency
     public function agency() {
         if($this->agency_id) {
             $record = Agency::find($this->agency_id);
             $this->currency_symbol = $record->agencySetting->money->currency_symbol;
             $this->telephone_prefix = $record->country->telephone_prefix;
+            $this->amount_min = $record->agencySetting->amount_min;
+            $this->amount_max = $record->agencySetting->amount_max;
 
             $this->collection_organization = Organization::
             join('organization_agreements', 'organizations.id', '=', 'organization_agreements.organization_id')
@@ -389,12 +403,78 @@ class CampaignDetails extends Component
         } else {
             $this->currency_symbol = null;
             $this->telephone_prefix = null;
-
             $this->collection_organization = null;
         }
 
     }
 
+    // +++++++++++++++++++++++++++++++++++++++++++ send review
+    //open review
+    public function reviewConfirm() {
+        $this->confirmingSendReview = true;
+    }
+
+    //send review
+    public function sendReview() {
+        $this->validate([
+            'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['required', 'accepted'] : '',
+        ]);
+        $record = Campaign::find($this->campaign_id);
+        // we update the info
+        $record->update([
+            'status' => 'IN_REVIEW'
+        ]);
+        if($record->campaignOpeningRequest == null) {
+            $record->campaignOpeningRequest()->create([
+                'order_number' => time(),
+                'date_send' => Carbon::now()
+            ]);
+            
+            $extract = 'Send to campaign review: '.$record->id;
+            $record->userHistories()->create([
+                'photo_path' => null,
+                'extract' => $extract,
+                'data' => $record,
+                'action' =>  'CREATE',
+                'user_id' => auth()->user()->id,
+                'site_id' => 1,
+                //'agency_id' => 1
+                ]);
+        } else {
+            $record->campaignOpeningRequest()->update([
+                'date_send' => Carbon::now()
+            ]);
+            
+            $extract = 'Send to campaign review: '.$record->id;
+            $record->userHistories()->create([
+                'photo_path' => null,
+                'extract' => $extract,
+                'data' => $record,
+                'action' =>  'UPDATE',
+                'user_id' => auth()->user()->id,
+                'site_id' => 1,
+                //'agency_id' => 1
+                ]);
+        }
+       
+        
+        $this->confirmingSendReview = false;
+        return redirect()->route('your/campaigns');
+    }
+
+    // redirect preview
+    public function preview($id) {
+        $record = Campaign::findOrFail($id);
+        return redirect()->route('campaign/preview', ['slug' => $record->slug]);
+    }
+
+    // redirect edti prfile
+    public function editProfile() {
+        return redirect()->route('setting/profile');
+    }
+
+    // +++++++++++++++++++++++++++++++++++++++++++ default 
+    // create questions
     public function createQuestions($id) {
         $record = CampaignQuestion::create([
             'about' => null,
@@ -411,7 +491,17 @@ class CampaignDetails extends Component
         ]);
     }
 
+    // create rewards default
     public function createRewars($id) {
+        $record = Agency::find($this->agency_id);
+        $this->currency_symbol = $record->agencySetting->money->currency_symbol;
+        if($record->country->code = 'BO') {
+            $this->createRewarsBO($id);
+        }
+     }
+
+     // create rewards BO
+     public function createRewarsBO($id) {
 
         $languaje = 'es';
 
@@ -481,66 +571,6 @@ class CampaignDetails extends Component
             'collaborators' => 0,
             'campaign_id' => $id,
         ]);
-    }
-
-    public function reviewConfirm() {
-        $this->confirmingSendReview = true;
-    }
-
-    public function sendReview() {
-        $this->validate([
-            'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['required', 'accepted'] : '',
-        ]);
-        $record = Campaign::find($this->campaign_id);
-        // we update the info
-        $record->update([
-            'status' => 'IN_REVIEW'
-        ]);
-        if($record->campaignOpeningRequest == null) {
-            $record->campaignOpeningRequest()->create([
-                'order_number' => time(),
-                'date_send' => Carbon::now()
-            ]);
-            
-            $extract = 'Send to campaign review: '.$record->id;
-            $record->userHistories()->create([
-                'photo_path' => null,
-                'extract' => $extract,
-                'data' => $record,
-                'action' =>  'CREATE',
-                'user_id' => auth()->user()->id,
-                'site_id' => 1,
-                //'agency_id' => 1
-                ]);
-        } else {
-            $record->campaignOpeningRequest()->update([
-                'date_send' => Carbon::now()
-            ]);
-            
-            $extract = 'Send to campaign review: '.$record->id;
-            $record->userHistories()->create([
-                'photo_path' => null,
-                'extract' => $extract,
-                'data' => $record,
-                'action' =>  'UPDATE',
-                'user_id' => auth()->user()->id,
-                'site_id' => 1,
-                //'agency_id' => 1
-                ]);
-        }
-       
-        
-        $this->confirmingSendReview = false;
-        return redirect()->route('my/campaigns');
-    }
-
-    public function preview($id) {
-        $record = Campaign::findOrFail($id);
-        return redirect()->route('campaigns/preview', ['slug' => $record->slug]);
-    }
-
-    public function editProfile() {
-        return redirect()->route('setting/profile');
     }
 }
 

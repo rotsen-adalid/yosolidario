@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Campaigns\Published;
 use Livewire\Component;
 
 use App\Models\Campaign;
+use App\Models\CampaignUpdate;
 
 class ShowPublished extends Component
 {
@@ -16,6 +17,8 @@ class ShowPublished extends Component
     public $copySmall;
     public $host;
     public $message;
+
+    public $countUpdates;
 
     public function mount($slug = null)
     {
@@ -32,6 +35,11 @@ class ShowPublished extends Component
                 return redirect()->route('home');
             }
         }
+
+        $this->countUpdates =   CampaignUpdate::
+                                where('campaign_id', '=' ,$campaign[0]->id)
+                                ->get();
+                                
         $host= $_SERVER["HTTP_HOST"];
         if($host == 'yosolidario.test') {
             $this->host = 'http://yosolidario.test';

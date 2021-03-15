@@ -1,13 +1,13 @@
 <div>
     <div class="mt-3 sm:mt-7 text-3xl sm:text-4xl text-ys1 font-bold">
         <span>{{ number_format($this->campaign->campaignCollected->amount_collected, 2 ) }}</span>
-        <span class="ml-1">{{$this->campaign->agency->country->currency_symbol}}</span>
+        <span class="ml-1">{{$this->campaign->agency->agencySetting->money->currency_symbol}}</span>
     </div>
     <div class="space-x-1">
-        <span>{{__('raised from the goal of')}} </span>
+        <span>{{__('Raised from the goal of')}} </span>
         <span class="font-bold">
             {{ number_format($this->campaign->campaignCollected->amount_target, 2 ) }}
-            {{$this->campaign->agency->country->currency_symbol}}
+            {{$this->campaign->agency->agencySetting->money->currency_symbol}}
         </span>
     </div>
     <!-- -->
@@ -17,7 +17,7 @@
                 <span>{{$this->campaign->campaignCollected->collaborators}}</span>
             </div>
             <div class="space-x-1">
-                <span>{{__('collaborators')}} </span>
+                <span>{{__('Collaborators')}} </span>
             </div>
         </div>
         <div class="text-sm sm:text-base ">
@@ -25,7 +25,7 @@
                 <span>{{$this->campaign->shareds}}</span>
             </div>
             <div class="space-x-1">
-                <span>{{__('shares')}} </span>
+                <span>{{__('Shares')}} </span>
             </div>
         </div>
         <div class="text-sm sm:text-base ">
@@ -33,7 +33,7 @@
                 <span>{{$this->campaign->followers}}</span>
             </div>
             <div class="space-x-1">
-                <span>{{__('follewers')}} </span>
+                <span>{{__('Follewers')}} </span>
             </div>
         </div>
     </div>
@@ -52,4 +52,16 @@
             <span>{{__('Back this campaign')}}</span>
         </button>
     </div>
+
+    <div class="flex mt-2 space-x-2">
+        <button class="w-full text-center px-4 py-1 sm:py-3 bg-white border border-gray-300 rounded-md font-bold text-sm text-black uppercase tracking-widest shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">
+            <i class="text-black uil uil-bookmark"></i>
+            {{__('Remind me')}}
+        </button>
+        <button  wire:click="shared" class="w-full text-center px-4  py-1 sm:py-3 bg-white border border-gray-300 rounded-md font-bold text-sm text-black uppercase tracking-widest shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">
+            <i class="text-black uil uil-share-alt"></i>
+            {{__('Share')}}
+        </button>
+    </div>
+    
 </div>

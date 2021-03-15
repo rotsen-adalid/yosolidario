@@ -10,4 +10,8 @@ class UpdatesPreview extends Component
     {
         return view('livewire.campaigns.preview.updates-preview');
     }
+
+    public function shared() {
+
+    }
 }

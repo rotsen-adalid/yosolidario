@@ -19,7 +19,7 @@
                     <span class="ml-1 mr-1">/</span>
                         {{ __('Questions') }}
                     <span class="ml-1 mr-1">/</span>
-                    <a class="underline hover:text-gray-900" href="{{ route('campaign/update/rewards',  $this->campaign) }}">
+                    <a class="underline hover:text-gray-900" href="{{ route('campaign/rewards/show',  $this->campaign) }}">
                         {{ __('Rewards') }}
                     </a>
                 </h2>
@@ -49,15 +49,15 @@
         
             <x-slot name="description">
                 <div class="sm:pt-3">
-                    {{ __('Describe in detail the objective of your collection, present the problem you want to address and why it is important to solve it. Do not forget to add an image to accompany the text, it is MANDATORY.') }}
+                    {{ __('Explain exactly how you are going to use the funds raised and how you are going to distribute your budget.') }}
                 </div>
             </x-slot>
             <x-slot name="form">
                  <!-- about -->
                  <div class="col-span-6 sm:col-span-6">
-                    <x-jet-label for="about" value="{{ __('What is it about?') }}" />
+                    <x-label for="about" value="{{ __('What is it about?') }}" required/>
                     <x-textarea id="about" class="mt-1 block w-full h-48 sm:h-44" wire:model.defer="about" autofocus autocomplete="off"/>
-                    <x-jet-input-error for="about" class="mt-2"/>
+                    <x-input-error for="about" class="mt-2"/>
                 </div>
                 <!-- Photo -->
                 <div x-data="{photoName: null, photoPreview: null}" class="col-span-6 sm:col-span-4">
@@ -74,7 +74,7 @@
                                 reader.readAsDataURL($refs.photo.files[0]);
                         " />
 
-                    <x-jet-label for="photoOne" value="{{ __('Image') }}" />
+                    <x-label for="photoOne" value="{{ __('Image') }}" />
                     <!-- Current Profile Photo -->
                     <div class="mt-2" x-show="!photoPreview">
                         @if( $this->about_url)
@@ -100,15 +100,15 @@
                             <img src="{{asset('images/photo_upload.png')}}" alt="" class="rounded-sm h-60 sm:h-72 w-full object-cover">
                         @endif
                     </div>
-                    <x-jet-secondary-button class="mt-2 mr-2" type="button" x-on:click.prevent="$refs.photo.click()">
+                    <x-secondary-button class="mt-2 mr-2 uppercase" type="button" x-on:click.prevent="$refs.photo.click()">
                         {{ __('Select A Image') }}
-                    </x-jet-secondary-button>
+                    </x-secondary-button>
                     
-                    <x-jet-input-error for="photoOne" class="mt-2" />
+                    <x-input-error for="photoOne" class="mt-2" />
                 </div>
             </x-slot>
         </x-input-section>
-        <x-jet-section-border />
+        <x-section-border />
         <!-- Two -->
         <x-input-section class="mt-10 sm:mt-0">
             <x-slot name="title">
@@ -123,9 +123,9 @@
             <x-slot name="form">
                 <!-- use_of_money -->
                 <div class="col-span-6 sm:col-span-6">
-                    <x-jet-label for="use_of_money" value="{{ __('How will I use the money?') }}" />
+                    <x-label for="use_of_money" value="{{ __('How will I use the money?') }}" required/>
                     <x-textarea id="use_of_money" class="mt-1 block w-full h-48 sm:h-44" wire:model.defer="use_of_money" autocomplete="off"/>
-                    <x-jet-input-error for="use_of_money" class="mt-2" />
+                    <x-input-error for="use_of_money" class="mt-2" />
                 </div>
                 <!-- Photo -->
                 <div x-data="{photoName: null, photoPreview: null}" class="col-span-6 sm:col-span-4">
@@ -142,7 +142,7 @@
                                 reader.readAsDataURL($refs.photo.files[0]);
                         " />
 
-                    <x-jet-label for="photoTwo" value="{{ __('Image') }}" />
+                    <x-label for="photoTwo" value="{{ __('Image') }}" />
                     <!-- Current Profile Photo -->
                     <div class="mt-2" x-show="!photoPreview">
                         @if( $this->use_of_money_url)
@@ -168,15 +168,15 @@
                             <img src="{{asset('images/photo_upload.png')}}" alt="" class="rounded-sm h-60 sm:h-72 w-full object-cover">
                         @endif
                     </div>
-                    <x-jet-secondary-button class="mt-2 mr-2" type="button" x-on:click.prevent="$refs.photo.click()">
+                    <x-secondary-button class="mt-2 mr-2 uppercase" type="button" x-on:click.prevent="$refs.photo.click()">
                         {{ __('Select A Image') }}
-                    </x-jet-secondary-button>
+                    </x-secondary-button>
                     
-                    <x-jet-input-error for="photoTwo" class="mt-2" />
+                    <x-input-error for="photoTwo" class="mt-2" />
                 </div>
             </x-slot>
         </x-input-section>
-        <x-jet-section-border />
+        <x-section-border />
         <!-- three -->
         <x-input-section class="mt-10 sm:mt-0">
             <x-slot name="title">
@@ -191,9 +191,9 @@
             <x-slot name="form">
                 <!-- about_organizer -->
                 <div class="col-span-6 sm:col-span-6">
-                    <x-jet-label for="about_organizer" value="{{ __('About the organizer') }}" />
+                    <x-label for="about_organizer" value="{{ __('About the organizer') }}" required/>
                     <x-textarea id="about_organizer" class="mt-1 block w-full h-48 sm:h-36" wire:model.defer="about_organizer" autocomplete="off"/>
-                    <x-jet-input-error for="about_organizer" class="mt-2"/>
+                    <x-input-error for="about_organizer" class="mt-2"/>
                 </div>
                 <!-- Photo -->
                 <div x-data="{photoName: null, photoPreview: null}" class="col-span-6 sm:col-span-4">
@@ -210,7 +210,7 @@
                                 reader.readAsDataURL($refs.photo.files[0]);
                         " />
 
-                    <x-jet-label for="photoThree" value="{{ __('Image') }}" />
+                    <x-label for="photoThree" value="{{ __('Image') }}" />
                     <!-- Current Profile Photo -->
                     <div class="mt-2" x-show="!photoPreview">
                         @if( $this->about_organizer_url)
@@ -236,15 +236,15 @@
                             <img src="{{asset('images/photo_upload.png')}}" alt="" class="rounded-sm h-60 sm:h-72 w-full object-cover">
                         @endif
                     </div>
-                    <x-jet-secondary-button class="mt-2 mr-2" type="button" x-on:click.prevent="$refs.photo.click()">
+                    <x-secondary-button class="mt-2 mr-2 uppercase" type="button" x-on:click.prevent="$refs.photo.click()">
                         {{ __('Select A Image') }}
-                    </x-jet-secondary-button>
+                    </x-secondary-button>
                     
-                    <x-jet-input-error for="photoThree" class="mt-2" />
+                    <x-input-error for="photoThree" class="mt-2" />
                 </div>
             </x-slot>
         </x-input-section>
-        <x-jet-section-border />
+        <x-section-border />
         <!-- four -->
         <x-input-section class="mt-10 sm:mt-0">
             <x-slot name="title">
@@ -259,9 +259,9 @@
             <x-slot name="form">
                <!-- delivery_of_rewards -->
                <div class="col-span-6 sm:col-span-6">
-                    <x-jet-label for="delivery_of_rewards" value="{{ __('How and when are the rewards delivered?') }}" />
+                    <x-label for="delivery_of_rewards" value="{{ __('How and when are the rewards delivered?') }}" required/>
                     <x-textarea id="delivery_of_rewards" class="mt-1 block w-full h-36 sm:h-36" wire:model.defer="delivery_of_rewards" autocomplete="off"/>
-                    <x-jet-input-error for="delivery_of_rewards" class="mt-2" />
+                    <x-input-error for="delivery_of_rewards" class="mt-2" />
                 </div>
                 <!-- Photo -->
                 <div x-data="{photoName: null, photoPreview: null}" class="col-span-6 sm:col-span-4">
@@ -278,7 +278,7 @@
                                 reader.readAsDataURL($refs.photo.files[0]);
                         " />
 
-                    <x-jet-label for="photoFour" value="{{ __('Image') }}" />
+                    <x-label for="photoFour" value="{{ __('Image') }}" />
                     <!-- Current Profile Photo -->
                     <div class="mt-2" x-show="!photoPreview">
                         @if( $this->delivery_of_rewards_url)
@@ -304,32 +304,32 @@
                             <img src="{{asset('images/photo_upload.png')}}" alt="" class="rounded-sm h-60 sm:h-72 w-full object-cover">
                         @endif
                     </div>
-                    <x-jet-secondary-button class="mt-2 mr-2" type="button" x-on:click.prevent="$refs.photo.click()">
+                    <x-secondary-button class="mt-2 mr-2 uppercase" type="button" x-on:click.prevent="$refs.photo.click()">
                         {{ __('Select A Image') }}
-                    </x-jet-secondary-button>
+                    </x-secondary-button>
                     
-                    <x-jet-input-error for="photoFour" class="mt-2" />
+                    <x-input-error for="photoFour" class="mt-2" />
                 </div>
             </x-slot>
         </x-input-section>
-        <x-jet-section-border />
+        <x-section-border />
         <!-- five -->
         <x-input-section class="mt-10 sm:mt-0">
             <x-slot name="title">
-                {{ __('Organizers contact details') }}
+                {{ __('Organizer contact details') }}
             </x-slot>
         
             <x-slot name="description">
                 <div class="sm:pt-3">
-                    {{ __('TAdd your name, email and phone where they can reach you') }}
+                    {{ __('Add your name, email and phone where they can reach you') }}
                 </div>
             </x-slot>
             <x-slot name="form">
                 <!-- contact_organizer -->
                 <div class="col-span-6 sm:col-span-6">
-                    <x-jet-label for="contact_organizer" value="{{ __('Organizers contact details') }}" />
+                    <x-label for="contact_organizer" value="{{ __('Organizer contact details') }}" required/>
                     <x-textarea id="contact_organizer" class="mt-1 block w-full h-36 sm:h-36" wire:model.defer="contact_organizer" autocomplete="off"/>
-                    <x-jet-input-error for="contact_organizer" class="mt-2" />
+                    <x-input-error for="contact_organizer" class="mt-2" />
                 </div>
                 <!-- Photo -->
                 <div x-data="{photoName: null, photoPreview: null}" class="col-span-6 sm:col-span-4">
@@ -346,7 +346,7 @@
                                 reader.readAsDataURL($refs.photo.files[0]);
                         " />
 
-                    <x-jet-label for="photoFive" value="{{ __('Image') }}" />
+                    <x-label for="photoFive" value="{{ __('Image') }}" />
                     <!-- Current Profile Photo -->
                     <div class="mt-2" x-show="!photoPreview">
                         @if( $this->contact_organizer_url)
@@ -372,15 +372,15 @@
                             <img src="{{asset('images/photo_upload.png')}}" alt="" class="rounded-sm h-60 sm:h-72 w-full object-cover">
                         @endif
                     </div>
-                    <x-jet-secondary-button class="mt-2 mr-2" type="button" x-on:click.prevent="$refs.photo.click()">
+                    <x-secondary-button class="mt-2 mr-2 uppercase" type="button" x-on:click.prevent="$refs.photo.click()">
                         {{ __('Select A Image') }}
-                    </x-jet-secondary-button>
+                    </x-secondary-button>
                     
-                    <x-jet-input-error for="photoFive" class="mt-2" />
+                    <x-input-error for="photoFive" class="mt-2" />
                 </div>
             </x-slot>
         </x-input-section>
-        <x-jet-section-border />
+        <x-section-border />
         <!-- six -->
         <x-input-section class="mt-10 sm:mt-0">
             <x-slot name="title">
@@ -395,15 +395,15 @@
             <x-slot name="form">
                 <!-- Title -->
                 <div class="col-span-6 sm:col-span-4">
-                    <x-jet-label for="question_title_add" value="{{ __('Question title') }} ({{ __('optional') }})" />
-                    <x-jet-input id="question_title_add" type="text" class="mt-1 block w-full" wire:model.defer="question_title_add" autocomplete="off" />
-                    <x-jet-input-error for="question_title_add" class="mt-2" />
+                    <x-label for="question_title_add" value="{{ __('Question title') }} ({{ __('optional') }})" />
+                    <x-input id="question_title_add" type="text" class="mt-1 block w-full" wire:model.defer="question_title_add" autocomplete="off" />
+                    <x-input-error for="question_title_add" class="mt-2" />
                 </div>
                 <!-- Body -->
                 <div class="col-span-6 sm:col-span-6">
-                    <x-jet-label for="question_body_add" value="{{ __('Answer to the question') }} ({{ __('optional') }})" />
+                    <x-label for="question_body_add" value="{{ __('Answer to the question') }} ({{ __('optional') }})" />
                     <x-textarea id="question_body_add" class="mt-1 block w-full h-36 sm:h-36" wire:model.defer="question_body_add" autocomplete="off"/>
-                    <x-jet-input-error for="question_body_add" class="mt-2" />
+                    <x-input-error for="question_body_add" class="mt-2" />
                 </div>
                 <!-- Photo -->
                 <div x-data="{photoName: null, photoPreview: null}" class="col-span-6 sm:col-span-4">
@@ -420,7 +420,7 @@
                                 reader.readAsDataURL($refs.photo.files[0]);
                         " />
 
-                    <x-jet-label for="photoSix" value="{{ __('Image') }} ({{ __('optional') }})" />
+                    <x-label for="photoSix" value="{{ __('Image') }} ({{ __('optional') }})" />
                     <!-- Current Profile Photo -->
                     <div class="mt-2" x-show="!photoPreview">
                         @if( $this->question_url_add)
@@ -446,22 +446,22 @@
                             <img src="{{asset('images/photo_upload.png')}}" alt="" class="rounded-sm h-60 sm:h-72 w-full object-cover">
                         @endif
                     </div>
-                    <x-jet-secondary-button class="mt-2 mr-2" type="button" x-on:click.prevent="$refs.photo.click()">
+                    <x-secondary-button class="mt-2 mr-2 uppercase" type="button" x-on:click.prevent="$refs.photo.click()">
                         {{ __('Select A Image') }}
-                    </x-jet-secondary-button>
+                    </x-secondary-button>
                     
-                    <x-jet-input-error for="photoSix" class="mt-2" />
+                    <x-input-error for="photoSix" class="mt-2" />
                 </div>
             </x-slot>
         </x-input-section>
         </x-slot>
         <x-slot name="actions">
-            <x-jet-action-message class="mr-3" on="message">
+            <x-action-message class="mr-3" on="message">
                 {{ __($this->message) }}
-            </x-jet-action-message>
+            </x-action-message>
             <x-button wire:loading.attr="disabled">
-                <span class="px-2 uppercase font-bold text-base"> {{ __('next') }}</span>
-                <i class="uil uil-angle-right-b text-base"></i>
+                <span class="px-2 font-bold sm:text-base"> {{ __('Next') }}</span>
+                   <i class="uil uil-angle-right-b sm:text-base"></i>
             </x-button>
         </x-slot>
         </x-form-section-multiple>

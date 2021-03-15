@@ -18,4 +18,8 @@ class CountersPreview extends Component
     {
         return view('livewire.campaigns.preview.counters-preview');
     }
+
+    public function shared() {
+
+    }
 }

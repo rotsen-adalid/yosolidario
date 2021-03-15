@@ -33,9 +33,6 @@ class PersonalInformation extends Model
         'reference_contact',
         'user_id',
         'country_id',
-        'bank_id',
-        'bank_account_number',
-        'bank_statement_path',
         'status',
         'search'
     ];
@@ -51,6 +48,11 @@ class PersonalInformation extends Model
     // uno a uno inversa
     public function country() {
         return $this->belongsTo(Country::class);
+    }
+
+    // relacion polimorfica uno a muchos
+     public function bankInfos() {
+        return $this->morphOne(BankInfo::class, 'bankinfoable');
     }
 
     // relacion polimorfica uno a muchos

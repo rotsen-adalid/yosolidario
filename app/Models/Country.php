@@ -36,8 +36,8 @@ class Country extends Model
     }
 
     // uno a muchos
-    public function users() {
-        return $this->hasMany(User::class);
+    public function profiles() {
+        return $this->hasMany(Profile::class);
     }
 
     // uno a muchos

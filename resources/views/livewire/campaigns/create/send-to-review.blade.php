@@ -1,18 +1,18 @@
 <x-dialog-modal wire:model="confirmingSendReview">
     <x-slot name="title">
-        <div class="text-red-500 font-semibold text-xl">
-            {{ __('Publish campaign') }}
+        <div class="font-semibold text-xl">
+            {{ __('Publish campaign') }}?
         </div>
     </x-slot>
     <x-slot name="content">
-        @if(Auth::user()->profile->count() > 0 )
+        @if(Auth::user()->profile)
 
         <div class="font-bold text-lg">
             {{ __('Your campaign') }}:
         </div>
 
         <div class="font-bold text-lg">
-            <span>{{$campaign->title}}</span>
+            <span><< {{$campaign->title}} >></span>
         </div>
 
         <div class="summary-post text-base text-justify mt-5">
@@ -84,19 +84,7 @@
 
         @else 
         <div class="flex justify-start items-center space-x-1">
-            <svg class="h-5" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                    viewBox="0 0 455.111 455.111" style="enable-background:new 0 0 455.111 455.111;" xml:space="preserve">
-            <circle style="fill:#E24C4B;" cx="227.556" cy="227.556" r="227.556"/>
-            <path style="fill:#D1403F;" d="M455.111,227.556c0,125.156-102.4,227.556-227.556,227.556c-72.533,0-136.533-32.711-177.778-85.333
-                c38.4,31.289,88.178,49.778,142.222,49.778c125.156,0,227.556-102.4,227.556-227.556c0-54.044-18.489-103.822-49.778-142.222
-                C422.4,91.022,455.111,155.022,455.111,227.556z"/>
-            <path style="fill:#FFFFFF;" d="M331.378,331.378c-8.533,8.533-22.756,8.533-31.289,0l-72.533-72.533l-72.533,72.533
-                c-8.533,8.533-22.756,8.533-31.289,0c-8.533-8.533-8.533-22.756,0-31.289l72.533-72.533l-72.533-72.533
-                c-8.533-8.533-8.533-22.756,0-31.289c8.533-8.533,22.756-8.533,31.289,0l72.533,72.533l72.533-72.533
-                c8.533-8.533,22.756-8.533,31.289,0c8.533,8.533,8.533,22.756,0,31.289l-72.533,72.533l72.533,72.533
-                C339.911,308.622,339.911,322.844,331.378,331.378z"/>
-            <g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g>
-            </svg>
+            <i class="uil uil-times-circle text-red-500 text-2xl"></i>
             <div class="font-bold text-lg">
                 {{ __('You need to complete your profile') }}
             </div>
@@ -118,10 +106,10 @@
             <div class="ml-3 space-y-2 my-4">
                 <div class="text-gray-700"> 
                     <span class="font-bold">{{__('Organizator')}}: </span>
-                    {{Auth::user()->name}}
+                    <span>{{Auth::user()->name}}</span>
                 </div>
                 <div>
-                    <x-button class="ml-2" wire:click="editProfile" wire:loading.attr="disabled">
+                    <x-button class="ml-2 text-sm" wire:click="editProfile" wire:loading.attr="disabled">
                         {{ __('Complete your profile') }}
                     </x-button>
                 </div>
@@ -133,7 +121,7 @@
         <x-secondary-button wire:click="$toggle('confirmingSendReview')" wire:loading.attr="disabled">
             <span class="uppercase">{{ __('Nevermind') }}</span>
         </x-secondary-button>
-        @if(Auth::user()->profile->count() > 0 )
+        @if(Auth::user()->profile)
             <x-button class="ml-2" wire:click="sendReview" wire:loading.attr="disabled">
                <span class="uppercase"> {{ __('Publish campaign') }}</span>
             </x-button>

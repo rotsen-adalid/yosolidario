@@ -53,10 +53,17 @@ class Campaign extends Model
     {
         return 'slug';
     }
+    
     // uno a muchos inversa
     public function user() {
         return $this->belongsTo(User::class);
     }
+
+    // uno a muchos
+    public function campaignSaves() {
+        return $this->hasMany(CampaignSave::class);
+    }
+
     // uno a muchos inversa
     public function categoryCampaign() {
         return $this->belongsTo(CategoryCampaign::class);
@@ -72,6 +79,10 @@ class Campaign extends Model
     // uno a uno
     public function campaignCollected() {
         return $this->hasOne(CampaignCollected::class);
+    }
+    // uno a uno
+    public function campaignUrgent() {
+        return $this->hasOne(CampaignUrgent::class);
     }
     // uno a uno
     public function campaignQuestion() {

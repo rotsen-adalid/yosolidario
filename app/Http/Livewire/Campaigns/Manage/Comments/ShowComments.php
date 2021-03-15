@@ -17,6 +17,7 @@ class ShowComments extends Component
             //return redirect()->route('campaign/create');
         }
     } 
+
     public function render()
     {
         return view('livewire.campaigns.manage.comments.show-comments');

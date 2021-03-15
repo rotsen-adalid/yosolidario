@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class=" bg-white border-b border-gray-100  header w-full">
+<nav x-data="{ open: false }" class=" bg-white border-b border-gray-100  header w-full ">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between h-20">
@@ -14,35 +14,41 @@
 
               <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                   <x-nav-link href="{{ route('campaign/create') }}" :active="request()->routeIs('campaign/create')" class="font-bold text-base ">
-                      {{ __('Create campaign ') }}
+                      {{ __('Start a campaign') }}
                   </x-nav-link>
               </div>
 
               <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                  <x-nav-link href="{{ route('home') }}" :active="request()->routeIs('')">
+                  <x-nav-link href="{{ route('campaigns/discover') }}" :active="request()->routeIs('campaigns/discover')">
                       {{ __('Campaigns') }}
                   </x-nav-link>
               </div>
 
               <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                   <x-nav-link href="{{ url('about/how-it-works') }}" :active="request()->routeIs('about/how-it-works')">
-                      {{ __('How it works? ') }}
+                      {{ __('How it works?') }}
                   </x-nav-link>
               </div>
+
+              <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                <x-nav-link href="{{ url('about/about-us') }}" :active="request()->routeIs('about/about-us')">
+                    {{ __('About us') }}
+                </x-nav-link>
+            </div>
 
           </div>
 
           <div class="hidden sm:flex sm:items-center sm:ml-6">
 
             <div class="w-80">
-                <x-input-rounded id="search" class="block mt-1 w-full" type="text" name="search" placeholder="{{ __('Search Campaigns') }}" />
+                <x-input-rounded id="search" class="block mt-1 w-full bg-gray-100" type="text" name="search" placeholder="{{ __('Search Campaigns') }}" />
             </div>
 
               @auth
               <!-- Teams Dropdown -->
               @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
                   <div class="ml-3 relative">
-                      <x-jet-dropdown align="right" width="60">
+                      <x-dropdown align="right" width="60">
                           <x-slot name="trigger">
                               <span class="inline-flex rounded-md">
                                   <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:bg-gray-50 hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition ease-in-out duration-150">
@@ -63,14 +69,14 @@
                                   </div>
 
                                   <!-- Team Settings -->
-                                  <x-jet-dropdown-link href="{{ route('teams.show', Auth::user()->currentTeam->id) }}">
+                                  <x-dropdown-link href="{{ route('teams.show', Auth::user()->currentTeam->id) }}">
                                       {{ __('Team Settings') }}
-                                  </x-jet-dropdown-link>
+                                  </x-dropdown-link>
 
                                   @can('create', Laravel\Jetstream\Jetstream::newTeamModel())
-                                      <x-jet-dropdown-link href="{{ route('teams.create') }}">
+                                      <x-dropdown-link href="{{ route('teams.create') }}">
                                           {{ __('Create New Team') }}
-                                      </x-jet-dropdown-link>
+                                      </x-dropdown-link>
                                   @endcan
 
                                   <div class="border-t border-gray-100"></div>
@@ -81,17 +87,17 @@
                                   </div>
 
                                   @foreach (Auth::user()->allTeams() as $team)
-                                      <x-jet-switchable-team :team="$team" />
+                                      <x-switchable-team :team="$team" />
                                   @endforeach
                               </div>
                           </x-slot>
-                      </x-jet-dropdown>
+                      </x-dropdown>
                   </div>
               @endif
 
               <!-- Settings Dropdown -->
               <div class="ml-3 relative">
-                  <x-jet-dropdown align="right" width="48">
+                  <x-dropdown align="right" width="48">
                       <x-slot name="trigger">
                           @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
                               <button class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition duration-150 ease-in-out">
@@ -116,64 +122,68 @@
 
                       <x-slot name="content">
                           
-                          <!-- Management Panel -->
-                          <div class="block px-4 py-2 text-xs text-gray-400">
-                              {{ __('Management Panel') }}
-                          </div>
+                            <!-- Management Panel -->
+                            <div class="block px-4 py-2 text-xs text-gray-400">
+                                {{ __('Management panel') }}
+                            </div>
 
-                          <!-- My campaigns -->
-                          <x-dropdown-link href="{{ url('my/campaigns') }}">
-                              {{ __('My campaigns') }}
-                          </x-dropdown-link>
+                            <!-- My campaigns -->
+                            <x-dropdown-link href="{{ route('your/campaigns') }}">
+                                {{ __('Your campaigns') }}
+                            </x-dropdown-link>
 
-                          <!-- My collaborations -->
-                          <x-dropdown-link href="{{ url('my-collaborations') }}">
-                              {{ __('My collaborations') }}
-                          </x-dropdown-link>
+                            <!-- My collaborations -->
+                            <x-dropdown-link href="{{ route('your/collaborations') }}">
+                                {{ __('Your collaborations') }}
+                            </x-dropdown-link>
+                            
+                            <!-- Saved campaigns -->
+                            <x-dropdown-link href="{{ route('campaign/saves/show') }}">
+                                {{ __('Saved campaigns') }}
+                            </x-dropdown-link>
                           
-                          <!-- Account Management -->
-                          <div class="block px-4 py-2 text-xs text-gray-400">
-                              {{ __('Manage Account') }}
-                          </div>
+                            <!-- Account Management -->
+                            <div class="block px-4 py-2 text-xs text-gray-400">
+                                {{ __('Manage account') }}
+                            </div>
 
-                          @if(Auth::user()->slug)
-                              <x-jet-dropdown-link href="{{ route('user', Auth::user()) }}">
-                                  {{ __('Profile') }}
-                              </x-jet-dropdown-link>
-                          @endif
+                            @if(Auth::user()->slug)
+                                <x-dropdown-link href="{{ route('user', Auth::user()) }}">
+                                    {{ __('Profile') }}
+                                </x-dropdown-link>
+                            @endif
 
-                          @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
-                              <x-jet-dropdown-link href="{{ route('api-tokens.index') }}">
-                                  {{ __('API Tokens') }}
-                              </x-jet-dropdown-link>
-                          @endif
+                            @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
+                                <x-dropdown-link href="{{ route('api-tokens.index') }}">
+                                    {{ __('API Tokens') }}
+                                </x-dropdown-link>
+                            @endif
 
-                          <x-jet-dropdown-link href="{{ route('setting/account') }}">
-                              {{ __('Account Setting') }}
-                          </x-jet-dropdown-link>
+                            <x-dropdown-link href="{{ route('setting/account') }}">
+                                {{ __('Account setting') }}
+                            </x-dropdown-link>
 
-                          <div class="border-t border-gray-100"></div>
+                            <div class="border-t border-gray-100"></div>
 
-                          <!-- Authentication -->
-                          <form method="POST" action="{{ route('logout') }}">
-                              @csrf
+                            <!-- Authentication -->
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
 
-                              <x-jet-dropdown-link href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                              this.closest('form').submit();">
-                                  {{ __('Logout') }}
-                              </x-jet-dropdown-link>
-                          </form>
+                                <x-dropdown-link href="{{ route('logout') }}"
+                                        onclick="event.preventDefault();
+                                                this.closest('form').submit();">
+                                    {{ __('Logout') }}
+                                </x-dropdown-link>
+                            </form>
                       </x-slot>
-                  </x-jet-dropdown>
+                  </x-dropdown>
               </div>
               @else
               <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
 
-                  <a class="uppercase font-bold text-sm text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
-                      {{ __('Login') }}
+                  <a class="font-bold text-sm text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
+                      <span class="border border-ys1 py-2 px-3 rounded-lg text-ys1 font-bold ">{{ __('Login') }}</span>
                   </a>
-
               </div>
               @endauth
           </div>
@@ -197,21 +207,27 @@
         </div>  
         <div class="space-y-1">
             <x-responsive-nav-link href="{{ route('campaign/create') }}" :active="request()->routeIs('campaign/create')">
-                {{ __('Create campaign ') }}
+                {{ __('Start a campaign') }}
             </x-responsive-nav-link>
         </div>
 
       <div class="space-y-1">
-          <x-responsive-nav-link href="{{ url('campaign/create') }}" :active="request()->routeIs('campaign/create0')">
+          <x-responsive-nav-link href="{{ route('campaigns/discover') }}" :active="request()->routeIs('campaigns/discover')">
               {{ __('Campaigns') }}
           </x-responsive-nav-link>
       </div>
 
       <div class="space-y-1">
-          <x-responsive-nav-link href="{{ url('campaign/create') }}" :active="request()->routeIs('campaign/create1')">
-              {{ __('How it works? ') }}
+          <x-responsive-nav-link href="{{ route('about/how-it-works') }}" :active="request()->routeIs('about/how-it-works')">
+              {{ __('How it works?') }}
           </x-responsive-nav-link>
       </div>
+
+      <div class="space-y-1">
+        <x-responsive-nav-link href="{{ route('about/about-us') }}" :active="request()->routeIs('about/about-us')">
+            {{ __('About us') }}
+        </x-responsive-nav-link>
+    </div>
 
       @auth
       <!-- Responsive Settings Options -->
@@ -220,7 +236,11 @@
             <div class="flex items-center px-4">
                 @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
                     <div class="flex-shrink-0 mr-3">
-                        <img class="h-10 w-10 rounded-full object-cover" src="{{ Auth::user()->profile_photo_path }}" alt="{{ Auth::user()->name }}" />
+                        @if (Auth::user()->profile_photo_path)
+                            <img class="h-10 w-10 rounded-full object-cover" src="{{ Auth::user()->profile_photo_path }}" alt="{{ Auth::user()->name }}" />
+                        @else 
+                            <img class="h-10 w-10 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
+                        @endif
                     </div>
                 @endif
 
@@ -233,18 +253,18 @@
           <div class="mt-3">
               <!-- Management Panel -->
               <div class="block pt-2 pb-1 px-4 text-xs text-gray-400">
-                {{ __('Management Panel') }}
+                {{ __('Management panel') }}
               </div>
-              <x-responsive-nav-link href="{{ route('my/campaigns') }}" :active="request()->routeIs('my-campaigns')">
-                {{ __('My campaigns') }}
+              <x-responsive-nav-link href="{{ route('your/campaigns') }}" :active="request()->routeIs('your/campaigns')">
+                {{ __('Your campaigns') }}
               </x-responsive-nav-link>
 
-              <x-responsive-nav-link href="{{ route('profile.show') }}" :active="request()->routeIs('profile.show')">
-                {{ __('My collaborations') }}
+              <x-responsive-nav-link href="{{ route('your/collaborations') }}" :active="request()->routeIs('your/collaborations')">
+                {{ __('Your collaborations') }}
               </x-responsive-nav-link>
               <!-- Account Management -->
               <div class="block pt-2 pb-1 px-4 text-xs text-gray-400">
-                {{ __('Manage Account') }}
+                {{ __('Manage account') }}
               </div>
 
               @if(Auth::user()->slug)
@@ -254,15 +274,15 @@
               @endif
 
               <x-responsive-nav-link href="{{ route('setting/account') }}" :active="request()->routeIs('setting/account')">
-                  {{ __('Account Setting') }}
+                  {{ __('Account setting') }}
               </x-responsive-nav-link>
 
               <div class="border-t mt-2 mb-1 border-gray-200"></div>
 
               @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
-                  <x-jet-responsive-nav-link href="{{ route('api-tokens.index') }}" :active="request()->routeIs('api-tokens.index')">
+                  <x-responsive-nav-link href="{{ route('api-tokens.index') }}" :active="request()->routeIs('api-tokens.index')">
                       {{ __('API Tokens') }}
-                  </x-jet-responsive-nav-link>
+                  </x-responsive-nav-link>
               @endif
 
               <!-- Authentication -->
@@ -285,14 +305,14 @@
                   </div>
 
                   <!-- Team Settings -->
-                  <x-jet-responsive-nav-link href="{{ route('teams.show', Auth::user()->currentTeam->id) }}" :active="request()->routeIs('teams.show')">
+                  <x-responsive-nav-link href="{{ route('teams.show', Auth::user()->currentTeam->id) }}" :active="request()->routeIs('teams.show')">
                       {{ __('Team Settings') }}
-                  </x-jet-responsive-nav-link>
+                  </x-responsive-nav-link>
 
                   @can('create', Laravel\Jetstream\Jetstream::newTeamModel())
-                      <x-jet-responsive-nav-link href="{{ route('teams.create') }}" :active="request()->routeIs('teams.create')">
+                      <x-responsive-nav-link href="{{ route('teams.create') }}" :active="request()->routeIs('teams.create')">
                           {{ __('Create New Team') }}
-                      </x-jet-responsive-nav-link>
+                      </x-responsive-nav-link>
                   @endcan
 
                   <div class="border-t border-gray-200"></div>
@@ -303,17 +323,17 @@
                   </div>
 
                   @foreach (Auth::user()->allTeams() as $team)
-                      <x-jet-switchable-team :team="$team" component="jet-responsive-nav-link" />
+                      <x-switchable-team :team="$team" component="responsive-nav-link" />
                   @endforeach
               @endif
           </div>
       </div>
       @else
           <div class="border-t border-gray-200"></div>
-          <div class="pt-2 pb-3 space-y-1">
-              <x-jet-responsive-nav-link href="{{ route('login') }}" :active="request()->routeIs('login')">
-                  {{ __('Login ') }}
-              </x-jet-responsive-nav-link>
+          <div class="pt-3 pb-3 space-y-1">
+              <x-responsive-nav-link href="{{ route('login') }}" :active="request()->routeIs('login')">
+                    <span class="border border-ys1 py-2 px-3 rounded-lg text-ys1 font-bold ">{{ __('Login') }}</span>
+              </x-responsive-nav-link>
           </div>
       @endauth
   </div>

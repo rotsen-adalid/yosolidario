@@ -37,9 +37,7 @@ class User extends Authenticatable // implements MustVerifyEmail
         'email', 
         'password', 
         'profile_photo_path',
-        'country_id',
-        'status',
-
+        
         'search'
     ];
 
@@ -93,21 +91,14 @@ class User extends Authenticatable // implements MustVerifyEmail
         return $this->hasMany(Campaign::class);
     }
 
-    // uno a muchos inversa
-    public function country()
-    {
-        return $this->belongsTo(Country::class);
+    // uno a muchos
+    public function campaignSaves() {
+        return $this->hasMany(CampaignSave::class);
     }
 
     // relacion polimorfica uno a uno
     public function image() {
         return $this->morphOne(Image::class, 'imageable');
-    }
-    
-    // uno a muchos inversa
-    public function agency()
-    {
-        return $this->belongsTo(Agency::class);
     }
 
     // relacion polimorfica uno a muchos
@@ -116,11 +107,17 @@ class User extends Authenticatable // implements MustVerifyEmail
     }
 
     // relacion muchos a muchos
+    public function agencies()
+    {
+        return $this->belongsToMany(Agency::class);
+    }
+    
+    // relacion muchos a muchos
     public function sites()
     {
         return $this->belongsToMany(Site::class)->withTimestamps();
     }
-
+    
     // function autorize site
     public function authorizeSites($sites)
     {

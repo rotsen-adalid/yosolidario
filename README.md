@@ -63,3 +63,6 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 
 # ejecutar seeder con base de datos predeterminado
 php artisan db:seed
+
+# cambiando idioma de login 
+vendor/laravel/fortify/routes

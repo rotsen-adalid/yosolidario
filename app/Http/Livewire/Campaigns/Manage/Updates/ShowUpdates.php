@@ -16,7 +16,6 @@ class ShowUpdates extends Component
     public $photoOne;
 
     public $campaign;
-    public $updatesDialog;
     public $deleterDialog;
 
     public function mount(Campaign $campaign)
@@ -40,117 +39,12 @@ class ShowUpdates extends Component
     }
 
     public function addUpdates() {
-        $this->updatesDialog = true;
+        return redirect()->route('campaign/manage/communications/register', ['campaign' => $this->campaign]);
     }
 
-    public function StoreOrUpdate() {
-        if($this->campaign_update_id) {
-            $this->update();
-        } else {
-            $this->Add();
-        }
-    }
-    public function Add() {
-
-        $this->validate([
-            'title' => 'required|min:3|max:60',
-            'body' => 'required',
-        ]);
-
-        if($this->photoOne) {
-            $this->validate([
-                'photoOne' => 'image|max:2048',
-            ]);
-            $photo = $this->photoOne->store('public/campaign_updates_image');
-            $this->update_photo_path = Storage::url($photo);
-        } else {
-            $this->update_photo_path = null;
-        }
-
-        $record = Campaign::findOrFail($this->campaign->id);
-        $record->campaignUpdates()->create([
-            'title' => addslashes($this->title),
-            'body' => addslashes($this->body),
-            'update_photo_path' => $this->update_photo_path,
-            'user_id' => auth()->user()->id
-        ]);
-
-        $extract = 'An update was added to the campaign'.$record->id;
-        $record->userHistories()->create([
-            'photo_path' => null,
-            'extract' => $extract,
-            'data' => $record,
-            'action' =>  'CREATE',
-            'user_id' => auth()->user()->id,
-            'site_id' => 1,
-            'agency_id' => $this->campaign->agency->id
-            ]);
-
-        $this->resetInput();
-        $this->updatesDialog = false;
-    }
-    public function update() {
-
-        $this->validate([
-            'title' => 'required|min:3|max:60',
-            'body' => 'required',
-        ]);
-
-        if($this->photoOne) {
-            $this->validate([
-                'photoOne' => 'image|max:2048',
-            ]);
-            $photo = $this->photoOne->store('public/campaign_updates_image');
-            $this->update_photo_path = Storage::url($photo);
-        }
-
-        $record = CampaignUpdate::findOrFail($this->campaign_update_id);
-        $record->update([
-            'title' => addslashes($this->title),
-            'body' => addslashes($this->body),
-            'update_photo_path' => $this->update_photo_path,
-        ]);
-        $extract = 'An update is modified'.$record->id;
-        $record->userHistories()->create([
-            'photo_path' => null,
-            'extract' => $extract,
-            'data' => $record,
-            'action' =>  'CREATE',
-            'user_id' => auth()->user()->id,
-            'site_id' => 1,
-            'agency_id' => $this->campaign->agency->id
-            ]);
-        $this->resetInput();
-        $this->updatesDialog = false;
-    }
-    public function deleteOne() {
-        if($this->campaign_update_id) {
-            $record = CampaignUpdate::findOrFail($this->campaign_update_id);
-            
-            $url = str_replace('storage', 'public', $record->update_photo_path);
-            Storage::delete($url);
-            $record->update([
-                'update_photo_path' => null
-            ]);   
-        }
-        $this->photoOne = null;
-        $this->update_photo_path = null;
-    }
-
-    public function updateDialog($id) {
+    public function editUpdates($id) {
         $record = CampaignUpdate::find($id);
-        $this->campaign_update_id = $record->id;
-        $this->title = $record->title;
-        $this->body = $record->body;
-        $this->update_photo_path = $record->update_photo_path;
-        $this->updatesDialog = true;
-    }
-
-    public function resetInput(){
-        $this->campaign_update_id = null;
-        $this->title = null;
-        $this->body = null;
-        $this->update_photo_path = null;
+        return redirect()->route('campaign/manage/communications/update', ['campaign' => $this->campaign, 'campaignUpdate' => $record]);
     }
 
     public function deleteConfirm($id) {
@@ -162,6 +56,11 @@ class ShowUpdates extends Component
     public function delete() {
         if($this->campaign_update_id) {
             $record = CampaignUpdate::find($this->campaign_update_id);
+            if($record->image != null) {
+                $url = str_replace('storage', 'public', $record->image->url);
+                Storage::delete($url);
+                $record->image()->delete(); 
+            } 
             $record->delete();
             $extract = 'Delete campaign updating: '.$record->id;
             $record->userHistories()->create([
@@ -174,7 +73,6 @@ class ShowUpdates extends Component
                 'agency_id' => $this->campaign->agency->id
                 ]);
         }
-        $this->resetInput();
         $this->deleterDialog = false;
     }
 }

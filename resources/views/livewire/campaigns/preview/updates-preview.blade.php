@@ -1,6 +1,16 @@
-<div class="text-justify py-5">
-    <span>{{__('You haven\'t posted any updates yet. Enter to ')}}</span>
-    <a class="text-ys1 font-semibold" href="#">{{__('Promoter panel')}}</a>
-    <span>{{__(' , go to the Updates tab and write what you want to say to your collaborators. We will take care of sending this message to all your current collaborators by telegram or whatsapp.')}}</span>
+<div>
+    <div class="text-center py-5 ">
+        <span class="text-xl sm:text-2xl font-bold">{{__('No updates')}}</span>
+    </div>
+    <div class=" flex sm:justify-center sm:items-center mt-5 sm:mt-5 space-x-4">
+        <button class="w-full lg:w-72 px-4 py-2 sm:py-4 text-center bg-yellow-400 border border-yellow-500 rounded-md font-bold text-base text-black uppercase tracking-widest hover:bg-yellow-500 active:bg-yellow-500 focus:outline-none focus:border-gray-100 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
+            <!-- <img src="{asset('images/icono.png')}}" class="h-7" alt=""> -->
+            <span>{{__('Back this campaign')}}</span>
+        </button>
+        <button wire:click="shared" class="w-full lg:w-72 px-4 py-2 sm:py-4 text-center border border-yellow-400 border border-yellow-500 rounded-md font-bold text-base text-black uppercase tracking-widest hover:border-yellow-500 active:border-yellow-500 focus:outline-none focus:border-yellow-300 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
+            <!-- <img src="{asset('images/icono.png')}}" class="h-7" alt=""> -->
+            <span>{{__('Share')}}</span>
+        </button>
+    </div>
  </div>
  

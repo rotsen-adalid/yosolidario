@@ -26,12 +26,17 @@
       allowfullscreen>
     </iframe>
   </div>
-  <div class="px-4 sm:px-0 text-sm sm:text-base flex pt-5 justify-center item-center  text-black">
-    <span>{{__('Created')}}
-      {{ \Carbon\Carbon::parse($this->campaign->campaignOpeningRequest->date_revised)->diffForHumans() }}
+  <div class="px-4 sm:px-0 text-sm sm:text-base sm:flex pt-5 justify-center item-center text-black">
+    @if ($this->campaign->campaignOpeningRequest)
+      <div>{{__('Created')}}
+        {{ \Carbon\Carbon::parse($this->campaign->campaignOpeningRequest->date_revised)->diffForHumans() }}
+      </div>
+      <span class="mr-2 sm:mx-4">|</span>    
+    @endif
+    <i class=" text-black uil uil-pricetag-alt"></i>
+    <span class="ml-1">
+      {{__($this->campaign->categoryCampaign->name)}}
     </span>
-    <span class="mx-2">|</span>
-    <span>{{__($this->campaign->categoryCampaign->name)}}</span>
   </div>
 </div>
 

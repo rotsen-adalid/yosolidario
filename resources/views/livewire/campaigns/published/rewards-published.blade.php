@@ -13,8 +13,21 @@
 
             <div class=" w-full bg-white @if($item->image_url) -mt-10 @endif  shadow-lg rounded-lg overflow-hidden p-5 border">
             
-                <div class="title-post font-semibold text-xl">{{$item->amount}} {{$item->campaign->country->currency_symbol}}</div>
-          
+                @if ($item->campaign->agency->country->code == $this->country_code)
+                    <div class="title-post font-semibold text-xl">
+                        {{$item->amount}} 
+                        {{$item->campaign->agency->agencySetting->money->currency_symbol}}
+                    </div>
+                @else
+                    <div class="title-post font-semibold text-xl">
+                        {{  number_format(
+                            $this->convertCurrency(
+                                $item->amount, 
+                                $item->campaign->agency->agencySetting->buy_usd
+                            ), 2 ) }}
+                        {{$this->currency}}
+                    </div>
+                @endif
                 <!-- description -->
                 <div class="summary-post text-base text-justify mt-4">
                     {{$item->description}}
@@ -30,6 +43,15 @@
                         @endif
                     </div>
                 </div>
+                <!-- delivery_date -->
+                @if ($item->delivery_date)
+                    <div class="text-sm text-justify mt-1">
+                        {{__('Estimated delivery date')}}
+                        <span class="font-semibold">
+                            {{ \Carbon\Carbon::parse($item->delivery_date)->toFormattedDateString() }}
+                        </span>
+                    </div>
+                @endif
                 <!-- delivery_date -->
                 @if ($item->delivery_date)
                     <div class="text-sm text-justify mt-1">

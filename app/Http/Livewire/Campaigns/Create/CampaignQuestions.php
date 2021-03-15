@@ -56,6 +56,8 @@ class CampaignQuestions extends Component
     { 
         return view('livewire.campaigns.create.campaign-questions');
     }
+
+    // get information
     public function edit($id) {
         $record = CampaignQuestion::find($id);
         $this->campaign_question_id = $record->id;
@@ -77,6 +79,7 @@ class CampaignQuestions extends Component
         $this->campaign_id =  $record->campaign_id;
     }
 
+    // updating date
     public function StoreOrUpdate() {
 
         $this->validate([
@@ -91,7 +94,8 @@ class CampaignQuestions extends Component
             'contact_organizer' => 'required|min:10|max:1000',
             //*'photoFive' => 'image|max:2048',
         ]);
-
+        
+        // upload photos
         if($this->photoOne) {
             $record = CampaignQuestion::findOrFail($this->campaign_question_id);
             $url = str_replace('storage', 'public', $record->about_url);
@@ -153,6 +157,8 @@ class CampaignQuestions extends Component
         } else {
             $this->contact_organizer_url_upload =  $this->contact_organizer_url;
         }
+
+        // question optionan insert
         if(strlen($this->question_title_add) > 0) {
             if($this->photoSix) {
                 $record = CampaignQuestion::findOrFail($this->campaign_question_id);
@@ -180,7 +186,8 @@ class CampaignQuestions extends Component
             $this->question_url_add_upload = null;
         }
         $record = CampaignQuestion::find($this->campaign_question_id);
-        // we update the info
+
+        // update the info
         $record->update([
             'about' => addslashes($this->about),
             'about_url' => $this->about_url_upload,
@@ -198,6 +205,8 @@ class CampaignQuestions extends Component
             'question_url_add' => $this->question_url_add_upload,
             // 'campaign_id' =>  $this->campaign_id,
         ]);
+
+        // histories
         $extract = 'Update campaign questions: '.$record->id;
         $record->userHistories()->create([
             'photo_path' => null,
@@ -208,16 +217,20 @@ class CampaignQuestions extends Component
             'site_id' => 1,
             //'agency_id' => 1
             ]);
-
+        
+        // updating status campaign
         if ($this->status_register == 'INCOMPLETE') {
             $record_campaign = Campaign::find($this->campaign_id);
             $record_campaign->update([
                 'status_register' => 'COMPLETE'
             ]);
         }
-        return redirect()->route('campaign/update/rewards', ['campaign' => $this->campaign]);
+
+        // redirect
+        return redirect()->route('campaign/rewards/show', ['campaign' => $this->campaign]);
     }
 
+    // delete photos
     public function deleteOne() {
         $record = CampaignQuestion::findOrFail($this->campaign_question_id);
         $url = str_replace('storage', 'public', $record->about_url);
@@ -280,10 +293,13 @@ class CampaignQuestions extends Component
         $this->question_url_add = null;
     }
 
+    // +++++++++++++++++++++++++++++++++++++++++++ send review
+    //open review
     public function reviewConfirm() {
         $this->confirmingSendReview = true;
     }
 
+    //send review
     public function sendReview() {
         $this->validate([
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['required', 'accepted'] : '',
@@ -325,15 +341,19 @@ class CampaignQuestions extends Component
                 //'agency_id' => 1
                 ]);
         }
+       
+        
         $this->confirmingSendReview = false;
-        return redirect()->route('my/campaigns');
+        return redirect()->route('your/campaigns');
     }
 
+    // redirect preview
     public function preview($id) {
         $record = Campaign::findOrFail($id);
-        return redirect()->route('campaigns/preview', ['slug' => $record->slug]);
+        return redirect()->route('campaign/preview', ['slug' => $record->slug]);
     }
 
+    // redirect edti prfile
     public function editProfile() {
         return redirect()->route('setting/profile');
     }

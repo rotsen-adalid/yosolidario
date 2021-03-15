@@ -1,0 +1,133 @@
+<x-slot name="title">
+    {{__('Rewards')}} : YoSolidario
+</x-slot>
+<x-slot  name="seo">
+
+</x-slot>
+<x-slot  name="menu">
+    @livewire('navigation')
+</x-slot>
+<div class="bg-gray-50">
+<x-section-content>
+    <x-slot name="header">
+        <header class="bg-white shadow pt-2 mb-10"> 
+            <div class="sm:flex justify-between items-start max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 space-y-2">
+                <h2 class="flex items-center font-semibold text-xl text-gray-800 leading-tight pt-4">
+                    <a class="underline hover:text-gray-900" href="{{ route('campaign/update', $this->campaign) }}">
+                        {{ __('Details') }}
+                    </a>
+                    <span class="ml-1 mr-1">/</span>
+                    <a class="underline hover:text-gray-900" href="{{ route('campaign/update/questions', $this->campaign) }}">
+                        {{ __('Questions') }}
+                    </a>
+                    <span class="ml-1 mr-1">/</span>
+                    {{ __('Rewards') }}
+                </h2>
+                
+                @if ($this->status_register == 'COMPLETE')
+                <div class="flex items-center leading-tight space-x-2">
+                    <x-button wire:click="reviewConfirm" wire:loading.attr="disabled">
+                         <span class="uppercase">{{ __('Publish campaign') }}</span>
+                    </x-button>
+                    <x-secondary-button wire:click="preview({{$this->campaign_id}})" wire:loading.attr="disabled">
+                        <span class="uppercase">{{ __('Preview') }}</span>
+                    </x-secondary-button>
+                </div>
+                @endif
+    
+            </div>
+        </header>
+    </x-slot>
+    <x-slot  name="content" >
+        <x-section-title>
+            <x-slot name="title">
+                <x-button wire:click="register" wire:loading.attr="disabled">
+                    <i class="uil uil-plus text-base"></i>
+                    <span class="py-1 px-1  text-base"> 
+                        {{ __('Reward') }}
+                    </span>
+                </x-button>
+            </x-slot>
+            <x-slot name="description">
+                <span class="text-sm sm:text-base">
+                    {{__('Rewards are amounts that you suggest to your community of contributors and that will help them measure the impact of their contribution. Get inspired by the default recognitions and feel free to edit them according to your needs and if you need to add more.')}}
+                </span>
+            </x-slot>
+        </x-section-title>
+        @include('livewire.campaigns.create.campaign-rewards.modal-campaign-reward')
+        @if ($collection->count() > 0)
+            
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mt-7">
+            @foreach ($collection as $item)
+            <div class="px-4 sm:px-0 @if($collection->count() == 1) sm:col-start-2 @endif">
+            
+                @if($item->image_url)
+                    <div class="cursor-pointer bg-gray-300 h-56 w-full rounded-lg shadow-md bg-cover bg-center" 
+                        style="background-image: url({{ URL::to('/').$item->image_url}})">
+                    </div>
+                @else
+                    <div class="cursor-pointer bg-gray-300 h-56 w-full rounded-lg shadow-md bg-cover bg-center" 
+                        style="background-image: url({{asset('images/photo_upload.png')}})">
+                    </div>
+                @endif
+                
+                <div class=" w-full bg-white -mt-10 shadow-lg rounded-lg overflow-hidden p-5">
+                
+                    <div class="title-post font-semibold text-xl">{{$item->amount}} 
+                        {{$item->campaign->agency->agencySetting->money->currency_symbol}}</div>
+              
+                    <!-- description -->
+                    <div class="summary-post text-base text-justify mt-4">
+                        {{$item->description}}
+                    </div>
+                    <!-- collaboratos -->
+                    <div class="header-content inline-flex mt-4">
+                        <div class="category-title flex-1 text-sm">
+                            @if ($item->limiter == 'YES')
+                                <span> 0 / {{$item->quantity}}</span>
+                                {{__('Collaborators')}} 
+                            @elseif ($item->limiter == 'NO')
+                                0 {{__('Collaborators')}} 
+                            @endif
+                        </div>
+                    </div>
+                    <!-- delivery_date -->
+                    @if ($item->delivery_date)
+                        <div class="text-sm text-justify mt-1">
+                            {{__('Estimated delivery date')}}
+                            <span class="font-semibold">
+                                {{ \Carbon\Carbon::parse($item->delivery_date)->toFormattedDateString() }}
+                            </span>
+                        </div>
+                    @endif
+                    <!-- options -->
+                    <hr class="mt-2 mb-3">
+                    <div class="flex justify-between items-start mt-5 sm:mt-0">
+                        <i class="uil uil-edit text-xl font-bold cursor-pointer" 
+                        wire:click="edit({{$item->id}})" wire:loading.attr="disabled"></i>
+
+                        <i class="uil uil-trash text-xl text-red-500 cursor-pointer" 
+                        wire:click="deleteDialog({{$item->id}})" wire:loading.attr="disabled"></i>
+
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
+        @else
+        <div class="flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-md w-full space-y-8">
+          <div> 
+            <h2 class="mt-6 text-center text-xl font-light">
+                {{ __('Campaign without reward') }}
+            </h2>
+          </div>
+    
+        </div>
+    </div>
+        @endif
+       @include('livewire.campaigns.create.send-to-review')
+    </x-slot>
+</x-section-content>
+</div>
+<livewire:footer/>

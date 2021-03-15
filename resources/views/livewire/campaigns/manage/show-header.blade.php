@@ -1,7 +1,9 @@
 <div class="bg-white shadow mb-10"> 
     <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-2 sm:space-y-0 py-4">
         <div class="text-gray-900">
-            <div class="font-bold text-lg ">{{$campaign->title}}</div>
+            <a href="{{ route('campaign/published', $campaign->slug) }}" class="font-bold text-lg cursor-pointer">
+                {{$campaign->title}}
+            </a>
             <!-- -->
             <div class="h-2 relative max-w-xl rounded-full overflow-hidden mt-2">
                 <div class="w-full h-full bg-gray-200 absolute"></div>
@@ -11,12 +13,12 @@
             <div class=" space-x-2 mt-3 campaigns-start">
                 <span class="text-lg font-bold">
                     {{ number_format($campaign->campaignCollected->amount_collected, 2 ) }}
-                    {{$campaign->agency->country->currency_symbol}}
+                    {{$campaign->agency->agencySetting->money->currency_symbol}}
                 </span>
-                <span>{{__('raised from the goal of')}} </span>
+                <span>{{__('Raised from the goal of')}} </span>
                 <span class="font-bold">
                     {{ number_format($campaign->campaignCollected->amount_target, 2 ) }}
-                    {{$campaign->agency->country->currency_symbol}}
+                    {{$campaign->agency->agencySetting->money->currency_symbol}}
                 </span>
             </div>
         </div>
@@ -42,12 +44,12 @@
         <div class="flex">
             <div class="space-x-0 -my-px sm:ml-0 flex">
                 <x-nav-link href="{{ route('campaign/manage/collaborations', $campaign) }}" :active="request()->routeIs('campaign/manage/collaborations')">
-                    {{ __('Collaborations ') }}
+                    {{ __('Collaborators') }}
                 </x-nav-link>
             </div>
     
             <div class="space-x-8 -my-px ml-2 sm:ml-10 flex">
-                <x-nav-link href="{{ route('campaign/manage/updates', $campaign) }}" :active="request()->routeIs('campaign/manage/updates')">
+                <x-nav-link href="{{ route('campaign/manage/communications/show', $campaign) }}" :active="request()->routeIs('campaign/manage/communications/show')">
                     {{ __('Updates') }}
                 </x-nav-link>
             </div>

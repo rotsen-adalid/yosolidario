@@ -23,11 +23,6 @@ class Agency extends Model
         'search'
     ];
 
-    // uno a muchos 
-    public function users() {
-        return $this->hasMany(User::class);
-    }
-
     // uno a muchos inversa
     public function country() {
         return $this->belongsTo(Country::class);
@@ -59,8 +54,19 @@ class Agency extends Model
     }
 
     // uno a muchos 
+    public function agencyUsers() {
+        return $this->hasMany(AgencyUser::class);
+    }
+
+    // uno a muchos 
     public function organizations() {
         return $this->hasMany(Organization::class);
+    }
+
+    // muchos a muchos
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
     }
 
     // relacion polimorfica uno a muchos
