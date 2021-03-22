@@ -21,7 +21,7 @@
 
 </x-slot>
 <x-slot  name="menu">
-    <livewire:navigation/>
+    <livewire:menu.navigation-published :campaign="$campaign"/>
 </x-slot>
 <div class="bg-white">
 <x-section-content>
@@ -263,4 +263,4 @@
 
 </x-section-content>
 </div>
-<livewire:footer/>
+<livewire:footer.footer-app/>

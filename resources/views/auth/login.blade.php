@@ -1,4 +1,5 @@
 <x-guest-layout>
+    <div class="md:min-h-screen md:flex md:flex-col md:justify-center md:items-center py-10 md:-mt-5 bg-gray-50">
     <x-authentication-card>
         <x-slot name="logo">
             <x-authentication-card-logo />
@@ -49,4 +50,6 @@
             </div>
         </form>
     </x-authentication-card>
+    </div>
+    <livewire:footer.footer-guest/>
 </x-guest-layout>

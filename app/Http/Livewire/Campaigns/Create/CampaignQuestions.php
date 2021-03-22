@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Storage;
 
 use App\Models\Campaign;
 use App\Models\CampaignQuestion;
+use App\Models\Notice;
+use App\Notifications\TelegramNotification;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Laravel\Jetstream\Jetstream;
@@ -342,7 +344,24 @@ class CampaignQuestions extends Component
                 ]);
         }
        
-        
+        // notification telegram
+        $host= $_SERVER["HTTP_HOST"];
+        if($host == 'yosolidario.test') {
+            $host = 'http://yosolidario.test';
+        } elseif($host == 'yosolidario.com') {
+            $host = 'https://yosolidario.com';
+        }
+
+        $notice = new Notice([
+            'telegramid' => $record->agency->telegram->çhat_id,
+            'notice' => 'Nueva camapaña',
+            'linkOne' => $host.'/'.$record->slug,
+            'linkTwo' => $host.'/user'.'/'.$record->user->slug,
+            'action' => 'CAMPAIGN_IN_REVIEW'
+        ]);
+        $notice->notify(new TelegramNotification);
+        // end notification telegram
+
         $this->confirmingSendReview = false;
         return redirect()->route('your/campaigns');
     }

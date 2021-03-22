@@ -25,10 +25,6 @@ class ShowCampaignSaves extends Component
                     ]);
     }
 
-    public function discoverCampaign() {
-
-    }
-
     public function view($id) {
         $record = Campaign::findOrFail($id);
         return redirect()->route('campaign/published', ['slug' => $record->slug]);
@@ -62,5 +58,9 @@ class ShowCampaignSaves extends Component
         }
         $this->campaign_follower_id = null;
         $this->deleteConfirm = false;
+    }
+
+    public function discoverCampaign() {
+        return redirect()->route('campaigns/discover');
     }
 }

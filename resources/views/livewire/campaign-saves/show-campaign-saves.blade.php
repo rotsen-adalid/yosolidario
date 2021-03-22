@@ -5,9 +5,10 @@
    
 </x-slot>
 <x-slot  name="menu">
-    @livewire('navigation')
+    <livewire:menu.navigation-app/>
 </x-slot>
-<div class="bg-gray-50">
+      
+<div class="mt-20 bg-gray-50">
 <x-section-content>
     <x-slot name="header">
         <div class="bg-white shadow mb-10"> 
@@ -105,11 +106,11 @@
       
       <!-- -->
       <hr class="mt-5 mb-5">
-      <div class="flex justify-between items-start mt-5 sm:mt-3">
-        <button wire:click="deleteSave({{$item->id}})" wire:loading.attr="disabled" class="w-full text-center px-4 py-1 sm:py-3 bg-white border border-gray-300 rounded-md font-bold text-sm text-black uppercase tracking-widest shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">
-            <i class="text-black uil uil-bookmark"></i>
+      <div class=" mt-5 sm:mt-3">
+        <x-secondary-button wire:click="deleteSave({{$item->id}})" wire:loading.attr="disabled" class="w-full justify-center">
+            <span class="material-icons-outlined text-red-500">delete</span>
             {{__('Delete from saved')}}
-        </button>
+        </x-secondary-button>
       </div>
 
       </div>
@@ -127,6 +128,7 @@
             </h2>
             <p class="mt-3 mb-16 text-center">
                 <x-button wire:click="discoverCampaign" wire:loading.attr="disabled">
+                    <span class="material-icons-outlined pr-1">bookmark_add</span>
                     <span class="text-base">{{ __('Discover campaigns') }}</span>
                 </x-button>
             </p>
@@ -137,4 +139,4 @@
     @endif
     </x-slot>
 </x-section-content>
-<livewire:footer/>
+<livewire:footer.footer-app/>

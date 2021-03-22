@@ -42,12 +42,19 @@
                                 {{$item->title}}
                             </span>
                         </div>
-
+                        
+                        <!-- video -->
+                         @if ($item->video)
+                            <div class="flex justify-center items-center mt-5">
+                                <iframe class=" h-40 w-full sm:h-96 sm:w-4/4" src="https://www.youtube.com/embed/{{$this->urlVideo($item->video->url)}}" title="{{$item->title}}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            </div> 
+                        @endif
+                        <!-- end video -->
                         <div class="mt-4 pb-10 sm:pb-5 flex flex-col-reverse sm:flex-col sm:block">
                             @if ($item->image)
                                 <div @click="$dispatch('imgu-modal', {  imgModalSrcUpdates: '{{URL::to('/').$item->image->url}}', imgModalDescUpdates: '' })" class="flex justify-center sm:block">
                                     @if ($item->image->url)
-                                        <img class="h-auto w-80 mt-3 sm:mt-0 sm:mr-4 rounded cursor-pointer" src="{{URL::to('/').$item->image->url}}" 
+                                        <img class="h-auto w-60 mt-3 sm:mt-0 sm:mr-4 rounded cursor-pointer" src="{{URL::to('/').$item->image->url}}" 
                                         hspace="2" vspace="2" style="float: left;" />
                                     @endif
                                 </div>
@@ -58,13 +65,13 @@
                                  </div>
                              </div>
                          </div>
-
                     </div>
                 </div>
             </li>
         @php ($i--)
         @endforeach
         </ul>
+        
     </div>
     </div>
     @else

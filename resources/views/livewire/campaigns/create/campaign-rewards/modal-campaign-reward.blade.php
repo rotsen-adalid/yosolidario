@@ -10,10 +10,10 @@
         </div>
     </x-slot>
     <x-slot name="footer">
-        <x-secondary-button class="uppercase" wire:click="$toggle('confirmingDeletion')" wire:loading.attr="disabled">
+        <x-secondary-button class="" wire:click="$toggle('confirmingDeletion')" wire:loading.attr="disabled">
             {{ __('Nevermind') }}
         </x-secondary-button>
-        <x-danger-button class="ml-2 uppercase" wire:click="delete({{ $campaign_reward_id }})" wire:loading.attr="disabled">
+        <x-danger-button class="ml-2" wire:click="delete({{ $campaign_reward_id }})" wire:loading.attr="disabled">
             {{ __('Delete') }}
         </x-danger-button>
     </x-slot>

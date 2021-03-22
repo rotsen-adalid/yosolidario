@@ -15,7 +15,7 @@
                         @click="
                       isPlaying = !isPlaying;
                       $nextTick(() => { $refs.iframeElement.setAttribute('src', iframe_url()) });">
-          <i class="text-white text-7xl uil uil-play-circle"></i>
+              <span class="material-icons-outlined text-white text-7xl">play_circle</span>
         </button>
       </div>
     </div>
@@ -33,7 +33,7 @@
       </div>
       <span class="mr-2 sm:mx-4">|</span>    
     @endif
-    <i class=" text-black uil uil-pricetag-alt"></i>
+    <span class="material-icons-outlined text-gray-600 text-base">loyalty</span>
     <span class="ml-1">
       {{__($this->campaign->categoryCampaign->name)}}
     </span>

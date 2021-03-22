@@ -5,14 +5,15 @@
   
 </x-slot>
 <x-slot  name="menu">
-    @livewire('navigation')
+    <livewire:menu.navigation-app/>
 </x-slot>
-<div>
+  
+<div class="mt-20">
     <div class="bg-white shadow"> 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-2 sm:space-y-0 py-10">
             <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center">
-                <a href="{{ route('home') }}" class=" text-sm text-gray-800 bg-pink-50 py-2 px-2">
-                    <i class="uil uil-angle-left-b"></i>
+                <a href="{{ route('home') }}" class="flex items-center text-sm text-gray-800 bg-pink-50 py-2 px-2">
+                    <span class="material-icons-outlined text-base">arrow_back_ios</span>
                     {{ __('Home') }}
                 </a>
             </div>

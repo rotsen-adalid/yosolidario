@@ -12,6 +12,11 @@ class BankInfo extends Model
     protected $table = 'bank_infos';
     protected $guarded = [];
     
+    // uno a muchos inversa
+    public function bank() {
+        return $this->belongsTo(Bank::class);
+    }
+
     //relacion polimorfica
     public function bankinfoable() {
         return $this->morphTo();

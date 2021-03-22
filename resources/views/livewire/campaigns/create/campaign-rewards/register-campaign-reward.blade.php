@@ -9,15 +9,16 @@
    
 </x-slot>
 <x-slot  name="menu">
-    @livewire('navigation')
+    <livewire:menu.navigation-app/>
 </x-slot>
-<div class="bg-gray-50">
+      
+<div class="mt-20 bg-gray-50">
 <x-section-content>
     <x-slot name="header">
         <header class="bg-white shadow pt-2 mb-10"> 
             <div class="sm:flex justify-between items-start max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 space-y-2">
                 <h2 class="flex items-center font-semibold text-xl text-gray-800 leading-tight pt-4">
-                    <i class="uil uil-angle-left-b"></i>
+                    <span class="material-icons-outlined text-base">arrow_back</span>
                     <a class="underline hover:text-gray-900" href="{{ route('campaign/rewards/show', $this->campaign) }}">
                         <span>{{ __('Show rewards') }}</span>
                     </a>
@@ -49,7 +50,7 @@
             </x-slot>
             <x-slot name="form">
 
-                        <!-- amount -->
+            <!-- amount -->
             <div class="col-span-6 sm:col-span-4">
                 <div class="sm:flex sm:space-x-2">
                     <div>
@@ -69,13 +70,13 @@
                 </div>
             </div>
             <!-- description -->
-            <div class="col-span-6 sm:col-span-4 mt-4">
+            <div class="col-span-6 sm:col-span-4">
                 <x-label for="description" class="text-base" value="{{ __('Description') }}" required/>
                 <x-textarea id="description" class="mt-1 block w-full" wire:model.defer="description" autocomplete="off"/>
                 <x-input-error for="description" class="mt-2" />
             </div>
             <!-- limiter -->
-            <div class="col-span-6 sm:col-span-4 mt-4">
+            <div class="col-span-6 sm:col-span-4">
                 <div class="flex space-x-1">
                     <div class="w-48">
                         <x-label for="limiter" class="text-base" value="{{ __('Limit quantity?') }}" required/>
@@ -98,7 +99,7 @@
                 </div>
             </div>
             <!-- Photo -->
-            <div x-data="{photoName: null, photoPreview: null}" class="col-span-6 sm:col-span-4 mt-4">
+            <div x-data="{photoName: null, photoPreview: null}" class="col-span-6 sm:col-span-4">
                 <!-- Profile Photo File Input -->
                 <input type="file" class="hidden" accept="image/*"
                     wire:model="photoOne"
@@ -111,7 +112,7 @@
                             };
                             reader.readAsDataURL($refs.photo.files[0]);
                     " />
-
+                    <x-label for="description" class="text-base" value="{{ __('Image') }} ({{ __('optional') }})"/>
                 <!-- Current Profile Photo -->
                 <div class="mt-2" x-show="!photoPreview">
                     @if( $image_url)
@@ -120,7 +121,14 @@
                     </x-icon-button>
                         <img src="{{ URL::to('/') }}{{$image_url}}" alt="" class="rounded-smh-48 sm:h-56 w-auto object-cover">
                     @else 
-                        <img src="{{asset('images/photo_upload.png')}}" alt="" class="rounded-sm h-48 sm:h-56 w-auto object-cover">
+                        <div class="mt-1 flex justify-center items-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md w-full h-60 sm:h-64">
+                            <div class="space-y-1 text-center">
+                            <span class="material-icons-outlined text-5xl text-gray-500">add_a_photo</span>
+                            <p class="text-xs text-gray-500">
+                                PNG, JPG up to 2MB
+                            </p>
+                            </div>
+                        </div>
                     @endif
                 </div>
                 <!-- Image Preview -->
@@ -133,12 +141,19 @@
                             </x-icon-button>
                         </span>
                     @else
-                        <img src="{{asset('images/photo_upload.png')}}" alt="" class="rounded-sm h-48 sm:h-56 w-auto object-cover">
+                        <div class="mt-1 flex justify-center items-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md w-full h-60 sm:h-64">
+                            <div class="space-y-1 text-center">
+                            <span class="material-icons-outlined text-5xl text-gray-500">add_a_photo</span>
+                            <p class="text-xs text-gray-500">
+                                PNG, JPG up to 2MB
+                            </p>
+                            </div>
+                        </div>
                     @endif
                 </div>
 
-                <x-secondary-button class="mt-2 mr-2 w-auto uppercase" type="button" x-on:click.prevent="$refs.photo.click()">
-                    {{ __('Select A Image') }} ({{ __('optional') }})
+                <x-secondary-button class="mt-2 mr-2 w-auto" type="button" x-on:click.prevent="$refs.photo.click()">
+                    {{ __('Select A Image') }}
                 </x-secondary-button>
 
                 <x-input-error for="photoOne" class="mt-2" />
@@ -153,3 +168,4 @@
 
     </x-slot>
 </x-section-content>
+<livewire:footer.footer-app/>

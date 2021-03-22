@@ -70,7 +70,6 @@ class RegisterCampaignReward extends Component
         }
 
         $this->resetInput();
-        $this->addOrUpdateDialog = false;
     }
 
     // insert data

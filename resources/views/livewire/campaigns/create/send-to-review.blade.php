@@ -12,7 +12,8 @@
         </div>
 
         <div class="font-bold text-lg">
-            <span><< {{$campaign->title}} >></span>
+            {{$campaign->title}} 
+            <span class="material-icons-outlined">format_quote</span>
         </div>
 
         <div class="summary-post text-base text-justify mt-5">
@@ -41,34 +42,19 @@
                     {{Auth::user()->name}}
                 </div>
                 <a href="tel:{{$campaign->country->telephone_prefix}}{{$campaign->telephone}}" class="flex space-x-1 items-center">
-                    <svg class="h-5" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                        viewBox="0 0 405.333 405.333" style="enable-background:new 0 0 405.333 405.333;" xml:space="preserve">
-                    <path style="fill:#009688;" d="M373.333,266.88c-24.696,0.048-49.241-3.856-72.704-11.563c-10.97-3.836-23.163-1.254-31.637,6.699
-                        l-46.037,34.731c-49.441-24.823-89.557-64.931-114.389-114.368l33.813-44.928c8.537-8.543,11.59-21.136,7.915-32.64
-                        C142.558,81.316,138.633,56.735,138.667,32c0-17.673-14.327-32-32-32H32C14.327,0,0,14.327,0,32
-                        c0.235,206.089,167.244,373.098,373.333,373.333c17.673,0,32-14.327,32-32V298.88C405.333,281.207,391.006,266.88,373.333,266.88z"
-                        />
-                    <g>
-                        <path style="fill:#455A64;" d="M394.667,170.667c-5.891,0-10.667-4.776-10.667-10.667
-                            c-0.094-76.545-62.122-138.573-138.667-138.667c-5.891,0-10.667-4.776-10.667-10.667S239.442,0,245.333,0
-                            c88.327,0.094,159.906,71.673,160,160C405.333,165.891,400.558,170.667,394.667,170.667z"/>
-                        <path style="fill:#455A64;" d="M309.333,170.667c-5.891,0-10.667-4.776-10.667-10.667c0-29.455-23.878-53.333-53.333-53.333
-                            c-5.891,0-10.667-4.776-10.667-10.667c0-5.891,4.776-10.667,10.667-10.667C286.571,85.333,320,118.763,320,160
-                            C320,165.891,315.224,170.667,309.333,170.667z"/></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g>
-                    </g><g></g><g></g><g></g><g></g><g></g>
-                    </svg>
-                    <div>
+                    <span class="material-icons-outlined">call</span>
+                    <span class="font-bold">
                         {{$campaign->telephone}}
-                    </div>
+                    </span>
                 </a>
             </div>
         </div>
 
         @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
         <div class="my-5">
-            <x-jet-label for="terms">
+            <x-label for="terms">
                 <div class="flex items-center">
-                    <x-jet-checkbox name="terms" id="terms" wire:model.defer="terms"/>
+                    <x-checkbox name="terms" id="terms" wire:model.defer="terms"/>
 
                     <div class="ml-2">
                         {!! __('I agree to the :terms_of_service and :privacy_policy', [
@@ -77,8 +63,8 @@
                         ]) !!}
                     </div>
                 </div>
-                <x-jet-input-error for="terms" class="mt-1" />
-            </x-jet-label>
+                <x-input-error for="terms" class="mt-1" />
+            </x-label>
         </div>
         @endif
 
@@ -119,11 +105,11 @@
     </x-slot>
     <x-slot name="footer">
         <x-secondary-button wire:click="$toggle('confirmingSendReview')" wire:loading.attr="disabled">
-            <span class="uppercase">{{ __('Nevermind') }}</span>
+            <span class="">{{ __('Nevermind') }}</span>
         </x-secondary-button>
         @if(Auth::user()->profile)
             <x-button class="ml-2" wire:click="sendReview" wire:loading.attr="disabled">
-               <span class="uppercase"> {{ __('Publish campaign') }}</span>
+               <span class=""> {{ __('Publish campaign') }}</span>
             </x-button>
         @endif
     </x-slot>

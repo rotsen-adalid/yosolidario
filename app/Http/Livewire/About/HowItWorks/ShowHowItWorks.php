@@ -10,4 +10,9 @@ class ShowHowItWorks extends Component
     {
         return view('livewire.about.how-it-works.show-how-it-works');
     }
+
+    public function createCampaign()
+    {
+        return redirect()->route('campaign/create');
+    }
 }

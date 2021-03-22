@@ -10,12 +10,12 @@
     
 </x-slot>
 <x-slot  name="menu">
-    @livewire('navigation')
+    <livewire:menu.navigation-app/>
 </x-slot>
-<div class="bg-gray-50">
+      
+<div class="mt-20 bg-gray-50">
 <x-section-content>
     <x-slot name="header">
-
         <header class="bg-white shadow pt-2 mb-10"> 
             <div class="sm:flex justify-between items-start max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 space-y-2">
                 <h2 class="flex items-center font-semibold text-xl text-gray-800 leading-tight pt-4">
@@ -37,10 +37,12 @@
                 @if ($this->status_register == 'COMPLETE')
                 <div class="flex items-center leading-tight space-x-2">
                     <x-button wire:click="reviewConfirm" wire:loading.attr="disabled">
-                        <span class="uppercase">{{ __('Publish campaign') }}</span>
+                        <span class="material-icons-outlined pr-1">open_in_new</span>
+                        <span class="">{{ __('Publish campaign') }}</span>
                     </x-button>
                     <x-secondary-button wire:click="preview({{$this->campaign_id}})" wire:loading.attr="disabled">
-                        <span class="uppercase">{{ __('Preview') }}</span>
+                        <span class="material-icons-outlined pr-1">remove_red_eye</span>
+                        <span class="">{{ __('Preview') }}</span>
                     </x-secondary-button>
                 </div>
                 @endif
@@ -66,7 +68,7 @@
                         <div class="col-span-6 sm:col-span-4">
                             <x-label for="agency_id" value="{{ __('Tell us where you mainly reside.') }}" required />
                             <div class="flex">
-                                <x-select class="mt-1 block w-full" id="agency_id" name="agency_id" wire:model.defer="agency_id" wire:change="agency" autofocus>
+                                <x-select class="mt-1 block w-full" id="agency_id" name="agency_id" wire:model="agency_id" autofocus> <!-- wire:change="agency" -->
                                     <x-slot name="option">
                                             <option value="">{{ __('Select country') }}</option>
                                         @foreach ($collection_agencies as $item)
@@ -103,13 +105,13 @@
                        <!-- title -->
                         <div class="col-span-6 sm:col-span-4">
                             <x-label for="title" value="{{ __('Title') }}" required/>
-                            <x-input id="title" type="text" class="mt-1 block w-full" wire:model.defer="title"  autocomplete="off" minlength="10" maxlength="60" wire:keyup="generateSlug" /> <!-- wire:keyup="generateSlug"  -->
+                            <x-input id="title" type="text" class="mt-1 block w-full" wire:model.defer="title"  autocomplete="off" minlength="5" maxlength="60" wire:keyup="generateSlug" /> <!-- wire:keyup="generateSlug"  -->
                             <x-input-error for="title" class="mt-2" />
                         </div>
                         <!-- extract -->
                         <div class="col-span-6 sm:col-span-4">
                             <x-label for="extract" value="{{ __('Short description') }}" required/>
-                            <x-textarea id="extract" class="mt-1 block w-full" rows="3" wire:model.defer="extract" autocomplete="off" minlength="60" maxlength="170"/>
+                            <x-textarea id="extract" class="mt-1 block w-full" rows="3" wire:model.defer="extract" autocomplete="off" minlength="5" maxlength="170"/>
                             <x-input-error for="extract" class="mt-2" />
                         </div>
                         <!-- category campaign-->
@@ -168,7 +170,7 @@
                                       </x-slot>
                                   </x-select>
                               </div>
-                              <x-jet-input-error for="organization_id" class="mt-2" />
+                              <x-input-error for="organization_id" class="mt-2" />
                             </div>
                             @endif
                         @endif
@@ -185,7 +187,7 @@
                                             @endforeach
                                         </x-slot>
                                     </x-select>
-                                    <x-jet-input-error for="country_id" class="mt-2" />
+                                    <x-input-error for="country_id" class="mt-2" />
                                 </div>
                                 <div class="w-full">
                                     <x-input id="locality" type="text" class="mt-1 block w-full" wire:model.defer="locality" autocomplete="off" minlength="3" maxlength="100"/>
@@ -234,6 +236,7 @@
                         </div>
                     </x-slot>
                     <x-slot name="form">
+
                         <!-- Photo -->
                         <div x-data="{photoName: null, photoPreview: null}" class="col-span-6 sm:col-span-4">
                             <!-- Profile Photo File Input -->
@@ -258,7 +261,14 @@
                                     </x-icon-button>
                                     <img src="{{ URL::to('/') }}{{$this->photo_url}}" alt="" class="rounded-sm h-60 w-full object-cover">
                                 @else 
-                                    <img src="{{asset('images/photo_upload.png')}}" alt="" class="rounded-sm h-60 w-full object-cover ">
+                                    <div class="mt-1 flex justify-center items-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md w-full h-60 sm:h-64">
+                                        <div class="space-y-1 text-center">
+                                        <span class="material-icons-outlined text-5xl text-gray-500">add_a_photo</span>
+                                        <p class="text-xs text-gray-500">
+                                            PNG, JPG up to 2MB
+                                        </p>
+                                        </div>
+                                    </div>
                                 @endif
                             </div>
             
@@ -272,15 +282,21 @@
                                         </x-icon-button>
                                     </span>
                                 @else 
-                                    <img src="{{asset('images/photo_upload.png')}}" alt="" class="rounded-sm h-60 sm:h-64 w-full object-cover">
+                                    <div class="mt-1 flex justify-center items-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md w-full h-60 sm:h-64">
+                                        <div class="space-y-1 text-center">
+                                        <span class="material-icons-outlined text-5xl text-gray-500">add_a_photo</span>
+                                        <p class="text-xs text-gray-500">
+                                            PNG, JPG up to 2MB
+                                        </p>
+                                        </div>
+                                    </div>
                                 @endif
                             </div>
-                                <x-secondary-button class="mt-2 mr-2 uppercase" type="button" x-on:click.prevent="$refs.photo.click()">
+                                <x-secondary-button class="mt-2 mr-2" type="button" x-on:click.prevent="$refs.photo.click()">
                                     {{ __('Select A Image') }}
                                 </x-secondary-button> 
                             <x-input-error for="photoOne" class="mt-2" />
                         </div>
-
                         <!-- Video link -->
                         <div class="col-span-6 sm:col-span-4">
                             <x-label for="video_url" value="{{ __('Video link YouTube ') }}" required/>
@@ -291,12 +307,12 @@
                 </x-input-section>
             </x-slot>
             <x-slot name="actions">
-                <x-jet-action-message class="mr-3" on="message">
+                <x-action-message class="mr-3" on="message">
                     {{ __($this->message) }}
-                </x-jet-action-message>
+                </x-action-message>
                 <x-button wire:loading.attr="disabled">
                    <span class="px-2 font-bold sm:text-base"> {{ __('Next') }}</span>
-                   <i class="uil uil-angle-right-b sm:text-base"></i>
+                   <span class="material-icons-outlined ml-1">arrow_forward_ios</span>
                 </x-button>
             </x-slot>
         </x-form-section-multiple>
@@ -307,4 +323,4 @@
     </x-slot>
 </x-section-content>
 </div>
-<livewire:footer/>
+<livewire:footer.footer-app/>

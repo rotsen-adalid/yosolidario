@@ -40,8 +40,14 @@
 
           <div class="hidden sm:flex sm:items-center sm:ml-6">
 
-            <div class="w-80">
-                <x-input-rounded id="search" class="block mt-1 w-full bg-gray-100" type="text" name="search" placeholder="{{ __('Search Campaigns') }}" />
+            <div class="relative text-gray-600 ">
+                <input type="text" name="serch" placeholder="{{__('Search Campaigns')}}" 
+                class="border border-gray-200 bg-white h-11 px-5 pr-10 rounded-full text-sm w-96 focus:border-green-500 focus:ring focus:ring-green-50 focus:ring-opacity-50 rounded-md shadow-sm">
+                <button type="submit" class="absolute right-0 mt-3 mr-2">
+                    <span class="material-icons-outlined cursor-pointer">
+                        search
+                    </span>
+                </button>
             </div>
 
               @auth
@@ -201,10 +207,16 @@
   </div>
 
   <!-- Responsive Navigation Menu -->
-  <div :class="{'block': open, 'hidden': ! open}" x-on:click.away="open = false" class="hidden sm:hidden ">
-        <div class="pt-2 px-4 pb-4">
-            <x-input-rounded id="search" class="block mt-1 w-full" type="text" name="search" placeholder="{{ __('Search Campaigns') }}" />
-        </div>  
+  <div :class="{'block': open, 'hidden': ! open}" x-on:click.away="open = false" class="hidden sm:hidden">
+        <div class="relative text-gray-600  mx-4 mb-2">
+            <input type="text" name="serch" placeholder="{{__('Search Campaigns')}}" 
+            class="border border-gray-200 bg-white h-11 px-5 pr-10 rounded-full text-sm w-full focus:border-green-500 focus:ring focus:ring-green-50 focus:ring-opacity-50 rounded-md shadow-sm">
+            <button type="submit" class="absolute right-0 mt-3 mr-2">
+                <span class="material-icons-outlined cursor-pointer">
+                    search
+                </span>
+            </button>
+        </div> 
         <div class="space-y-1">
             <x-responsive-nav-link href="{{ route('campaign/create') }}" :active="request()->routeIs('campaign/create')">
                 {{ __('Start a campaign') }}

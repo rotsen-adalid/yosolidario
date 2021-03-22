@@ -7,7 +7,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-10">
         @foreach ($collection as $item)
         <div class="px-0 sm:px-0 @if($collection->count() == 1) sm:col-start-2 @endif">
-            <div wire:click="view({{$item->id}})" wire:loading.attr="disabled" class="cursor-pointer bg-gray-300 h-56 w-full rounded-lg shadow-md bg-cover bg-center" 
+            <div wire:click="view({{$item->id}})" wire:loading.attr="disabled" class="cursor-pointer bg-gray-300 h-56 w-full rounded-lg shadow-md border border-gray-100 bg-cover bg-center" 
                 style="background-image: url({{ URL::to('/').$item->image->url}})">
             </div>
 

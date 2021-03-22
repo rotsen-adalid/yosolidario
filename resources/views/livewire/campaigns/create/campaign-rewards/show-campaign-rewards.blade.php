@@ -5,9 +5,10 @@
 
 </x-slot>
 <x-slot  name="menu">
-    @livewire('navigation')
+    <livewire:menu.navigation-app/>
 </x-slot>
-<div class="bg-gray-50">
+      
+<div class="mt-20 bg-gray-50">
 <x-section-content>
     <x-slot name="header">
         <header class="bg-white shadow pt-2 mb-10"> 
@@ -27,10 +28,12 @@
                 @if ($this->status_register == 'COMPLETE')
                 <div class="flex items-center leading-tight space-x-2">
                     <x-button wire:click="reviewConfirm" wire:loading.attr="disabled">
-                         <span class="uppercase">{{ __('Publish campaign') }}</span>
+                        <span class="material-icons-outlined pr-1">open_in_new</span>
+                        <span class="">{{ __('Publish campaign') }}</span>
                     </x-button>
                     <x-secondary-button wire:click="preview({{$this->campaign_id}})" wire:loading.attr="disabled">
-                        <span class="uppercase">{{ __('Preview') }}</span>
+                        <span class="material-icons-outlined pr-1">remove_red_eye</span>
+                        <span class="">{{ __('Preview') }}</span>
                     </x-secondary-button>
                 </div>
                 @endif
@@ -41,12 +44,12 @@
     <x-slot  name="content" >
         <x-section-title>
             <x-slot name="title">
-                <x-button wire:click="register" wire:loading.attr="disabled">
-                    <i class="uil uil-plus text-base"></i>
-                    <span class="py-1 px-1  text-base"> 
+                <x-secondary-button wire:click="register" wire:loading.attr="disabled">
+                    <span class="material-icons-outlined pr-1">add</span>
+                    <span class=""> 
                         {{ __('Reward') }}
                     </span>
-                </x-button>
+                </x-secondary-button>
             </x-slot>
             <x-slot name="description">
                 <span class="text-sm sm:text-base">
@@ -66,8 +69,18 @@
                         style="background-image: url({{ URL::to('/').$item->image_url}})">
                     </div>
                 @else
+                    <!-- 
                     <div class="cursor-pointer bg-gray-300 h-56 w-full rounded-lg shadow-md bg-cover bg-center" 
-                        style="background-image: url({{asset('images/photo_upload.png')}})">
+                        style="background-image: url({asset('images/photo_upload.png')}})">
+                    </div>
+                    -->
+                    <div class="flex justify-center items-center px-6 pt-5 pb-6  bg-gray-200  rounded-md w-full h-56">
+                        <div class="space-y-1 text-center">
+                        <span class="material-icons-outlined text-5xl text-gray-500">photo</span>
+                        <p class="text-xs text-gray-500">
+                            PNG, JPG up to 2MB
+                        </p>
+                        </div>
                     </div>
                 @endif
                 
@@ -102,13 +115,15 @@
                     @endif
                     <!-- options -->
                     <hr class="mt-2 mb-3">
-                    <div class="flex justify-between items-start mt-5 sm:mt-0">
-                        <i class="uil uil-edit text-xl font-bold cursor-pointer" 
-                        wire:click="edit({{$item->id}})" wire:loading.attr="disabled"></i>
-
-                        <i class="uil uil-trash text-xl text-red-500 cursor-pointer" 
-                        wire:click="deleteDialog({{$item->id}})" wire:loading.attr="disabled"></i>
-
+                    <div class="flex justify-between items-center">
+                        <span wire:click="edit({{$item->id}})" wire:loading.attr="disabled" 
+                            class="material-icons-outlined text-xl font-bold cursor-pointer border border-gray-100 shadow-lg px-2 py-1 rounded-lg">
+                            edit
+                        </span>
+                        <span wire:click="deleteDialog({{$item->id}})" wire:loading.attr="disabled" 
+                            class="material-icons-outlined text-xl font-bold cursor-pointer text-red-500 border border-gray-100 shadow-lg px-2 py-1 rounded-lg">
+                            delete
+                        </span>
                     </div>
                 </div>
             </div>
@@ -126,8 +141,9 @@
         </div>
     </div>
         @endif
+       <!-- Send to review Modal -->
        @include('livewire.campaigns.create.send-to-review')
     </x-slot>
 </x-section-content>
 </div>
-<livewire:footer/>
+<livewire:footer.footer-app/>

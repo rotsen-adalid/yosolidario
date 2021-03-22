@@ -12,7 +12,7 @@ class RegisterUpdates extends Component
 {
     use WithFileUploads;
 
-    public $campaign_update_id, $title, $body, $update_photo_path, $campaign_id;
+    public $campaign_update_id, $title, $body, $update_photo_path, $campaign_id, $video_url;
     public $photoOne;
 
     public $campaign;
@@ -37,7 +37,7 @@ class RegisterUpdates extends Component
     public function StoreOrUpdate() {
 
         $this->validate([
-            'title' => 'required|min:3|max:200',
+            'title' => 'required|min:3|max:60',
             'body' => 'required',
         ]);
 
@@ -69,6 +69,12 @@ class RegisterUpdates extends Component
             $photo_url = Storage::url($photo);
             $record->image()->create([
                 'url' => $photo_url
+            ]);
+        }
+
+        if($this->video_url) {
+            $record->video()->create([
+                'url' => $this->video_url
             ]);
         }
 
@@ -113,6 +119,18 @@ class RegisterUpdates extends Component
             }
         }
 
+        if($this->video_url) {
+            if($record->video) {
+                $record->video()->update([
+                    'url' => $this->video_url
+                ]);
+            }else {
+                $record->video()->create([
+                    'url' => $this->video_url
+                ]);
+            }
+        }
+        
         $extract = 'An update is modified'.$record->id;
         $record->userHistories()->create([
             'photo_path' => null,
@@ -149,6 +167,11 @@ class RegisterUpdates extends Component
             $this->update_photo_path = $record->image->url;
         } else {
             $this->update_photo_path = null;
+        }
+        if($record->video) {
+            $this->video_url = $record->video->url;
+        } else {
+            $this->video_url = null;
         }
     }
 

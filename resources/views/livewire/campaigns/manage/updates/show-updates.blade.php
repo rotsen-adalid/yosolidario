@@ -7,7 +7,7 @@
 <x-slot  name="menu">
     @livewire('navigation')
 </x-slot>
-<div class="bg-violet-50">
+<div class="bg-purple-50">
 <x-section-content>
     <x-slot name="header">
         <livewire:campaigns.manage.show-header :campaign="$campaign"/>
@@ -17,7 +17,7 @@
         <x-section-title>
             <x-slot name="title">
                 <x-button class="ml-2 font-bold text-base" wire:click="addUpdates" wire:loading.attr="disabled">
-                    <i class="uil uil-plus text-base"></i>
+                    <span class="material-icons-outlined">add</span>
                     <span>{{__('Add update')}}</span>
                 </x-button>
             </x-slot>
@@ -69,27 +69,34 @@
                                 </span>
                             </div>
                             <div class="flex space-x-2">
-                                <i class="uil uil-edit text-lg font-bold cursor-pointer" 
-                                    wire:click="editUpdates({{$item->id}})" wire:loading.attr="disabled"></i>
-                                <i class="uil uil-trash text-lg text-red-500 cursor-pointer" 
-                                    wire:click="deleteConfirm({{$item->id}})" wire:loading.attr="disabled"></i>
+                                <span   wire:click="editUpdates({{$item->id}})" wire:loading.attr="disabled"
+                                        class="material-icons-outlined text-lg font-bold cursor-pointer shadow py-1 px-2 rounded-lg border border-gray-100">
+                                        edit
+                                </span>
+                                <span    wire:click="deleteConfirm({{$item->id}})" wire:loading.attr="disabled"
+                                        class="material-icons-outlined text-lg text-red-500 font-bold cursor-pointer shadow py-1 px-2 rounded-lg border border-gray-100">
+                                        delete
+                                </span>
                             </div>
-    
+                            @if ($item->video)
+                                <div class="flex justify-center items-center mt-5">
+                                    <iframe class=" h-40 w-full sm:h-96 sm:w-3/4" src="https://www.youtube.com/embed/{{$this->urlVideo($item->video->url)}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                </div> 
+                            @endif
                             <div class="mt-4 pb-10 sm:pb-5 flex flex-col-reverse sm:flex-col sm:block">
                                 @if ($item->image)
                                     <div @click="$dispatch('imgu-modal', {  imgModalSrcUpdates: '{{URL::to('/').$item->image->url}}', imgModalDescUpdates: '' })" class="flex justify-center sm:block">
                                         @if ($item->image->url)
-                                            <img class="h-auto w-80 mt-3 sm:mt-0 sm:mr-4 rounded cursor-pointer" src="{{URL::to('/').$item->image->url}}" 
+                                            <img class="h-auto w-64 mt-3 sm:mt-0 sm:mr-4 rounded cursor-pointer" src="{{URL::to('/').$item->image->url}}" 
                                             hspace="2" vspace="2" style="float: left;" />
                                         @endif
                                     </div>
                                 @endif
-
-                                 <div>
-                                     <div class="text-justify text-base">
-                                        {!! nl2br(e($item->body), false) !!}
-                                     </div>
-                                 </div>
+                                <div>
+                                    <div class="text-justify text-base">
+                                    {!! nl2br(e($item->body), false) !!}
+                                    </div>
+                                </div>
                              </div>
     
                         </div>
@@ -116,3 +123,5 @@
 </x-section-content>
 </div>
 <livewire:footer/>
+
+  

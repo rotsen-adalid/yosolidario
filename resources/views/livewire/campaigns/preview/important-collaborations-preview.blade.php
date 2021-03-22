@@ -2,7 +2,7 @@
     <div class="flex justify-start">
         <div class="flex items-center ">
             <div class="flex-shrink-0 w-12 h-12 cursor-pointer">
-                <i class=" text-black uil uil-user-circle text-5xl text-ys1"></i>
+                <span class="material-icons-outlined text-ys1 text-5xl">account_circle</span>
             </div>
 
             <div class="ml-3 space-y-2">

@@ -5,9 +5,10 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@iconscout/unicons@3.0.6/css/line.css">
 </x-slot>
 <x-slot  name="menu">
-    @livewire('navigation')
+    <livewire:menu.navigation-app/>
 </x-slot>
-<div class="bg-gray-50">
+      
+<div class="mt-20 bg-gray-50">
 <x-section-content>
     <x-slot name="header">
         <header class="bg-white shadow pt-2 mb-10"> 
@@ -27,10 +28,12 @@
                 @if ($this->status_register == 'COMPLETE')
                 <div class="flex items-center leading-tight space-x-2">
                     <x-button wire:click="reviewConfirm" wire:loading.attr="disabled">
-                        <span class="uppercase">{{ __('Publish campaign') }}</span>
+                        <span class="material-icons-outlined pr-1">open_in_new</span>
+                        <span class="">{{ __('Publish campaign') }}</span>
                     </x-button>
                     <x-secondary-button wire:click="preview({{$this->campaign_id}})" wire:loading.attr="disabled">
-                        <span class="uppercase">{{ __('Preview') }}</span>
+                        <span class="material-icons-outlined pr-1">remove_red_eye</span>
+                        <span class="">{{ __('Preview') }}</span>
                     </x-secondary-button>
                 </div>
                 @endif
@@ -78,12 +81,19 @@
                     <!-- Current Profile Photo -->
                     <div class="mt-2" x-show="!photoPreview">
                         @if( $this->about_url)
-                        <x-icon-button wire:click="deleteOne" class="absolute m-1 opacity-70">
-                            <i class="uil uil-trash text-base"></i>
-                        </x-icon-button>
+                            <x-icon-button wire:click="deleteOne" class="absolute m-1 opacity-70">
+                                <i class="uil uil-trash text-base"></i>
+                            </x-icon-button>
                             <img src="{{ URL::to('/') }}{{$this->about_url}}" alt="" class="rounded-sm h-60 sm:h-72 w-full object-cover">
                         @else 
-                            <img src="{{asset('images/photo_upload.png')}}" alt="" class="rounded-sm h-60 sm:h-72 w-full object-cover">
+                            <div class="mt-1 flex justify-center items-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md w-full h-60 sm:h-64">
+                                <div class="space-y-1 text-center">
+                                <span class="material-icons-outlined text-5xl text-gray-500">add_a_photo</span>
+                                <p class="text-xs text-gray-500">
+                                    PNG, JPG up to 2MB
+                                </p>
+                                </div>
+                            </div>
                         @endif
                     </div>
 
@@ -97,10 +107,17 @@
                                 </x-icon-button>
                             </span>
                         @else 
-                            <img src="{{asset('images/photo_upload.png')}}" alt="" class="rounded-sm h-60 sm:h-72 w-full object-cover">
+                            <div class="mt-1 flex justify-center items-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md w-full h-60 sm:h-64">
+                                <div class="space-y-1 text-center">
+                                <span class="material-icons-outlined text-5xl text-gray-500">add_a_photo</span>
+                                <p class="text-xs text-gray-500">
+                                    PNG, JPG up to 2MB
+                                </p>
+                                </div>
+                            </div>
                         @endif
                     </div>
-                    <x-secondary-button class="mt-2 mr-2 uppercase" type="button" x-on:click.prevent="$refs.photo.click()">
+                    <x-secondary-button class="mt-2 mr-2" type="button" x-on:click.prevent="$refs.photo.click()">
                         {{ __('Select A Image') }}
                     </x-secondary-button>
                     
@@ -151,7 +168,14 @@
                         </x-icon-button>
                             <img src="{{ URL::to('/') }}{{$this->use_of_money_url}}" alt="" class="rounded-sm h-60 sm:h-72 w-full object-cover">
                         @else 
-                            <img src="{{asset('images/photo_upload.png')}}" alt="" class="rounded-sm h-60 sm:h-72 w-full object-cover">
+                            <div class="mt-1 flex justify-center items-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md w-full h-60 sm:h-64">
+                                <div class="space-y-1 text-center">
+                                <span class="material-icons-outlined text-5xl text-gray-500">add_a_photo</span>
+                                <p class="text-xs text-gray-500">
+                                    PNG, JPG up to 2MB
+                                </p>
+                                </div>
+                            </div>
                         @endif
                     </div>
 
@@ -165,10 +189,17 @@
                                 </x-icon-button>
                             </span>
                         @else 
-                            <img src="{{asset('images/photo_upload.png')}}" alt="" class="rounded-sm h-60 sm:h-72 w-full object-cover">
+                            <div class="mt-1 flex justify-center items-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md w-full h-60 sm:h-64">
+                                <div class="space-y-1 text-center">
+                                <span class="material-icons-outlined text-5xl text-gray-500">add_a_photo</span>
+                                <p class="text-xs text-gray-500">
+                                    PNG, JPG up to 2MB
+                                </p>
+                                </div>
+                            </div>
                         @endif
                     </div>
-                    <x-secondary-button class="mt-2 mr-2 uppercase" type="button" x-on:click.prevent="$refs.photo.click()">
+                    <x-secondary-button class="mt-2 mr-2" type="button" x-on:click.prevent="$refs.photo.click()">
                         {{ __('Select A Image') }}
                     </x-secondary-button>
                     
@@ -219,7 +250,14 @@
                         </x-icon-button>
                             <img src="{{ URL::to('/') }}{{$this->about_organizer_url}}" alt="" class="rounded-sm h-60 sm:h-72 w-full object-cover">
                         @else 
-                            <img src="{{asset('images/photo_upload.png')}}" alt="" class="rounded-sm h-60 sm:h-72 w-full object-cover">
+                            <div class="mt-1 flex justify-center items-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md w-full h-60 sm:h-64">
+                                <div class="space-y-1 text-center">
+                                <span class="material-icons-outlined text-5xl text-gray-500">add_a_photo</span>
+                                <p class="text-xs text-gray-500">
+                                    PNG, JPG up to 2MB
+                                </p>
+                                </div>
+                            </div>
                         @endif
                     </div>
 
@@ -233,10 +271,17 @@
                                 </x-icon-button>
                             </span>
                         @else 
-                            <img src="{{asset('images/photo_upload.png')}}" alt="" class="rounded-sm h-60 sm:h-72 w-full object-cover">
+                            <div class="mt-1 flex justify-center items-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md w-full h-60 sm:h-64">
+                                <div class="space-y-1 text-center">
+                                <span class="material-icons-outlined text-5xl text-gray-500">add_a_photo</span>
+                                <p class="text-xs text-gray-500">
+                                    PNG, JPG up to 2MB
+                                </p>
+                                </div>
+                            </div>
                         @endif
                     </div>
-                    <x-secondary-button class="mt-2 mr-2 uppercase" type="button" x-on:click.prevent="$refs.photo.click()">
+                    <x-secondary-button class="mt-2 mr-2" type="button" x-on:click.prevent="$refs.photo.click()">
                         {{ __('Select A Image') }}
                     </x-secondary-button>
                     
@@ -287,7 +332,14 @@
                         </x-icon-button>
                             <img src="{{ URL::to('/') }}{{$this->delivery_of_rewards_url}}" alt="" class="rounded-sm h-60 sm:h-72 w-full object-cover">
                         @else 
-                            <img src="{{asset('images/photo_upload.png')}}" alt="" class="rounded-sm h-60 sm:h-72 w-full object-cover">
+                            <div class="mt-1 flex justify-center items-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md w-full h-60 sm:h-64">
+                                <div class="space-y-1 text-center">
+                                <span class="material-icons-outlined text-5xl text-gray-500">add_a_photo</span>
+                                <p class="text-xs text-gray-500">
+                                    PNG, JPG up to 2MB
+                                </p>
+                                </div>
+                            </div>
                         @endif
                     </div>
 
@@ -301,10 +353,17 @@
                                 </x-icon-button>
                             </span>
                         @else 
-                            <img src="{{asset('images/photo_upload.png')}}" alt="" class="rounded-sm h-60 sm:h-72 w-full object-cover">
+                            <div class="mt-1 flex justify-center items-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md w-full h-60 sm:h-64">
+                                <div class="space-y-1 text-center">
+                                <span class="material-icons-outlined text-5xl text-gray-500">add_a_photo</span>
+                                <p class="text-xs text-gray-500">
+                                    PNG, JPG up to 2MB
+                                </p>
+                                </div>
+                            </div>
                         @endif
                     </div>
-                    <x-secondary-button class="mt-2 mr-2 uppercase" type="button" x-on:click.prevent="$refs.photo.click()">
+                    <x-secondary-button class="mt-2 mr-2" type="button" x-on:click.prevent="$refs.photo.click()">
                         {{ __('Select A Image') }}
                     </x-secondary-button>
                     
@@ -355,7 +414,14 @@
                         </x-icon-button>
                             <img src="{{ URL::to('/') }}{{$this->contact_organizer_url}}" alt="" class="rounded-smh-60 sm:h-72 w-full object-cover">
                         @else 
-                            <img src="{{asset('images/photo_upload.png')}}" alt="" class="rounded-sm h-60 sm:h-72 w-full object-cover">
+                            <div class="mt-1 flex justify-center items-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md w-full h-60 sm:h-64">
+                                <div class="space-y-1 text-center">
+                                <span class="material-icons-outlined text-5xl text-gray-500">add_a_photo</span>
+                                <p class="text-xs text-gray-500">
+                                    PNG, JPG up to 2MB
+                                </p>
+                                </div>
+                            </div>
                         @endif
                     </div>
 
@@ -369,10 +435,17 @@
                                 </x-icon-button>
                             </span>
                         @else 
-                            <img src="{{asset('images/photo_upload.png')}}" alt="" class="rounded-sm h-60 sm:h-72 w-full object-cover">
+                            <div class="mt-1 flex justify-center items-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md w-full h-60 sm:h-64">
+                                <div class="space-y-1 text-center">
+                                <span class="material-icons-outlined text-5xl text-gray-500">add_a_photo</span>
+                                <p class="text-xs text-gray-500">
+                                    PNG, JPG up to 2MB
+                                </p>
+                                </div>
+                            </div>
                         @endif
                     </div>
-                    <x-secondary-button class="mt-2 mr-2 uppercase" type="button" x-on:click.prevent="$refs.photo.click()">
+                    <x-secondary-button class="mt-2 mr-2" type="button" x-on:click.prevent="$refs.photo.click()">
                         {{ __('Select A Image') }}
                     </x-secondary-button>
                     
@@ -429,7 +502,14 @@
                         </x-icon-button>
                             <img src="{{ URL::to('/') }}{{$this->question_url_add}}" alt="" class="rounded-sm h-60 sm:h-72 w-full object-cover">
                         @else 
-                            <img src="{{asset('images/photo_upload.png')}}" alt="" class="rounded-sm h-60 sm:h-72 w-full object-cover">
+                            <div class="mt-1 flex justify-center items-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md w-full h-60 sm:h-64">
+                                <div class="space-y-1 text-center">
+                                <span class="material-icons-outlined text-5xl text-gray-500">add_a_photo</span>
+                                <p class="text-xs text-gray-500">
+                                    PNG, JPG up to 2MB
+                                </p>
+                                </div>
+                            </div>
                         @endif
                     </div>
 
@@ -443,10 +523,17 @@
                                 </x-icon-button>
                             </span>
                         @else 
-                            <img src="{{asset('images/photo_upload.png')}}" alt="" class="rounded-sm h-60 sm:h-72 w-full object-cover">
+                            <div class="mt-1 flex justify-center items-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md w-full h-60 sm:h-64">
+                                <div class="space-y-1 text-center">
+                                <span class="material-icons-outlined text-5xl text-gray-500">add_a_photo</span>
+                                <p class="text-xs text-gray-500">
+                                    PNG, JPG up to 2MB
+                                </p>
+                                </div>
+                            </div>
                         @endif
                     </div>
-                    <x-secondary-button class="mt-2 mr-2 uppercase" type="button" x-on:click.prevent="$refs.photo.click()">
+                    <x-secondary-button class="mt-2 mr-2" type="button" x-on:click.prevent="$refs.photo.click()">
                         {{ __('Select A Image') }}
                     </x-secondary-button>
                     
@@ -461,13 +548,13 @@
             </x-action-message>
             <x-button wire:loading.attr="disabled">
                 <span class="px-2 font-bold sm:text-base"> {{ __('Next') }}</span>
-                   <i class="uil uil-angle-right-b sm:text-base"></i>
+                <span class="material-icons-outlined ml-1">arrow_forward_ios</span>
             </x-button>
         </x-slot>
         </x-form-section-multiple>
-         <!-- Send to review Modal -->
+        <!-- Send to review Modal -->
         @include('livewire.campaigns.create.send-to-review')
     </x-slot>
 </x-section-content>
 </div>
-<livewire:footer/>
+<livewire:footer.footer-app/>

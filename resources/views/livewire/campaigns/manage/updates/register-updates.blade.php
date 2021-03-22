@@ -1,8 +1,8 @@
 <x-slot name="title">
     @if ($campaign_update_id)
-        {{ __('Update data') }}
+        {{ __('Update data') }} : YoSolidario
     @else
-        {{ __('New update') }}
+        {{ __('New update') }} : YoSolidario
     @endif
 </x-slot>
 <x-slot  name="seo">
@@ -11,7 +11,7 @@
 <x-slot  name="menu">
     @livewire('navigation')
 </x-slot>
-<div class="bg-violet-50">
+<div class="bg-purple-50">
 <x-section-content>
     <x-slot name="header">
         <livewire:campaigns.manage.show-header :campaign="$campaign"/>
@@ -67,12 +67,19 @@
                     <!-- Current Profile Photo -->
                     <div class="mt-2" x-show="!photoPreview">
                         @if( $update_photo_path)
-                            <x-icon-button wire:click="deleteOne" class="absolute m-1 opacity-70">
-                                <i class="uil uil-trash text-base"></i>
+                            <x-icon-button wire:click="deleteOne" class="py-1 m-1 m-1 opacity-70">
+                                <span class="material-icons-outlined">delete</span>
                             </x-icon-button>
                             <img src="{{ URL::to('/') }}{{$update_photo_path}}" alt="" class="rounded-sm h-60 sm:h-64 w-full object-cover">
                         @else 
-                            <img src="{{asset('images/photo_upload.png')}}" alt="" class="rounded-sm h-60 sm:h-64 w-full object-cover">
+                            <div class="mt-1 flex justify-center items-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md w-full h-60 sm:h-64">
+                                <div class="space-y-1 text-center">
+                                <span class="material-icons-outlined text-5xl text-gray-500">add_a_photo</span>
+                                <p class="text-xs text-gray-500">
+                                    PNG, JPG up to 2MB
+                                </p>
+                                </div>
+                            </div>
                         @endif
                     </div>
 
@@ -81,21 +88,33 @@
                         @if($photoOne)
                             <span class="block rounded-sm w-full h-60 sm:h-64"
                                 x-bind:style="'background-size: cover; background-repeat: no-repeat; background-position: center center; background-image: url(\'' + photoPreview + '\');'">
-                                <x-icon-button wire:click="deleteOne" class="m-1 opacity-70">
-                                    <i class="uil uil-trash text-base"></i>
+                                <x-icon-button wire:click="deleteOne" class="py-1 m-1 opacity-70">
+                                    <span class="material-icons-outlined">delete</span>
                                 </x-icon-button>
                             </span>
                         @else 
-                            <img src="{{asset('images/photo_upload.png')}}" alt="" class="rounded-sm h-60 sm:h-64 w-full object-cover">
+                            <div class="mt-1 flex justify-center items-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md w-full h-60 sm:h-64">
+                                <div class="space-y-1 text-center">
+                                <span class="material-icons-outlined text-5xl text-gray-500">add_a_photo</span>
+                                <p class="text-xs text-gray-500">
+                                    PNG, JPG up to 2MB
+                                </p>
+                                </div>
+                            </div>
                         @endif
                     </div>
-
-                    <x-secondary-button class="mt-2 mr-2 uppercase" type="button" x-on:click.prevent="$refs.photo.click()">
+                    <x-secondary-button class="mt-2 mr-2" type="button" x-on:click.prevent="$refs.photo.click()">
                         {{ __('Select A Image') }}
                     </x-secondary-button>
-
                     <x-input-error for="photoOne" class="mt-2" />
                 </div>
+                <!-- Video link  -->
+                <div class="col-span-6 sm:col-span-4">
+                    <x-label for="video_url" value="{{ __('Video link YouTube ') }}"/>
+                    <x-input id="video_url" type="text" class="mt-1 block w-full" wire:model.defer="video_url"  autocomplete="off" minlength="3" maxlength="50"/>
+                    <x-input-error for="video_url" class="mt-2" />
+                </div>
+                
             </x-slot>
             <x-slot name="actions">
                 <x-button class="text-sm" wire:loading.attr="disabled">

@@ -75,15 +75,15 @@
         </div>
         <!-- -->
         <div class="pt-6 pb-10 sm:pb-5 flex flex-col-reverse sm:flex-col sm:block border-b">
-           <div @click="$dispatch('img-modal', {  imgModalSrc: '{{URL::to('/').$this->campaign->campaignQuestion->delivery_of_awards_url}}', imgModalDesc: '' })" class="flex justify-center sm:block">
-                @if($this->campaign->campaignQuestion->delivery_of_awards_url)
-                    <img class="h-auto w-80 mt-3 sm:mt-0 sm:mr-4 rounded cursor-pointer" src="{{URL::to('/').$this->campaign->campaignQuestion->delivery_of_awards_url}}" 
+           <div @click="$dispatch('img-modal', {  imgModalSrc: '{{URL::to('/').$this->campaign->campaignQuestion->delivery_of_rewards_url}}', imgModalDesc: '' })" class="flex justify-center sm:block">
+                @if($this->campaign->campaignQuestion->delivery_of_rewards_url)
+                    <img class="h-auto w-80 mt-3 sm:mt-0 sm:mr-4 rounded cursor-pointer" src="{{URL::to('/').$this->campaign->campaignQuestion->delivery_of_rewards_url}}" 
                     hspace="2" vspace="2" style="float: left;" />
                 @endif
            </div>
             <div class="">
                 <div class=" mb-5 font-bold py-1 text-lg">
-                    {{__('How and when are the awards delivered?')}}
+                    {{__('How and when are the rewards delivered?')}}
                 </div>
                 <div class="text-justify">
                     {!! nl2br(e($this->campaign->campaignQuestion->delivery_of_rewards), false) !!}

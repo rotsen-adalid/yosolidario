@@ -25,9 +25,9 @@ class OrganizationAgreement extends Model
     ];
    
     // uno a muchos inversa
-    public function organizationAgreement()
+    public function organization()
     {
-        return $this->belongsTo(OrganizationAgreement::class);
+        return $this->belongsTo(Organization::class);
     }
     // relacion polimorfica uno a muchos
     public function userHistories() {

@@ -2,8 +2,9 @@
 <div class="bg-transparent lg:pt-12 lg:flex lg:justify-center mt-10 sm:-mt-28">
     <div class="bg-white lg:mx-8 lg:flex lg:max-w-5xl shadow-lg rounded-lg  w-full lg:h-56">
         <div class=" w-full lg:w-96">
-            <div class="h-44 lg:h-64 bg-cover rounded-t-lg sm:rounded-t-none lg:rounded-r-none lg:rounded-l-lg lg:h-full" 
-                style="background-image:url('{{ URL::to('/').$collection[0]->campaign->image->url}}')"></div>
+            <div wire:click="view({{$collection[0]->id}})" wire:loading.attr="disabled" class="cursor-pointer h-44 lg:h-64 bg-cover rounded-t-lg sm:rounded-t-none lg:rounded-r-none lg:rounded-l-lg lg:h-full" 
+                style="background-image:url('{{ URL::to('/').$collection[0]->campaign->image->url}}')">
+            </div>
         </div>
         <div class="py-6 px-4  lg:w-full">
             <h2 class="text-base text-pink-700 font-bold uppercase">{{__('Urgent campaign')}}</h2>

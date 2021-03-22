@@ -5,9 +5,10 @@
    
 </x-slot>
 <x-slot  name="menu">
-    @livewire('navigation')
+    <livewire:menu.navigation-app/>
 </x-slot>
-<div class="bg-gray-50">
+      
+<div class="mt-20 bg-gray-50">
 <x-section-content>
     <x-slot name="header">
         <div class="bg-white shadow mb-10"> 
@@ -16,8 +17,8 @@
                     {{ __('Your campaigns') }}
                 </div>
                 <div>
-                    <a  href="{{ route('campaign/create') }}" class="w-full px-4 py-2 sm:py-3 text-center border bg-ys1 rounded-md font-bold text-base text-white tracking-widest hover:bg-ys2 active:bg-ys2 focus:outline-none focus:border-gray-100 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
-                        <i class="uil uil-plus text-base"></i>
+                    <a  href="{{ route('campaign/create') }}" class="flex items-center w-full px-3 py-1 sm:py-2 text-center border bg-ys1 rounded-md font-bold text-base text-white tracking-widest hover:bg-ys2 active:bg-ys2 focus:outline-none focus:border-gray-100 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
+                        <span class="material-icons-outlined">add</span>
                         <span>{{__('Start a campaign')}}</span>
                     </a>
                 </div>
@@ -56,6 +57,18 @@
                         <div class="h-2 w-2 rounded-full m-1 bg-green-500 " ></div>
                     </div>
                     <div>{{__('In campaign')}}</div>
+                @elseif ($item->status == 'INACTIVE')
+                    @if ($item->campaignOpeningRequest)
+                        @if ($item->campaignOpeningRequest->status == 'REJECTED')
+                            <div class="category-badge flex-1  h-4 w-4 m rounded-full m-1 bg-red-100">
+                                <div class="h-2 w-2 rounded-full m-1 bg-red-500 " ></div>
+                            </div>
+                            <div>{{__('Rejected')}}</div>
+                        @endif
+                    @else
+                        
+                    @endif
+                   
                 @endif
             </div>
             <div class="space-x-1">
@@ -107,22 +120,21 @@
       
       <!-- -->
       <hr class="mt-5 mb-5">
-      <div class="flex justify-between items-start mt-5 sm:mt-3">
+      <div class="flex justify-between mt-5 sm:mt-3 h-9 items-center">
         @if ($item->status == 'DRAFT')
-            <x-button wire:click="editCampaign({{$item->id}})" wire:loading.attr="disabled">
-                <span class="text-base capitalize">{{ __('Edit') }}</span>
-            </x-button>
-            <x-secondary-button wire:click="view({{$item->id}})" wire:loading.attr="disabled">
-                <span class="text-base capitalize">{{ __('Preview') }}</span>
-            </x-secondary-button>
+            <span wire:click="editCampaign({{$item->id}})" wire:loading.attr="disabled" 
+                class="material-icons-outlined cursor-pointer">edit</span>
+            <span wire:click="view({{$item->id}})" wire:loading.attr="disabled"
+                class="material-icons-outlined cursor-pointer">remove_red_eye</span>
         @elseif ($item->status == 'IN_REVIEW')
-            <button wire:click="view({{$item->id}})" wire:loading.attr="disabled" class="w-full px-4 py-2 text-center border border-ys1 rounded-md font-bold text-base  text-ys1 tracking-widest hover:text-ys2 hover:border-ys2 focus:border-bg-ys2 active:bg-ys2 focus:outline-none focus:border-bg-ys2 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
-                <span>{{ __('See publication') }}</span>
-            </button>
+            <x-secondary-button class="w-full justify-center" wire:click="view({{$item->id}})" wire:loading.attr="disabled">
+                <span class="material-icons-outlined pr-1">remove_red_eye</span>
+                <span class="text-base capitalize">{{ __('See publication') }}</span>
+            </x-secondary-button>
         @elseif ($item->status == 'PUBLISHED')
-            <button wire:click="manage({{$item->id}})" wire:loading.attr="disabled" class="w-full px-4 py-2 text-center border border-ys1 rounded-md font-bold text-base  text-ys1 tracking-widest hover:text-ys2 hover:border-ys2 focus:border-bg-ys2 active:bg-ys2 focus:outline-none focus:border-bg-ys2 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
-                <span>{{__('Manage')}}</span>
-            </button>
+            <x-secondary-button class="w-full justify-center" wire:click="manage({{$item->id}})" wire:loading.attr="disabled">
+                <span class="text-base capitalize text-ys1">{{ __('Manage') }}</span>
+            </x-secondary-button>
         @endif
       </div>
 
@@ -139,17 +151,17 @@
             <h2 class="mt-6 text-center text-xl font-light">
                 {{ __('You have no campaigns') }}
             </h2>
-            <p class="mt-2 mb-16 text-center">
+            <p class="mt-3 mb-16 text-center">
                 <x-button wire:click="createCampaign" wire:loading.attr="disabled">
-                    <span class="text-base">{{ __('Start campaign') }}</span>
+                    <span class="material-icons-outlined pr-1">add</span>
+                    <span class="text-base">{{ __('Start a campaign') }}</span>
                 </x-button>
             </p>
           </div>
-    
         </div>
     </div>
     @endif
   </x-slot>
 </x-section-content>
 </div>
-<livewire:footer/>
+<livewire:footer.footer-app/>

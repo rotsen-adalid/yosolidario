@@ -5,8 +5,8 @@
             <span class="font-bold text-base">{{ __('Continue') }}</span>
         </x-button>
     </div>
-    <div class="text-base mt-10 cursor-pointer ">
-        <i class=" text-black uil uil-receipt-alt"></i>
+    <a href="{{route('fraud/register-campaign', $campaign)}}" class="flex justify-start items-center text-base mt-10 cursor-pointer ">
+        <span class="material-icons-outlined">flag</span>
         <span class="underline semibold">{{__('Report fundraiser')}}</span>
-    </div>
+    </a>
 </div>

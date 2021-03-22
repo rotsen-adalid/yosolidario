@@ -7,12 +7,12 @@
     </x-slot>
     <x-slot name="content">
         <x-slot name="footer">
-            <x-secondary-button class="uppercase" wire:click="$toggle('deleteConfirm')" wire:loading.attr="disabled">
+            <x-secondary-button wire:click="$toggle('deleteConfirm')" wire:loading.attr="disabled">
                 {{ __('Nevermind') }}
             </x-secondary-button>
-            <x-button class="ml-2 uppercase" wire:click="delete" wire:loading.attr="disabled">
+            <x-danger-button class="ml-2" wire:click="delete" wire:loading.attr="disabled">
                 {{ __('Delete') }}
-            </x-button>
+            </x-danger-button>
         </x-slot>
     </x-slot>
 </x-dialog-modal>

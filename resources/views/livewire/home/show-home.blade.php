@@ -21,10 +21,10 @@
   
 </x-slot>
 <x-slot  name="menu">
-    @livewire('navigation')
+    <livewire:menu.navigation-app/>
 </x-slot>
   
-<div class="">
+<div class="mt-20">
  
 <livewire:home.hero-home/>
 
@@ -37,12 +37,12 @@
 </div>
 
 <!-- Start a campaign -->
-<div class=" bg-red-50 py-16 sm:py-20">
+<div class=" bg-gray-50 py-16 sm:py-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 sm:mt-5">
-        <div class="text-center text-xl sm:text-2xl font-bold">{{__('Ready to start fundraising?')}}</div>
+        <div class="text-center text-xl sm:text-3xl font-bold">{{__('Ready to start fundraising?')}}</div>
         <div class="get-app flex space-x-5 mt-2 sm:mt-2 justify-center md:justify-center">
             <button wire:click="createCampaign" wire:loading.attr="disabled" 
-            class="focus:outline-none text-white text-lg font-semibold bg-ys1 shadow-md px-3 py-2 rounded-md flex items-center space-x-4 hover:text-white mt-4 hover:bg-ys2">
+            class="font-bold focus:outline-none text-white text-lg font-semibold bg-ys1 shadow-lg px-6 py-3 rounded-md flex items-center space-x-4 hover:text-white mt-4 hover:bg-ys2">
             {{ __('Start a campaign') }}
             </button>
         </div>
@@ -51,4 +51,4 @@
 <!-- End Start -->
 
 </div>
-<livewire:footer/>
+<livewire:footer.footer-app/>

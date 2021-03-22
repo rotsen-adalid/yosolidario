@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire\Home;
 use Livewire\Component;
+
+use App\Models\Campaign;
 use Illuminate\Support\Facades\Http;
 
 use App\Models\CampaignUrgent;
@@ -38,6 +40,11 @@ class CampaignUrgentHome extends Component
         return view('livewire.home.campaign-urgent-home',[
             'collection' => $collection
             ]);
+    }
+
+    public function view($id) {
+        $record = Campaign::findOrFail($id);
+        return redirect()->route('campaign/published', ['slug' => $record->slug]);
     }
 
     public function collaborate() {

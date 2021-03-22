@@ -10,4 +10,9 @@ class ShowAboutUs extends Component
     {
         return view('livewire.about.about-us.show-about-us');
     }
+
+    public function createCampaign()
+    {
+        return redirect()->route('campaign/create');
+    }
 }

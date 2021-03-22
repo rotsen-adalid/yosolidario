@@ -9,7 +9,9 @@ use Illuminate\Support\Str as Str;
 use App\Models\Campaign;
 use App\Models\CampaignQuestion;
 use App\Models\CampaignReward;
+use App\Models\Notice;
 use App\Models\Organization;
+use App\Notifications\TelegramNotification;
 use Carbon\Carbon;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Storage;
@@ -73,6 +75,7 @@ class CampaignDetails extends Component
 
     public function render()
     { 
+        $this->agency();
         $this->collection_agencies = Agency::All();
         $this->collection_countries = DB::table('countries')
                                         ->where('status_published_campaign', 'ACTIVE')
@@ -94,12 +97,13 @@ class CampaignDetails extends Component
     // create
     public function Store() {
         if ($this->type_campaign == 'ORGANIZATION')
+        {
             $this->validate([
-                'title' => 'required|min:10|max:60',
+                'title' => 'required|min:5|max:60',
                 'category_campaign_id' => 'required',
-                'slug' => "required|min:10|max:200|alpha_dash|unique:campaigns,slug",
+                'slug' => "required|min:3|max:60|alpha_dash|unique:campaigns,slug",
                 'photoOne' => 'image|max:2048',
-                'extract' => 'required|min:60|max:170',
+                'extract' => 'required|min:5|max:170',
                 'type_campaign' => 'required',
                 'organization_id' => 'required',
                 'locality' => 'required|min:3|max:100',
@@ -110,13 +114,14 @@ class CampaignDetails extends Component
                 'telephone' => 'required|digits_between:7,15',
                 'video_url' => 'required|url'
             ]);
+        }
         else {
             $this->validate([
-                'title' => 'required|min:10|max:60',
+                'title' => 'required|min:5|max:60',
                 'category_campaign_id' => 'required',
-                'slug' => "required|min:10|max:200|alpha_dash|unique:campaigns,slug",
+                'slug' => "required|min:3|max:60|alpha_dash|unique:campaigns,slug",
                 'photoOne' => 'image|max:2048',
-                'extract' => 'required|min:60|max:170',
+                'extract' => 'required|min:5|max:170',
                 'type_campaign' => 'required',
                 'locality' => 'required|min:3|max:100',
                 'agency_id' => 'required',
@@ -209,11 +214,11 @@ class CampaignDetails extends Component
         
         if ($this->type_campaign == 'ORGANIZATION')
             $this->validate([
-                'title' => 'required|min:10|max:60',
+                'title' => 'required|min:5|max:60',
                 'category_campaign_id' => 'required',
-                'slug' => "required|min:3|max:200|alpha_dash|unique:campaigns,slug,$this->campaign_id",
+                'slug' => "required|min:3|max:60|alpha_dash|unique:campaigns,slug,$this->campaign_id",
                 //'photoOne' => 'image|max:2048',
-                'extract' => 'required|min:60|max:170',
+                'extract' => 'required|min:5|max:170',
                 'type_campaign' => 'required',
                 'organization_id' => 'required',
                 'locality' => 'required|min:3|max:100',
@@ -228,11 +233,11 @@ class CampaignDetails extends Component
             ]);
         else {
             $this->validate([
-                'title' => 'required|min:10|max:60',
+                'title' => 'required|min:5|max:60',
                 'category_campaign_id' => 'required',
-                'slug' => "required|min:3|max:200|alpha_dash|unique:campaigns,slug,$this->campaign_id",
+                'slug' => "required|min:3|max:60|alpha_dash|unique:campaigns,slug,$this->campaign_id",
                 //'photoOne' => 'image|max:2048',
-                'extract' => 'required|min:60|max:170',
+                'extract' => 'required|min:5|max:170',
                 'type_campaign' => 'required',
                 'locality' => 'required|min:3|max:100',
                 'agency_id' => 'required',
@@ -397,7 +402,7 @@ class CampaignDetails extends Component
             $this->collection_organization = Organization::
             join('organization_agreements', 'organizations.id', '=', 'organization_agreements.organization_id')
             ->where('organization_agreements.status', '=', 'ACTIVE')
-            ->where('organizations.country_id', '=' , $record->country_id)
+            //->where('organizations.agency_id', '=' , $this->agency_id)
             ->get();
 
         } else {
@@ -457,7 +462,24 @@ class CampaignDetails extends Component
                 ]);
         }
        
-        
+        // notification telegram
+        $host= $_SERVER["HTTP_HOST"];
+        if($host == 'yosolidario.test') {
+            $host = 'http://yosolidario.test';
+        } elseif($host == 'yosolidario.com') {
+            $host = 'https://yosolidario.com';
+        }
+
+        $notice = new Notice([
+            'telegramid' => $record->agency->telegram->çhat_id,
+            'notice' => 'Nueva camapaña',
+            'linkOne' => $host.'/'.$record->slug,
+            'linkTwo' => $host.'/user'.'/'.$record->user->slug,
+            'action' => 'CAMPAIGN_IN_REVIEW'
+        ]);
+        $notice->notify(new TelegramNotification);
+        // end notification telegram
+
         $this->confirmingSendReview = false;
         return redirect()->route('your/campaigns');
     }
@@ -518,7 +540,7 @@ class CampaignDetails extends Component
             $this->amountTwo = 100;
             $this->amountThree = 150;
             $this->amountFour = 200;
-            $this->amountFive = 200;
+            $this->amountFive = 250;
         }
 
         $recordOne = CampaignReward::create([

@@ -38,7 +38,7 @@
     <div class="flex justify-between items-start mt-3 md:mt-2">
         <div class="text-sm sm:text-base ">
             <div class="text-black font-bold underline">
-                <span>{{$this->campaign->campaignCollected->collaborators}}</span>
+                <span>{{round($this->campaign->campaignCollected->collaborators)}}</span>
             </div>
             <div class="space-x-1">
                 <span>{{__('Collaborators')}} </span>
@@ -46,7 +46,7 @@
         </div>
         <div class="text-sm sm:text-base ">
             <div class="text-black font-bold">
-                <span>{{$this->campaign->shareds}}</span>
+                <span>{{round($this->campaign->shareds)}}</span>
             </div>
             <div class="space-x-1">
                 <span>{{__('Shares')}} </span>
@@ -82,19 +82,21 @@
     <div class="flex mt-2 space-x-2">
         @if ($this->saveStatus)
             <button wire:click="deleteSaveCampaign({{$this->campaign_save_id}})" wire:loading.attr="disabled" 
-                class="w-full text-center px-4 py-1 sm:py-3 bg-white border border-gray-300 rounded-md font-bold text-sm text-black uppercase tracking-widest shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">
-                <i class="text-black uil uil-bookmark text-red-500 font-bold"></i>
+                class="flex justify-center items-center w-full text-center px-4 py-1 sm:py-3 bg-white border border-gray-300 rounded-md font-bold text-sm text-black uppercase tracking-widest shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">
+                <span class="material-icons-outlined">bookmark</span>
                 {{__('Saved')}}
             </button>
         @else
-            <button wire:click="saveCampaign({{$this->campaign->id}})" wire:loading.attr="disabled" class="w-full text-center px-4 py-1 sm:py-3 bg-white border border-gray-300 rounded-md font-bold text-sm text-black uppercase tracking-widest shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">
-                <i class="text-black uil uil-bookmark"></i>
+            <button wire:click="saveCampaign({{$this->campaign->id}})" wire:loading.attr="disabled" 
+                class="flex justify-center items-center w-full text-center px-4 py-1 sm:py-3 bg-white border border-gray-300 rounded-md font-bold text-sm text-black uppercase tracking-widest shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">
+                <span class="material-icons-outlined">bookmark_add</span>
                 {{__('Remind me')}}
             </button>
         @endif
 
-        <button  wire:click="shared" class="w-full text-center px-4  py-1 sm:py-3 bg-white border border-gray-300 rounded-md font-bold text-sm text-black uppercase tracking-widest shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">
-            <i class="text-black uil uil-share-alt"></i>
+        <button  wire:click="shared" 
+            class="flex justify-center items-center w-full text-center px-4  py-1 sm:py-3 bg-white border border-gray-300 rounded-md font-bold text-sm text-black uppercase tracking-widest shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">
+            <span class="material-icons-outlined">share</span>
             {{__('Share')}}
         </button>
     </div>

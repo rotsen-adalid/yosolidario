@@ -34,11 +34,11 @@
     </x-slot>
 
     <x-slot name="footer">
-        <x-secondary-button class="uppercase" wire:click="stopConfirmingPassword" wire:loading.attr="disabled">
+        <x-secondary-button class="" wire:click="stopConfirmingPassword" wire:loading.attr="disabled">
             {{ __('Nevermind') }}
         </x-secondary-button>
 
-        <x-button class="ml-2 uppercase" dusk="confirm-password-button" wire:click="confirmPassword" wire:loading.attr="disabled">
+        <x-button class="ml-2 " dusk="confirm-password-button" wire:click="confirmPassword" wire:loading.attr="disabled">
             {{ $button }}
         </x-button>
     </x-slot>

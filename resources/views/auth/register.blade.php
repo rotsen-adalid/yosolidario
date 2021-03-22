@@ -1,4 +1,5 @@
 <x-guest-layout>
+    <div class="md:min-h-screen md:flex md:flex-col md:justify-center md:items-center py-14 md:-mt-5 bg-gray-50">
     <x-authentication-card>
         <x-slot name="logo">
             <x-authentication-card-logo />
@@ -9,7 +10,7 @@
         <form method="POST" action="{{ route('register') }}">
             @csrf
 
-            <div>
+            <div class="mt-4">
                 <x-label for="name" value="{{ __('Name') }}" />
                 <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
             </div>
@@ -57,4 +58,6 @@
             </div>
         </form>
     </x-authentication-card>
+    </div>
+    <livewire:footer.footer-guest/>
 </x-guest-layout>

@@ -122,6 +122,11 @@ class Campaign extends Model
         return $this->belongsTo(Organization::class);
     }
 
+    // relacion polimorfica uno a uno
+    public function telegram() {
+        return $this->morphOne(Image::class, 'telegramable');
+    }
+    
     // relacion polimorfica uno a muchos
     public function userHistories() {
         return $this->morphMany(UserHistory::class, 'userhistoriesable');

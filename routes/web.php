@@ -44,6 +44,10 @@ Route::middleware(['access'])->get('/{slug}/widget/medium', MediumWidget::class)
 use App\Http\Livewire\Campaigns\Published\Widget\SmallWidget;
 Route::middleware(['access'])->get('/{slug}/widget/small', SmallWidget::class)
 ->name('campaign/widget/small');
+// poster
+use App\Http\Livewire\Campaigns\Published\PrintPoster\ViewPrintPoster;
+Route::middleware(['access'])->get('/{slug}/poster', ViewPrintPoster::class)
+->name('campaign/poster');
 
 // ++++++++++++++++++++++++++ Campaigns
 
@@ -140,6 +144,15 @@ Route::middleware(['auth:sanctum', 'verified', 'access'])->get('/setting/profile
 use App\Http\Livewire\Setting\Notifications;
 Route::middleware(['auth:sanctum', 'verified', 'access'])->get('/setting/notifications', Notifications::class)
 ->name('setting/notifications');
+
+// ++++++++++++++++++++++++++ Fraud
+// fraud register
+use App\Http\Livewire\Fraud\Register\RegisterFraud;
+Route::middleware(['verified', 'access'])->get('/fraud/register/{campaign}', RegisterFraud::class)
+->name('fraud/register-campaign');
+
+Route::middleware(['verified', 'access'])->get('/fraud/register/', RegisterFraud::class)
+->name('fraud/register');
 
 // ++++++++++++++++++++++++++ Discover
 

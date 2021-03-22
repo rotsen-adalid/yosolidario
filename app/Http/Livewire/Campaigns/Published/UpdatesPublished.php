@@ -68,4 +68,13 @@ class UpdatesPublished extends Component
             $this->embed = false;
         }
     }
+
+    // convert url video
+    public function urlVideo($url) {
+        $video_array = explode("/",$url);
+        if($video_array[2] == 'youtu.be') {
+            $video_url =  $video_array[3];
+        }
+        return $video_url;
+    }
 }

@@ -51,8 +51,9 @@
                 <!-- options -->
                 <hr class="mt-4 mb-5">
                 <div class="flex justify-center items-center mt-5 sm:mt-0">
-                    <button  wire:loading.attr="disabled" class=" px-4 py-2 text-center border border-ys1 rounded-md font-bold text-base  text-ys1 tracking-widest hover:text-white hover:bg-ys2 focus:border-bg-ys2 active:bg-ys2 focus:outline-none focus:border-bg-ys2 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
-                        {{ __('Select this reward') }}
+                    <button  wire:loading.attr="disabled" class="flex items-center justify-center px-4 py-2 text-center border border-ys1 rounded-md font-bold text-base  text-ys1 tracking-widest hover:text-white hover:bg-ys2 focus:border-bg-ys2 active:bg-ys2 focus:outline-none focus:border-bg-ys2 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
+                        <span class="material-icons-outlined pr-1">add_task</span>
+                        <span>{{ __('Select this reward') }}</span>
                     </button>
                 </div>
             </div>

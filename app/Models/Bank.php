@@ -22,6 +22,11 @@ class Bank extends Model
         return $this->hasMany(PersonalInformation::class);
     }
 
+    // uno a muchos 
+    public function bankInfos() {
+        return $this->hasMany(BankInfo::class);
+    }
+
     // relacion polimorfica uno a muchos
     public function userHistories() {
         return $this->morphMany(UserHistory::class, 'userhistoriesable');

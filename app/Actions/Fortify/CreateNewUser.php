@@ -1,9 +1,13 @@
 <?php
 
 namespace App\Actions\Fortify;
+
+use App\Models\Agency;
+use App\Models\Notice;
 use App\Models\Site;
 use App\Models\Team;
 use App\Models\User;
+use App\Notifications\TelegramNotification;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -49,7 +53,7 @@ class CreateNewUser implements CreatesNewUsers
             //$user->assignRole('organizer');
             $user->sites()->attach(Site::where('name', 'yosolidario.com')->first());
 
-            $extract = 'Created user: '.$user->id;
+            /*$extract = 'New user registration: '.$user->id;
             $user->userHistories()->create([
                 'photo_path' => null,
                 'extract' => $extract,
@@ -58,6 +62,16 @@ class CreateNewUser implements CreatesNewUsers
                 'user_id' => $user->id,
                 'site_id' => 1,
                 ]);
+            */
+            $agencyBO = Agency::find(1);
+            $notice = new Notice([
+                'telegramid' => $agencyBO->telegram->çhat_id,    //Config::get('services.telegram_id')
+                'notice' => 'Nuevo usuario registrado',
+                'description' => $input['email']."\n".$input['name'],
+                'action' => 'USER_REGISTER'
+              
+            ]);
+            $notice->notify(new TelegramNotification);
             return $user;
         });
     }

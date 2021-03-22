@@ -21,8 +21,9 @@
 
 </x-slot>
 <x-slot  name="menu">
-    <livewire:navigation/>
+    <livewire:menu.navigation-preview :campaign="$campaign"/>
 </x-slot>
+      
 <div class="bg-white">
 <x-section-content>
     <x-slot name="header">
@@ -147,7 +148,7 @@
             </div>
             <div class="">
                 <!-- -->
-                <div class="text-base text-black"> <!--  activeClasses: 'border-l border-t border-r rounded-t text-ys1 font-bold capitalize', -->
+                <div class="text-base text-black "> <!--  activeClasses: 'border-l border-t border-r rounded-t text-ys1 font-bold capitalize', -->
                     <div 
                         x-data="{
                         openTab: window.location.hash ? window.location.hash.substring(1) : 'about',
@@ -248,4 +249,4 @@
 
 </x-section-content>
 </div>
-<livewire:footer/>
+<livewire:footer.footer-app/>

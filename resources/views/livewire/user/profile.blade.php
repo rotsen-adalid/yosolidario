@@ -24,9 +24,10 @@
     
 </x-slot>
 <x-slot  name="menu">
-    @livewire('navigation')
+    <livewire:menu.navigation-app/>
 </x-slot>
-<div class="bg-gray-50 py-6 sm:py-12 ">
+      
+<div class="mt-20 bg-gray-50 py-6 sm:py-12 ">
 <div class=" flex items-center justify-center px-4 sm:px-6 lg:px-8">
     <div class=" w-full space-y-2">
         <div class="flex space-x-3 sm:space-x-6 items-center justify-center">
@@ -375,4 +376,4 @@
     </div>
 </div>
 </div>
-<livewire:footer/>
+<livewire:footer.footer-app/>

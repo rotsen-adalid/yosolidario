@@ -33,6 +33,7 @@ class PersonalInformation extends Model
         'reference_contact',
         'user_id',
         'country_id',
+        'agency_id',
         'status',
         'search'
     ];
@@ -49,9 +50,12 @@ class PersonalInformation extends Model
     public function country() {
         return $this->belongsTo(Country::class);
     }
-
-    // relacion polimorfica uno a muchos
-     public function bankInfos() {
+    // uno a uno inversa
+    public function agency() {
+        return $this->belongsTo(Agency::class);
+    }
+    // relacion polimorfica uno a uno
+     public function bankInfo() {
         return $this->morphOne(BankInfo::class, 'bankinfoable');
     }
 

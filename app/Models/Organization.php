@@ -66,8 +66,8 @@ class Organization extends Model
     }
 
     // relacion polimorfica uno a muchos
-    public function bankInfos() {
-        return $this->morphMany(BankInfo::class, 'bankinfoable');
+    public function bankInfo() {
+        return $this->morphOne(BankInfo::class, 'bankinfoable');
     }
 
     // relacion polimorfica uno a muchos

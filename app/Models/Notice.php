@@ -12,17 +12,18 @@ class Notice extends Model
     use HasFactory;
     use Notifiable;
 
-    protected $primaryKey = 'id';
-    protected $primaryType = 'string';
-    protected $incrementing = false;
+    //protected $primaryKey = 'id';
+    //protected $keyType = 'string';
+    //protected $incrementing = false;
 
     protected $table = 'notices';
 
     protected $fillable = [
-        'id',
+        'telegramid',
         'notice',
-        'noticedes',
-        'noticelink',
-        'telegramid'
+        'description',
+        'linkOne',
+        'linkTwo',
+        'action'
     ];
 }

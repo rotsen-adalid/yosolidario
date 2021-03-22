@@ -15,7 +15,7 @@
                           @click="
                         isPlaying = !isPlaying;
                         $nextTick(() => { $refs.iframeElement.setAttribute('src', iframe_url()) });">
-            <i class="text-white text-7xl uil uil-play-circle"></i>
+              <span class="material-icons-outlined text-white text-7xl">play_circle</span>
           </button>
         </div>
       </div>
@@ -31,7 +31,10 @@
         {{ \Carbon\Carbon::parse($this->campaign->created_at)->diffForHumans() }}
       </span>
       <span class="mx-2">|</span>
-      <span>{{__($this->campaign->categoryCampaign->name)}}</span>
+      <span class="material-icons-outlined text-gray-600 text-base">loyalty</span>
+      <span class="ml-1">
+        {{__($this->campaign->categoryCampaign->name)}}
+      </span>
     </div>
   </div>
   
