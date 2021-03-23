@@ -5,7 +5,7 @@
 
 </x-slot>
 <x-slot  name="menu">
-    @livewire('navigation')
+    <livewire:menu.navigation-app/>
 </x-slot>
 <div class="bg-purple-50">
 <x-section-content>

@@ -116,10 +116,10 @@ use App\Http\Livewire\Campaigns\Manage\Comments\ShowComments;
 Route::middleware(['auth:sanctum', 'verified', 'access'])->get('/campaign/manage/comments/{campaign}', ShowComments::class)
 ->name('campaign/manage/comments');
 
-// ++++++++++++++++++++++++++ User 
+// ++++++++++++++++++++++++++ Collaborate 
 
-use App\Http\Livewire\Campaigns\ToCollaborate\ViewToCollaborate;
-Route::middleware(['access'])->get('/campaign/collaborate/{campaign}', ViewToCollaborate::class)
+use App\Http\Livewire\Campaigns\Collaborate\RegisterNoRewardCollaborate;
+Route::middleware(['access'])->get('/campaign/collaborate/{campaign}', RegisterNoRewardCollaborate::class)
 ->name('campaign/collaborate');
 
 // ++++++++++++++++++++++++++ User 
