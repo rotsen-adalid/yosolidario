@@ -47,7 +47,8 @@ class CampaignUrgentHome extends Component
         return redirect()->route('campaign/published', ['slug' => $record->slug]);
     }
 
-    public function collaborate() {
-        
+    public function backThisCampaign($campaign_id) {
+        $record = Campaign::find($campaign_id);
+        return redirect()->route('campaign/collaborate', ['campaign' => $record]);
     }
 }

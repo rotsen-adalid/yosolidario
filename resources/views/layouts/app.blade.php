@@ -43,11 +43,26 @@
         
         <!-- pwa -->
         @laravelPWA
+
+        <script>
+            window.fbAsyncInit = function() {
+              FB.init({
+                appId            : '738141669970459',
+                autoLogAppEvents : true,
+                xfbml            : true,
+                version          : 'v10.0'
+              });
+            };
+          </script>
+          <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+          
     </head>
     <body class="font-sans antialiased text-sm">
-        <x-jet-banner />
+        <x-banner />
         <div class="min-h-screen">
-            {{$menu}}
+            <div>
+                {{$menu}}
+            </div>
             <!-- Page Content -->
             <main>
                 {{ $slot }}

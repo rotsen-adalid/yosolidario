@@ -7,10 +7,10 @@
 <x-slot  name="menu">
     <livewire:menu.navigation-app/>
 </x-slot>
-<div class="bg-purple-50">
+<div class="mt-20 bg-purple-50">
 <x-section-content>
     <x-slot name="header">
-        <livewire:campaigns.manage.show-header :campaign="$campaign"/>
+        <livewire:campaigns.manage.menu.menu-header :campaign="$campaign"/>
     </x-slot>
     <x-slot  name="content">
         @include('livewire.campaigns.manage.updates.modal-updates')
@@ -122,6 +122,6 @@
     </x-slot>
 </x-section-content>
 </div>
-<livewire:footer/>
+<livewire:footer.footer-app/>
 
   

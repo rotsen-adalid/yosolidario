@@ -11,7 +11,7 @@
             <p class="mt-4 text-lg font-bold text-justify">{{$collection[0]->campaign->title}}</p>
             <p class="mt-2 text-base">{{$collection[0]->campaign->extract}}</p>
             <div class="mt-4">
-                <button wire:click="collaborate" wire:loading.attr="disabled" class="w-full sm:w-64 px-6 py-2 text-center border border-ys1 rounded-md font-bold text-base  text-ys1 tracking-widest hover:text-ys2 hover:border-ys2 focus:border-bg-ys2 active:bg-ys2 focus:outline-none focus:border-bg-ys2 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
+                <button wire:click="backThisCampaign({{$collection[0]->campaign->id}})" wire:loading.attr="disabled" class="w-full sm:w-64 px-6 py-2 text-center border border-ys1 rounded-md font-bold text-base  text-ys1 tracking-widest hover:text-ys2 hover:border-ys2 focus:border-bg-ys2 active:bg-ys2 focus:outline-none focus:border-bg-ys2 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
                     <span>{{__('Back this campaign')}}</span>
                 </button>
             </div>

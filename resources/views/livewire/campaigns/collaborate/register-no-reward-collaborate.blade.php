@@ -1,5 +1,5 @@
 <x-slot name="title">
-    {{__('Your campaigns')}} : YoSolidario
+    {{__('Collaborate with')}} {{$this->campaign->title}}
 </x-slot>
 <x-slot  name="seo">
 </x-slot>
@@ -8,90 +8,106 @@
 </x-slot>
 
 <div>
+    <x-dialog-modal-loading wire:model="loadindPay">
+        <x-slot name="content">
+            <span class="text-lg">{{__('equesting payment')}}...</span>
+        </x-slot>
+    </x-dialog-modal-loading>
     <div class="bg-gray-100 mt-16">
         <!-- -->
         <div class="max-w-5xl mx-auto px-4 sm:px-2 py-10">
             <div class="md:grid md:grid-cols-3 md:gap-6">
 
-              <div class="mt-5 md:mt-0 md:col-span-2">
+                <div class="mt-5 md:mt-0 md:col-span-2">
                 
-                  <div class="shadow sm:rounded-md sm:overflow-hidden">
-                    <div class="px-10 py-10 bg-white space-y-6 ">
+                    <div class="shadow sm:rounded-md sm:overflow-hidden">
+                    <div class="p-5 sm:px-16 sm:py-16 bg-white space-y-6 ">
 
                         <div class="text-center font-semibold text-3xl">
                             {{__('Indicate your collaboration')}} <br>
-                            {{$messagePn}} <br>
-                            {{$codigoRecaudacionPn}}
                         </div>
-
-                        <div class="flex justify-center">
-                            <div class="mt-1 flex rounded-md shadow-sm mx-5">
-                                <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-900 text-5xl font-bold">
-                                    {{$this->currency}}
-                                </span>
-                                <input type="text" name="amount" id="amount" wire:model="amount"  wire:keyup="amountTotal" onKeyPress="return validar(event)" maxlength="9"  autofocus
-                                class="focus:ring focus:ring-gray-50 focus:ring-opacity-50 focus:border-green-500 flex-1 block w-full rounded-none sm:text-5xl border-gray-200 font-bold shadow-xs text-right" placeholder="">
-                                <span class="inline-flex items-center px-3 rounded-r-md border border-l-0 border-gray-300 bg-white text-gray-900 text-5xl font-bold">
-                                    ,00
-                                </span>
-                            </div>
-                            <x-input-error for="amount" class="mt-2" />
-                        </div>
-
-                        <div class="px-5">
-                            <div class="block text-basefont-medium text-gray-700">{{__('YoSolidiario will continue to offer its services thanks to an optional contribution that collaborators will make here:')}}</div>
-                            <div class="flex mt-5 space-x-5 items-center">
-                                <div class="block text-base font-medium text-gray-700">{{__('Thank you for your input from:')}}</div>
-                                <div class="space-y-2">
-                                    <div>
-                                        <x-select class="mt-1 block w-48" id="amount_percentage_ys" wire:model="amount_percentage_ys" wire:change="percentageAmountTotal">
-                                            <x-slot name="option">
-                                                @foreach ($collected_percentage_ys as $item)
-                                                    <option value="{{$item['value']}}">
-                                                        @if ($this->amount >= 5 and $this->amount <= 14)
-                                                            <span>{{$item['amount']}}</span>
-                                                            <span>
-                                                                {{$this->currency}}
-                                                            </span>
-                                                        @elseif($this->amount >= 15)
-                                                            <span>{{$item['value']}}%</span>
-                                                            @if ($item['amount'] != 0)
-                                                                <span>
-                                                                    (<span>{{ number_format($item['amount'], 2 ) }}</span>
-                                                                    <span>
-                                                                        {{$this->currency}}
-                                                                    </span>)
-                                                                </span>
-                                                            @endif 
-                                                        @else
-                                                            <span>{{$item['value']}}%</span>
-                                                        @endif
-                                                    </option>
-                                                @endforeach
-                                                <option value="OTHER">{{__('Other')}}</option>
-                                            </x-slot>
-                                        </x-select>
-                                        <x-input-error for="amount_percentage_ys" class="mt-2" />
-                                    </div>
-                                    @if ($this->amount_percentage_ys == 'OTHER')
-                                        <x-input id="amount_ys" type="text" class="mt-1 block w-full" wire:model="amount_ys" wire:keyup="amountOther" onKeyPress="return validarOther(event)" autocomplete="off"/>
-                                    @endif
-                                    @if ($amount_total > 0)
-                                        <div class="font-bold">
-                                            {{__('Total')}}: 
-                                            <span>{{ number_format($amount_total, 2 ) }}</span>
-                                            <span>
-                                                {{$this->currency}}
-                                            </span>
-                                        </div>
-                                    @endif
+                        <div>
+                            <div class="flex justify-center">
+                                <div class="mt-1 flex rounded-md shadow-sm sm:mx-5">
+                                    <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-900 text-2xl sm:text-5xl font-bold">
+                                        {{$this->currency}}
+                                    </span>
+                                    <input type="text" name="amount_collaborator" id="amount_collaborator" wire:model="amount_collaborator"  wire:keyup="amountTotal" onKeyPress="return validar(event)" maxlength="9" 
+                                    class="focus:ring focus:ring-gray-50 focus:ring-opacity-50 focus:border-gray-200 flex-1 block w-full rounded-none text-2xl sm:text-5xl border-l-0 border-r-0 border-gray-200 font-bold shadow-xs text-right  bg-gray-50" placeholder="">
+                                    <span class="inline-flex items-center pr-3 rounded-r-md border border-l-0 border-gray-300 bg-white text-gray-900 text-2xl sm:text-5xl font-bold  bg-gray-50">
+                                        ,00
+                                    </span>
                                 </div>
+                            </div>
+                            <x-input-error for="amount_collaborator" class="mt-2" />
+                        </div>
+
+                        <div class="sm:px-5">
+                            <div class="block text-basefont-medium text-gray-700">{{__('YoSolidiario will continue to offer its services thanks to an optional contribution that collaborators will make here:')}}</div>
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-10">
+                                <div class="block text-base font-medium text-gray-700 mt-3">{{__('Thank you for your input from:')}}</div>
+
+                                    <div class="space-y-2">
+
+                                            <x-select class="mt-1 w-full" id="amount_percentage_yosolidario" wire:model="amount_percentage_yosolidario" wire:change="percentageAmountTotal">
+                                                <x-slot name="option">
+                                                    @foreach ($collected_percentage_ys as $item)
+                                                        <option value="{{$item['value']}}">
+                                                            @if ($this->amount_collaborator >= 5 and $this->amount_collaborator <= 14)
+                                                                <span>{{$item['amount_collaborator']}}</span>
+                                                                <span>
+                                                                    {{$this->currency}}
+                                                                </span>
+                                                            @elseif($this->amount_collaborator >= 15)
+                                                                <span>{{$item['value']}}%</span>
+                                                                @if ($item['amount_collaborator'] != 0)
+                                                                    <span>
+                                                                        (<span>{{ number_format($item['amount_collaborator'], 2 ) }}</span>
+                                                                        <span>
+                                                                            {{$this->currency}}
+                                                                        </span>)
+                                                                    </span>
+                                                                @endif 
+                                                            @else
+                                                                <span>{{$item['value']}}%</span>
+                                                            @endif
+                                                        </option>
+                                                    @endforeach
+                                                    <option value="OTHER">{{__('Other')}}</option>
+                                                </x-slot>
+                                            </x-select>
+                                            <x-input-error for="amount_percentage_yosolidario" class="mt-2" />
+                                        
+                                        @if ($this->amount_percentage_yosolidario == 'OTHER')
+                                            <div class="">
+                                                <div class="mt-1 flex rounded-md shadow-sm">
+                                                    <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-900 text-sm font-bold">
+                                                        {{$this->currency}}
+                                                    </span>
+                                                    <input type="text" name="amount_yosolidario" id="amount_yosolidario" wire:model="amount_yosolidario"  wire:keyup="amountOther"
+                                                    class="focus:ring focus:ring-gray-50 focus:ring-opacity-50 focus:border-gray-200 flex-1 block rounded-r border-gray-200 font-bold shadow-xs text-right  bg-gray-50 w-20" placeholder="">
+                                                    <!-- focus:ring focus:ring-gray-50 focus:ring-opacity-50 focus:border-gray-200 flex-1 block rounded-r sm:text-sm border-gray-200 font-bold shadow-xs text-right  bg-gray-50 -->
+                                                </div>
+                                                <x-input-error for="amount_collaborator" class="mt-2" />
+                                            </div>
+                                        @endif
+                                        @if ($amount_total > 0)
+                                            <div class="font-bold">
+                                                {{__('Total')}}: 
+                                                <span>{{ number_format($amount_total, 2 ) }}</span>
+                                                <span>
+                                                    {{$this->currency}}
+                                                </span>
+                                            </div>
+                                        @endif
+                                    </div>
+                                
                             </div>
                         </div>
 
                         <!-- your nane -->
                         <div class="col-span-6 sm:col-span-4">
-                           <div class="flex space-x-2">
+                            <div class="sm:flex space-y-4 sm:space-y-0 sm:space-x-2">
                                 <div class="w-full">
                                     <x-label for="name" value="{{ __('Name') }}" required/>
                                     <x-input id="name" type="text" class="mt-1 block w-full" wire:model.defer="name" autocomplete="off"/>
@@ -102,10 +118,10 @@
                                     <x-input id="lastname" type="text" class="mt-1 block w-full" wire:model.defer="lastname" autocomplete="off"/>
                                     <x-input-error for="lastname" class="mt-2" />
                                 </div>
-                           </div>
+                            </div>
                             <div class="mt-2">
-                                <label for="remember_me" class="flex items-center">
-                                    <x-checkbox id="remember_me" name="remember" />
+                                <label for="show_name" class="flex items-center">
+                                    <x-checkbox id="show_name" name="show_name" wire:model.defer="show_name" />
                                     <span class="ml-2 text-sm text-gray-600">{{ __('Hide the name of everyone except the organizer') }}</span>
                                 </label>
                             </div>
@@ -116,7 +132,67 @@
                             <x-label for="email" value="{{ __('Your email address') }}"/>
                             <x-input id="email" type="text" class="mt-1 block w-full" wire:model.defer="email" autocomplete="off"/>
                             <x-input-error for="email" class="mt-2" />
-                         </div>
+                        </div>
+
+                        <!-- phone -->
+                        @if ($this->campaign->agency->country->code == $this->country_code)
+                            <div class="col-span-6 sm:col-span-4">
+                                <x-label for="phone" value="{{ __('Your number phone') }}"/>
+                                <div class="mt-1 flex rounded-md shadow-sm">
+                                    <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-white text-gray-900 text-sm font-bold">
+                                        {{$this->telephone_prefix}}
+                                    </span>
+                                    <input type="text" name="phone" id="phone" wire:model="phone"   minlength="6" maxlength="20"
+                                    class="focus:ring focus:ring-gray-50 focus:ring-opacity-50 focus:border-gray-200 flex-1 block rounded-r border-gray-200 shadow-xs  bg-white w-20"> <!-- placeholder="{__('Number phone')}}" -->
+                                </div>
+                                <x-input-error for="phone" class="mt-2" />
+                            </div>
+                        @else
+                            <div class="col-span-6 sm:col-span-4">
+                                <x-label for="locality" value="{{ __('Your number phone') }}"/>
+                                <div class="flex space-x-1">
+                                    <div class="w-56">
+                                        <x-select class="mt-1 block w-full" id="country_id" name="country_id" wire:model.defer="country_id">
+                                            <x-slot name="option">
+                                                    <option value="">{{ __('Country') }}</option>
+                                                @foreach ($collection_countries as $item)
+                                                    <option value="{{$item->id}}">{{ __($item->name) }}</option>
+                                                @endforeach
+                                            </x-slot>
+                                        </x-select>
+                                    </div>
+                                    <div class="w-full">
+                                        <x-input id="phone" type="text" class="mt-1 block w-full" wire:model.defer="phone" autocomplete="off" minlength="6" maxlength="20"/>
+                                        <x-input-error for="phone" class="mt-2" />
+                                    </div>
+                                </div>
+                                <x-input-error for="country_id" class="mt-2" />
+                                <x-input-error for="phone" class="mt-2" />
+                            </div>
+                        @endif
+                        
+                        <!-- commentary -->
+                        <div class="col-span-6 sm:col-span-4">
+                            <x-label for="commentary" value="{{ __('Write here what you want to say to the organizer of the campaign') }}"/>
+                            <x-textarea id="commentary" class="mt-1 block w-full" rows="3" wire:model.defer="commentary" autocomplete="off" minlength="5" maxlength="170"/>
+                            <x-input-error for="commentary" class="mt-2" />
+                        </div>
+                        {{$this->messagePn}}
+                        <div class="col-span-6 sm:col-span-4">
+                            <div class="flex sm:flex-row flex-col sm:space-x-4 space-y-2 sm:space-y-0 justify-center">
+                                <div class="flex items-center space-x-2">
+                                    <input wire:model="payment_method" name="payment_method" type="radio" value="CASH"
+                                    class="rounded h-4 w-4 border-green-500 text-green-600 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50" />
+                                    <span class="font-semibold">{{__('Cash payment')}}</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <input wire:model="payment_method" name="payment_method" type="radio" value="CARD"
+                                    class="rounded h-4 w-4 border-green-500 text-green-600 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50" />
+                                    <span class="font-semibold">{{__('Visa Mastercard card')}}</span>
+                                </div>
+                            </div>
+                            <x-input-error for="payment_method" class="mt-2 text-center" />
+                        </div>
 
                         <div class="hidden sm:block">
                             <div class="py-1">
@@ -125,10 +201,9 @@
                         </div>
                         
                         <div class="px-4 text-center sm:px-6">
-                            <button type="submit" wire:click="pagosNet" wire:loading.attr="disabled" class="inline-flex justify-center py-4 px-10 border border-yellow-600 shadow-md text-lg font-bold rounded-md text-white bg-yellow-500 hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ys1">
+                            <x-accent-button wire:click="pagosNet(0)" wire:loading.attr="disabled" class="text-lg py-4 px-10">
                                 {{__('Back this campaign')}}
-                            </button>
-                            
+                            </x-accent-button>
                         </div>
 
                         <div class="hidden sm:block">
@@ -147,19 +222,19 @@
                         </div>
 
                     </div>
-                  </div>
-               
-              </div>
-              
-              <div class="md:col-span-1 ">
-                <div class="px-4 sm:p-4 shadow bg-white border border-gray-50 rounded-md">
-                  <h3 class="text-lg font-medium leading-6 text-gray-900">
-                      {{$this->cutLetter($campaign->title, 25)}}
-                  </h3>
-                  <div>
-                      <img src="{{ URL::to('/').$this->campaign->image->url}}" alt="">
-                  </div>
-                  <div>
+                    </div>
+                
+                </div>
+                
+                <div class="md:col-span-1 mt-5 sm:mt-0">
+                <div class="p-4 shadow bg-white border border-gray-50 rounded-md">
+                    <h3 class="text-lg font-medium leading-6 text-gray-900 mt-2 sm:mt-0">
+                        {{$this->cutLetter($campaign->title, 25)}}
+                    </h3>
+                    <div>
+                        <img src="{{ URL::to('/').$this->campaign->image->url}}" alt="">
+                    </div>
+                    <div>
                         @if ($this->campaign->agency->country->code == $this->country_code)
                             <div class="mt-3 sm:mt-7 text-3xl sm:text-4xl text-ys1 font-bold">
                                 <span>{{ number_format($this->campaign->campaignCollected->amount_collected, 2 ) }}</span>
@@ -239,9 +314,9 @@
                     </div>
 
                 </div>
-              </div>
+                </div>
             </div>
-          </div>
+            </div>
 
         <!-- -->
     </div>

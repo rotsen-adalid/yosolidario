@@ -5,12 +5,13 @@
 
 </x-slot>
 <x-slot  name="menu">
-    <livewire:menu.navigation-app/>
+    <livewire:menu.navigation-panel/>
 </x-slot>
-<div class="bg-red-50">
+      
+<div class="mt-20 bg-gray-50">
 <x-section-content>
     <x-slot name="header">
-        <livewire:campaigns.manage.show-header :campaign="$campaign"/>
+        <livewire:campaigns.manage.menu.menu-header :campaign="$campaign"/>
     </x-slot>
     <x-slot  name="content">
         <div class="flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -25,4 +26,4 @@
     </x-slot>
 </x-section-content>
 </div>
-<livewire:footer/>
+<livewire:footer.footer-app/>

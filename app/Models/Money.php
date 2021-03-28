@@ -32,6 +32,11 @@ class Money extends Model
         return $this->hasMany(AgencyPaymentMethod::class);
     }
 
+    // uno a uno
+    public function paymentOrder() {
+        return $this->hasOne(PaymentOrder::class);
+    }
+
     // relacion polimorfica uno a muchos
     public function userHistories() {
         return $this->morphMany(UserHistory::class, 'userhistoriesable');

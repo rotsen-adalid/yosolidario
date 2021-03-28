@@ -26,6 +26,11 @@ class Country extends Model
     }
 
     // uno a muchos 
+    public function countryEstates() {
+        return $this->hasMany(CountryEstate::class);
+    }
+
+    // uno a muchos 
     public function campaigns() {
         return $this->hasMany(Campaign::class);
     }

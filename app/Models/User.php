@@ -112,6 +112,11 @@ class User extends Authenticatable // implements MustVerifyEmail
         return $this->belongsToMany(Agency::class);
     }
     
+    // uno a muchos 
+    public function paymentOrders() {
+        return $this->hasMany(PaymentOrder::class);
+    }
+    
     // relacion muchos a muchos
     public function sites()
     {

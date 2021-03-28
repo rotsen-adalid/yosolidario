@@ -122,6 +122,11 @@ use App\Http\Livewire\Campaigns\Collaborate\RegisterNoRewardCollaborate;
 Route::middleware(['access'])->get('/campaign/collaborate/{campaign}', RegisterNoRewardCollaborate::class)
 ->name('campaign/collaborate');
 
+// PagosNet
+use App\Http\Livewire\Campaigns\Collaborate\Pagosnet\ViewCodePagosNet;
+Route::middleware(['access'])->get('/campaign/collaborate/pagosnet/cash/{paymentOrder}', ViewCodePagosNet::class)
+->name('campaign/collaborate/pagosnet/cash');
+
 // ++++++++++++++++++++++++++ User 
 
 // profile 

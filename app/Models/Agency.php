@@ -79,6 +79,11 @@ class Agency extends Model
         return $this->morphOne(Telegram::class, 'telegramable');
     }
 
+    // uno a muchos 
+    public function paymentOrders() {
+        return $this->hasMany(PaymentOrder::class);
+    }
+
     // relacion polimorfica uno a muchos
     public function userHistories() {
         return $this->morphMany(UserHistory::class, 'userhistoriesable');

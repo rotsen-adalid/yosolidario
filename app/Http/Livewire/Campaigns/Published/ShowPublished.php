@@ -97,4 +97,9 @@ class ShowPublished extends Component
             }
         }
     }
+
+    public function backThisCampaign($campaign_id) {
+        $record = Campaign::find($campaign_id);
+        return redirect()->route('campaign/collaborate', ['campaign' => $record]);
+    }
 }

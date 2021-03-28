@@ -24,8 +24,13 @@ class AgencyPp extends Model
     }
 
     // uno a muchos 
-    public function agencyPpm() {
+    public function agencyPpms() {
         return $this->hasMany(AgencyPpm::class);
+    }
+
+    // uno a muchos 
+    public function paymentOrders() {
+        return $this->hasMany(PaymentOrder::class);
     }
 
     // relacion polimorfica uno a muchos

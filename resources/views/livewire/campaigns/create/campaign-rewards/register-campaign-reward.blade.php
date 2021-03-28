@@ -119,7 +119,7 @@
                     <x-icon-button wire:click="deleteOne" class="absolute m-1 opacity-70">
                         <i class="uil uil-trash text-base"></i>
                     </x-icon-button>
-                        <img src="{{ URL::to('/') }}{{$image_url}}" alt="" class="rounded-smh-48 sm:h-56 w-auto object-cover">
+                        <img src="{{ URL::to('/') }}{{$image_url}}" alt="" class="rounded-sm w-full h-60 sm:h-64 object-cover">
                     @else 
                         <div class="mt-1 flex justify-center items-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md w-full h-60 sm:h-64">
                             <div class="space-y-1 text-center">
@@ -134,7 +134,7 @@
                 <!-- Image Preview -->
                 <div class="mt-2" x-show="photoPreview">
                     @if($photoOne)
-                        <span class="block rounded-sm h-48 sm:h-56 w-auto"
+                        <span class="block rounded-sm w-full h-60 sm:h-64"
                             x-bind:style="'background-size: cover; background-repeat: no-repeat; background-position: center center; background-image: url(\'' + photoPreview + '\');'">
                             <x-icon-button wire:click="deleteOne" class="m-1 opacity-70">
                                 <i class="uil uil-trash text-base"></i>

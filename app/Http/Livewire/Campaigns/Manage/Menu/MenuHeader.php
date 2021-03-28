@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Http\Livewire\Campaigns\Manage;
+namespace App\Http\Livewire\Campaigns\Manage\Menu;
 use Livewire\Component;
-
 use App\Models\Campaign;
 
-class ShowHeader extends Component
+class MenuHeader extends Component
 {
-
     public $campaign;
     public $shared;
     public $embed;
@@ -32,10 +30,12 @@ class ShowHeader extends Component
             $this->host = 'https://yosolidario.com';
         }
     } 
+
     public function render()
     {
-        return view('livewire.campaigns.manage.show-header');
+        return view('livewire.campaigns.manage.menu.menu-header');
     }
+
     public function shared() {
         $this->shared = true;
     }

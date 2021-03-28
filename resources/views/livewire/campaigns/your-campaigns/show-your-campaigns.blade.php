@@ -5,7 +5,7 @@
    
 </x-slot>
 <x-slot  name="menu">
-    <livewire:menu.navigation-app/>
+    <livewire:menu.navigation-panel/>
 </x-slot>
       
 <div class="mt-20 bg-gray-50">
@@ -13,11 +13,11 @@
     <x-slot name="header">
         <div class="bg-white shadow mb-10"> 
             <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-2 sm:space-y-0 py-6">
-                <div class=" font-semibold text-xl text-gray-800">
+                <div class=" font-bold text-2xl sm:text-3xl text-gray-800">
                     {{ __('Your campaigns') }}
                 </div>
                 <div>
-                    <a  href="{{ route('campaign/create') }}" class="flex items-center w-full px-3 py-1 sm:py-2 text-center border bg-ys1 rounded-md font-bold text-base text-white tracking-widest hover:bg-ys2 active:bg-ys2 focus:outline-none focus:border-gray-100 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
+                    <a  href="{{ route('campaign/create') }}" class="flex items-center w-full px-3 py-2 sm:py-3 text-center border bg-ys1 rounded-md font-bold text-base text-white tracking-widest hover:bg-ys2 active:bg-ys2 focus:outline-none focus:border-gray-100 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
                         <span class="material-icons-outlined">add</span>
                         <span>{{__('Start a campaign')}}</span>
                     </a>
@@ -30,8 +30,8 @@
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mt-7 ">
     @foreach ($collection as $item)
-    <div class="px-0 sm:px-0 @if($collection->count() == 1) sm:col-start-2 @endif">
-        <div wire:click="view({{$item->id}})" wire:loading.attr="disabled" class="cursor-pointer bg-gray-300 h-56 w-full rounded-lg shadow-md bg-cover bg-center" 
+    <div class="px-0 sm:px-0 @if($collection->count() == 1) sm:col-start-2 @endif border border-gray-100 rounded-md">
+        <div wire:click="view({{$item->id}})" wire:loading.attr="disabled" class="cursor-pointer bg-gray-300 h-56 w-full rounded-lg shadow-md bg-cover bg-center " 
             style="background-image: url({{ URL::to('/').$item->image->url}})">
         </div>
 
