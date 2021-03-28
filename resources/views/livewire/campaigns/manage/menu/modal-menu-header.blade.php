@@ -107,9 +107,9 @@
             }
             function windowFacebook(title, slug){ 
                 FB.ui({
-                method: 'share',
-                href: "https://www.yosolidario.com/"+slug,
-                }, function(response){});
+                    method: 'share',
+                    href: "https://www.yosolidario.com/"+slug,
+                    }, function(response){});
                 //var myURL = "https://www.facebook.com/sharer/sharer.php?u=https://www.yosolidario.com/"+slug+"&src=sdkpreparse";
                 windowOpen(myURL, title);
             } 
@@ -122,7 +122,10 @@
                 windowOpen(myURL, title);
             }
             function windowMessenger(title, slug){ 
-               
+                FB.ui({
+                    method: 'send',
+                    link: "https://www.yosolidario.com/"+slug,
+                    });
                 //var myURL = "https://www.facebook.com/dialog/send?app_id=738141669970459&channel_url=https://staticxx.facebook.com/connect/xd_arbiter/%3Fversion%3D46%23cb%3Df671437134a888%26domain%3Dwww.yosolidario.com%26origin%3Dhttps%253A%252F%252Fwww.yosolidario.com%252Ff1e014553c66d74%26relation%3Dopener&display=popup&e2e=%7B%7D&fallback_redirect_uri=https://www.yosolidario.com&link=https://www.yosolidario.com%3Futm_source%3Dmessenger%26utm_medium%3Dsocial%26utm_campaign%3Dp_cf%2Bshare-flow-1&locale=en_US&next=https://staticxx.facebook.com/x/connect/xd_arbiter/%3Fversion%3D46%23cb%3Dfc4bc0116622d%26domain%3Dwww.yosolidario.com%26origin%3Dhttps%253A%252F%252Fwww.yosolidario.com%252Ff1e014553c66d74%26relation%3Dopener%26frame%3Df32a0c8523ea0bc%26result%3D%2522xxRESULTTOKENxx%2522&sdk=joey&version=v7.0";
                 //var myURL = "http://www.facebook.com/dialog/send?app_id=123456789&amp;link=http://www.nytimes.com/interactive/2015/04/15/travel/europe-favorite-streets.html&amp;redirect_uri=https://www.domain.com/";
                 //windowOpen(myURL, title);
