@@ -82,7 +82,7 @@
                     <div class="mt-2" x-show="!photoPreview">
                         @if( $this->about_url)
                             <x-icon-button wire:click="deleteOne" class="absolute m-1 opacity-70">
-                                <i class="uil uil-trash text-base"></i>
+                                <span class="material-icons-outlined">delete</span>
                             </x-icon-button>
                             <img src="{{ URL::to('/') }}{{$this->about_url}}" alt="" class="rounded-sm h-60 sm:h-72 w-full object-cover">
                         @else 
@@ -103,7 +103,7 @@
                             <span class="block rounded-sm w-full h-60 sm:h-72"
                                 x-bind:style="'background-size: cover; background-repeat: no-repeat; background-position: center center; background-image: url(\'' + photoPreview + '\');'">
                                 <x-icon-button wire:click="deleteOne" class="m-1 opacity-70">
-                                    <i class="uil uil-trash text-base"></i>
+                                    <span class="material-icons-outlined">delete</span>
                                 </x-icon-button>
                             </span>
                         @else 
@@ -164,7 +164,7 @@
                     <div class="mt-2" x-show="!photoPreview">
                         @if( $this->use_of_money_url)
                         <x-icon-button wire:click="deleteTwo" class="absolute m-1 opacity-70">
-                            <i class="uil uil-trash text-base"></i>
+                            <span class="material-icons-outlined">delete</span>
                         </x-icon-button>
                             <img src="{{ URL::to('/') }}{{$this->use_of_money_url}}" alt="" class="rounded-sm h-60 sm:h-72 w-full object-cover">
                         @else 
@@ -185,7 +185,7 @@
                             <span class="block rounded-sm h-60 sm:h-72 w-full"
                                 x-bind:style="'background-size: cover; background-repeat: no-repeat; background-position: center center; background-image: url(\'' + photoPreview + '\');'">
                                 <x-icon-button wire:click="deleteTwo" class="m-1 opacity-70">
-                                    <i class="uil uil-trash text-base"></i>
+                                    <span class="material-icons-outlined">delete</span>
                                 </x-icon-button>
                             </span>
                         @else 
@@ -246,7 +246,7 @@
                     <div class="mt-2" x-show="!photoPreview">
                         @if( $this->about_organizer_url)
                         <x-icon-button wire:click="deleteThree" class="absolute m-1 opacity-70">
-                            <i class="uil uil-trash text-base"></i>
+                            <span class="material-icons-outlined">delete</span>
                         </x-icon-button>
                             <img src="{{ URL::to('/') }}{{$this->about_organizer_url}}" alt="" class="rounded-sm h-60 sm:h-72 w-full object-cover">
                         @else 
@@ -267,7 +267,7 @@
                             <span class="block rounded-sm w-full h-60 sm:h-72"
                                 x-bind:style="'background-size: cover; background-repeat: no-repeat; background-position: center center; background-image: url(\'' + photoPreview + '\');'">
                                 <x-icon-button wire:click="deleteThree" class="m-1 opacity-70">
-                                    <i class="uil uil-trash text-base"></i>
+                                    <span class="material-icons-outlined">delete</span>
                                 </x-icon-button>
                             </span>
                         @else 
@@ -328,7 +328,7 @@
                     <div class="mt-2" x-show="!photoPreview">
                         @if( $this->delivery_of_rewards_url)
                         <x-icon-button wire:click="deleteFour" class="absolute m-1 opacity-70">
-                            <i class="uil uil-trash text-base"></i>
+                            <span class="material-icons-outlined">delete</span>
                         </x-icon-button>
                             <img src="{{ URL::to('/') }}{{$this->delivery_of_rewards_url}}" alt="" class="rounded-sm h-60 sm:h-72 w-full object-cover">
                         @else 
@@ -349,7 +349,7 @@
                             <span class="block rounded-sm w-full h-60 sm:h-726"
                                 x-bind:style="'background-size: cover; background-repeat: no-repeat; background-position: center center; background-image: url(\'' + photoPreview + '\');'">
                                 <x-icon-button wire:click="deleteFour" class="m-1 opacity-70">
-                                    <i class="uil uil-trash text-base"></i>
+                                    <span class="material-icons-outlined">delete</span>
                                 </x-icon-button>
                             </span>
                         @else 
@@ -410,7 +410,7 @@
                     <div class="mt-2" x-show="!photoPreview">
                         @if( $this->contact_organizer_url)
                         <x-icon-button wire:click="deleteFive" class="absolute m-1 opacity-70">
-                            <i class="uil uil-trash text-base"></i>
+                            <span class="material-icons-outlined">delete</span>
                         </x-icon-button>
                             <img src="{{ URL::to('/') }}{{$this->contact_organizer_url}}" alt="" class="rounded-smh-60 sm:h-72 w-full object-cover">
                         @else 
@@ -431,7 +431,7 @@
                             <span class="block rounded-sm w-full h-60 sm:h-72"
                                 x-bind:style="'background-size: cover; background-repeat: no-repeat; background-position: center center; background-image: url(\'' + photoPreview + '\');'">
                                 <x-icon-button wire:click="deleteFive" class="m-1 opacity-70">
-                                    <i class="uil uil-trash text-base"></i>
+                                    <span class="material-icons-outlined">delete</span>
                                 </x-icon-button>
                             </span>
                         @else 
@@ -498,7 +498,7 @@
                     <div class="mt-2" x-show="!photoPreview">
                         @if( $this->question_url_add)
                         <x-icon-button wire:click="deleteSix" class="absolute m-1 opacity-70">
-                            <i class="uil uil-trash text-base"></i>
+                            <span class="material-icons-outlined">delete</span>
                         </x-icon-button>
                             <img src="{{ URL::to('/') }}{{$this->question_url_add}}" alt="" class="rounded-sm h-60 sm:h-72 w-full object-cover">
                         @else 
@@ -519,7 +519,7 @@
                             <span class="block rounded-sm w-full h-60 sm:h-72"
                                 x-bind:style="'background-size: cover; background-repeat: no-repeat; background-position: center center; background-image: url(\'' + photoPreview + '\');'">
                                 <x-icon-button wire:click="deleteSix" class="m-1 opacity-70">
-                                    <i class="uil uil-trash text-base"></i>
+                                    <span class="material-icons-outlined">delete</span>
                                 </x-icon-button>
                             </span>
                         @else 

@@ -1,37 +1,75 @@
 <x-slot name="title">
     @if ($campaign_update_id)
-        {{ __('Update data') }} : YoSolidario
+        {{ __('Edit communication') }} : YoSolidario
     @else
-        {{ __('New update') }} : YoSolidario
+        {{ __('Post an update') }} : YoSolidario
     @endif
 </x-slot>
 <x-slot  name="seo">
 
 </x-slot>
 <x-slot  name="menu">
-    @livewire('navigation')
+    <livewire:menu.navigation-panel/>
 </x-slot>
-<div class="bg-purple-50">
+<div class="mt-16 sm:mt-20 bg-white">
 <x-section-content>
     <x-slot name="header">
-        <livewire:campaigns.manage.show-header :campaign="$campaign"/>
+        <div class="hidden lg:flex lg:items-center">
+            <header class="bg-white shadow pt-1 mb-10 w-full"> 
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 space-y-2">
+                    <a  href="{{ route('campaign/manage/communications/show', $campaign) }}" class="cursor-pointer my-4 border border-gray-300 py-1 px-2 flex space-x-1 w-20">
+                        <span class="material-icons-outlined text-sm">arrow_back_ios</span>
+                        <span class="font-bold">{{__('Back')}}</span>
+                    </a>
+                    <div class="flex space-x-4 items-center">
+                        <div>
+                            <img src="{{ URL::to('/').$campaign->image->url}}" alt="{{$campaign->title}}" class="h-16">
+                        </div>
+                        <div>
+                            @if ($campaign_update_id)
+                                <h2 class="flex items-center font-bold text-2xl text-gray-800 leading-tight pt-4">
+                                    {{ __('Edit communication') }}
+                                </h2>
+                            @else 
+                                <h2 class="flex items-center font-bold text-2xl text-gray-800 leading-tight pt-4">
+                                    {{ __('Post an update') }}
+                                </h2>
+                            @endif
+                            <a href="{{ route('campaign/published', $campaign->slug) }}" 
+                                class="font-bold text-base cursor-pointer text-gray-600">
+                                {{$campaign->title}}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <!-- Responsive -->
+        <div class="lg:hidden">
+            <div class="border-b border-gray-200 py-5">
+                <a  ref="{{ route('campaign/manage/communications/show', $campaign) }}" class="cursor-pointer my-4  py-1 px-2 flex space-x-1 w-24">
+                    <span class="material-icons-outlined text-sm">arrow_back_ios</span>
+                </a>
+                <div class="flex items-center justify-center text-xl font-bold -mt-12">{{__('Post an update')}}</div>
+            </div>
+        </div>
     </x-slot>
     <x-slot  name="content">
         <x-form-section submit="StoreOrUpdate" class="mt-10 sm:mt-0">
             <x-slot name="title">
                 @if ($campaign_update_id)
-                    {{ __('Update data') }}
+                    {{ __('Let your supporters know your progress.') }}
                 @else
-                    {{ __('New update') }}
+                    {{ __('Let your supporters know your progress.') }}
                 @endif
             </x-slot>
         
             <x-slot name="description">
                 <div class="sm:pt-3">
                     @if ($campaign_update_id)
-                        {{__('Update the data of your communication to your collaborators.')}}
+                        {{__('An update can help increase momentum and encourage supporters to share or collaboration again.')}}
                     @else
-                        {{ __('Communicate to your collaborators about your campaign') }}
+                        {{ __('An update can help increase momentum and encourage supporters to share or collaboration again.') }}
                     @endif
                 </div>
             </x-slot>
@@ -67,7 +105,7 @@
                     <!-- Current Profile Photo -->
                     <div class="mt-2" x-show="!photoPreview">
                         @if( $update_photo_path)
-                            <x-icon-button wire:click="deleteOne" class="py-1 m-1 m-1 opacity-70">
+                            <x-icon-button wire:click="deleteOne" class="absolute m-1 opacity-70 py-1">
                                 <span class="material-icons-outlined">delete</span>
                             </x-icon-button>
                             <img src="{{ URL::to('/') }}{{$update_photo_path}}" alt="" class="rounded-sm h-60 sm:h-64 w-full object-cover">
@@ -117,11 +155,18 @@
                 
             </x-slot>
             <x-slot name="actions">
-                <x-button class="text-sm" wire:loading.attr="disabled">
-                    {{ __('Save') }}
-                </x-button>
+                @if ($campaign_update_id)
+                    <x-button class="text-sm" wire:loading.attr="disabled">
+                        {{ __('Edit communication') }}
+                    </x-button>
+                @else
+                    <x-button class="text-sm" wire:loading.attr="disabled">
+                        {{ __('Post update') }}
+                    </x-button>
+                @endif
+                
             </x-slot>
         </x-form-section>
     </x-slot>
 </x-section-content>
-<livewire:footer/>
+<livewire:footer.footer-app/>

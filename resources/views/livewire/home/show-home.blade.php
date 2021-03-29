@@ -17,7 +17,7 @@
         <meta name="twitter:title" content="YoSolidario - {{__('The crowdfunding platform')}}}">
         <meta name="twitter:creator" content="@yosolidariocom">
         <meta name="twitter:description" content="{{__('The most trusted online fundraising platform. Start a crowdfunding campaign. ✓ Read our guarantee!')}}">
-        <meta name="twitter:image" content="{{asset('images/logo-ceo.png')}}">
+        <meta name="twitter:image" content="{{asset('images/logo-ceo2.png')}}">
   
 </x-slot>
 <x-slot  name="menu">

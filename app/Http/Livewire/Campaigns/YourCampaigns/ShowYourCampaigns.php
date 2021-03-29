@@ -40,6 +40,6 @@ class ShowYourCampaigns extends Component
     
     public function manage($id) {
         $record = Campaign::find($id);
-        return redirect()->route('campaign/manage/collaborations', ['campaign' => $record]);
+        return redirect()->route('campaign/manage', ['campaign' => $record]);
     }
 }

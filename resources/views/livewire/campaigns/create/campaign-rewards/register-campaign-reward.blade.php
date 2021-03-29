@@ -117,7 +117,7 @@
                 <div class="mt-2" x-show="!photoPreview">
                     @if( $image_url)
                     <x-icon-button wire:click="deleteOne" class="absolute m-1 opacity-70">
-                        <i class="uil uil-trash text-base"></i>
+                        <span class="material-icons-outlined">delete</span>
                     </x-icon-button>
                         <img src="{{ URL::to('/') }}{{$image_url}}" alt="" class="rounded-sm w-full h-60 sm:h-64 object-cover">
                     @else 
@@ -137,7 +137,7 @@
                         <span class="block rounded-sm w-full h-60 sm:h-64"
                             x-bind:style="'background-size: cover; background-repeat: no-repeat; background-position: center center; background-image: url(\'' + photoPreview + '\');'">
                             <x-icon-button wire:click="deleteOne" class="m-1 opacity-70">
-                                <i class="uil uil-trash text-base"></i>
+                                <span class="material-icons-outlined">delete</span>
                             </x-icon-button>
                         </span>
                     @else

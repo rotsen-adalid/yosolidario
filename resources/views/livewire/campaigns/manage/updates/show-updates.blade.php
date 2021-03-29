@@ -5,26 +5,38 @@
 
 </x-slot>
 <x-slot  name="menu">
-    <livewire:menu.navigation-app/>
+    <livewire:menu.navigation-panel/>
 </x-slot>
-<div class="mt-20 bg-purple-50">
+<div class="mt-20 bg-white">
 <x-section-content>
     <x-slot name="header">
-        <livewire:campaigns.manage.menu.menu-header :campaign="$campaign"/>
+        <div class="hidden lg:flex lg:items-center">
+            <livewire:campaigns.manage.menu.menu-header :campaign="$campaign"/>
+        </div>
+        <!-- Responsive -->
+        <div class="lg:hidden px-4 ">
+            <div class="border-b border-gray-200 py-5">
+                <a  href="{{ route('your/campaigns') }}" class="cursor-pointer my-4  py-1 px-2 flex space-x-1 w-24">
+                    <span class="material-icons-outlined text-sm">arrow_back_ios</span>
+                </a>
+                <div class="flex items-center justify-center text-2xl font-bold -mt-12">{{__('Updates')}}</div>
+            </div>
+        </div>
     </x-slot>
     <x-slot  name="content">
         @include('livewire.campaigns.manage.updates.modal-updates')
+        @if ($collection->count() > 0)
         <x-section-title>
             <x-slot name="title">
-                <x-button class="ml-2 font-bold text-base" wire:click="addUpdates" wire:loading.attr="disabled">
+                <x-secondary-button class="ml-2 mt-5 sm:mt-0 font-bold text-base" wire:click="addUpdates" wire:loading.attr="disabled">
                     <span class="material-icons-outlined">add</span>
-                    <span>{{__('Add update')}}</span>
-                </x-button>
+                    <span>{{__('Post an update')}}</span>
+                </x-secondary-button>
             </x-slot>
             <x-slot name="description">
             </x-slot>
         </x-section-title>
-
+        @endif
         <div x-data="{ imgModalUpdates : false, imgModalSrcUpdates : '', imgModalDescUpdates : '' }">
             <template @imgu-modal.window="imgModalUpdates = true; imgModalSrcUpdates = $event.detail.imgModalSrcUpdates; imgModalDescUpdates = $event.detail.imgModalDescUpdates;" x-if="imgModalUpdates">
               <div x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-90" x-transition:enter-end="opacity-100 transform scale-100" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-90" x-on:click.away="imgModalSrcUpdates = ''" class="p-2 fixed w-full h-100 inset-0 z-50 overflow-hidden flex justify-center items-center bg-black bg-opacity-75">
@@ -59,24 +71,26 @@
                             </div>
                         </div>
                         <div class="ml-2 sm:ml-12 bg-white border rounded-lg shadow px-2 py-2 sm:px-4 sm:py-4">
-                            <div class="flex-1 font-medium">
-                                <span class="capitalize font-bold text-gray-800">
-                                    {{ \Carbon\Carbon::parse($item->created_at)->diffForHumans() }}
-                                </span>
-                                <span class="font-bold text-gray-800"> - </span>
-                                <span class="mb-3 font-bold text-gray-800 text-lg">
-                                    {{$item->title}}
-                                </span>
-                            </div>
-                            <div class="flex space-x-2">
-                                <span   wire:click="editUpdates({{$item->id}})" wire:loading.attr="disabled"
-                                        class="material-icons-outlined text-lg font-bold cursor-pointer shadow py-1 px-2 rounded-lg border border-gray-100">
-                                        edit
-                                </span>
-                                <span    wire:click="deleteConfirm({{$item->id}})" wire:loading.attr="disabled"
-                                        class="material-icons-outlined text-lg text-red-500 font-bold cursor-pointer shadow py-1 px-2 rounded-lg border border-gray-100">
-                                        delete
-                                </span>
+                            <div class=" space-y-2 sm:space-y-0 sm:flex justify-between">
+                                <div class="flex-1 font-medium">
+                                    <span class="capitalize font-bold text-gray-800">
+                                        {{ \Carbon\Carbon::parse($item->created_at)->diffForHumans() }}
+                                    </span>
+                                    <span class="font-bold text-gray-800"> - </span>
+                                    <span class="mb-3 font-bold text-gray-800 text-lg">
+                                        {{$item->title}}
+                                    </span>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <span   wire:click="editUpdates({{$item->id}})" wire:loading.attr="disabled"
+                                            class="material-icons-outlined text-lg font-bold cursor-pointer shadow py-1 px-2 rounded-lg border border-gray-100">
+                                            edit
+                                    </span>
+                                    <span    wire:click="deleteConfirm({{$item->id}})" wire:loading.attr="disabled"
+                                            class="material-icons-outlined text-lg text-red-500 font-bold cursor-pointer shadow py-1 px-2 rounded-lg border border-gray-100">
+                                            delete
+                                    </span>
+                                </div>
                             </div>
                             @if ($item->video)
                                 <div class="flex justify-center items-center mt-5">
@@ -111,14 +125,21 @@
             <div class="flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
                 <div class="max-w-md w-full space-y-8">
                 <div> 
-                    <h2 class="mt-4 text-center text-xl font-light">
-                        {{ __('No updates') }}
+                    <h2 class="mt-4 text-center text-lg font-bold">
+                        {{ __('You haven’t posted an update yet.') }}
                     </h2>
+                    <h2 class="mt-2 text-center font-light">
+                        {{ __('Keep your supporters up-to-date on your fundraisers!') }}
+                    </h2>
+                    <div class="flex justify-center mt-10">
+                        <x-button class=" justify-center" wire:click="addUpdates" wire:loading.attr="disabled">
+                            <span class="text-base font-bold">{{ __('Post an update') }}</span>
+                        </x-button>
+                    </div>
                 </div>
                 </div>
             </div>
         @endif
-        
     </x-slot>
 </x-section-content>
 </div>

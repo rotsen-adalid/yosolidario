@@ -95,6 +95,11 @@ Route::middleware(['auth:sanctum', 'verified', 'access'])->get('/campaign/saves/
 
 // ++++++++++++++++++++++++++ Campaign Manage
 
+// Panel
+use App\Http\Livewire\Campaigns\Manage\Panel\PanelManage;
+Route::middleware(['auth:sanctum', 'verified', 'access'])->get('/campaign/manage/{campaign}', PanelManage::class)
+->name('campaign/manage');
+
 // Show Collaborations
 use App\Http\Livewire\Campaigns\Manage\Collaborations\ShowCollaborations;
 Route::middleware(['auth:sanctum', 'verified', 'access'])->get('/campaign/manage/collaborations/{campaign}', ShowCollaborations::class)
