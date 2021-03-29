@@ -4,7 +4,7 @@
 <x-slot  name="seo">
   
         <!-- facebook -->
-        <meta property="og:url"        content="https://www.yosolidario.com" />
+        <meta property="og:url"        content="https://yosolidario.com" />
         <meta property="og:type"       content="article" />
         <meta property="og:title"      content="YoSolidario - {{__('The crowdfunding platform')}}" />
         <meta property="og:description"  content="{{__('The most trusted online fundraising platform. Start a crowdfunding campaign. ✓ Read our guarantee!')}}" />
