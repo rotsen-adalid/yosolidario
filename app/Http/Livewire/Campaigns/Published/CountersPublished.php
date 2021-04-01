@@ -65,15 +65,14 @@ class CountersPublished extends Component
     public function render()
     {
         //
-        $response = Http::get('http://api.ipapi.com/179.58.47.20?access_key=c161289d6c8bc62e50f1abad0c4846aa');
-        $ipapi = $response->json();
+        $ipapi = session()->get('ipapi');
 
         if ($ipapi != null) {
             $this->country_code = $ipapi['country_code'];
         } else {
             $this->country_code = 'US';
         }
-
+        //$this->country_code = 'US';
         // save collection global 
         $this->save_collection =  CampaignSave::
                             where('campaign_id', $this->campaign->id)

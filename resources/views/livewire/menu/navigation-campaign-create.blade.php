@@ -1,6 +1,6 @@
-<nav x-data="{ open: false }" class=" bg-white border-b border-gray-100  header w-full ">
+<nav x-data="{ open: false }" class=" bg-white border-b border-gray-100 shadow-md header w-full  fixed top-0">
     <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-5xl mx-auto px-4 md:px-6 lg:px-8">
       <div class="flex justify-between h-20">
           <div class="flex">
               <!-- Logo -->
@@ -12,33 +12,23 @@
 
               <!-- Navigation Links -->
 
-              <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                  <x-nav-link href="{{ route('campaign/create') }}" :active="request()->routeIs('campaign/create')" class="font-bold text-base ">
-                      {{ __('Start a campaign') }}
-                  </x-nav-link>
-              </div>
-
-              <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                  <x-nav-link href="{{ route('campaigns/discover') }}" :active="request()->routeIs('campaigns/discover')">
-                      {{ __('Campaigns') }}
-                  </x-nav-link>
-              </div>
-
           </div>
 
-          <div class="hidden sm:flex sm:items-center sm:ml-6">
-
-            <div class="relative text-gray-600 ">
-                <input type="text" name="serch" placeholder="{{__('Search Campaigns')}}" 
-                class="border border-gray-200 bg-white h-11 px-5 pr-10 rounded-full text-sm w-96 focus:border-green-500 focus:ring focus:ring-green-50 focus:ring-opacity-50 rounded-md shadow-sm">
-                <button type="submit" class="absolute right-0 mt-3 mr-2">
-                    <span class="material-icons-outlined cursor-pointer">
-                        search
-                    </span>
-                </button>
-            </div>
+          <div class="hidden lg:flex sm:items-center sm:ml-6">
 
               @auth
+              @if ($this->status_register == 'COMPLETE')
+              <div class="flex items-center leading-tight space-x-2">
+                  <x-basic-button wire:click="reviewConfirm" wire:loading.attr="disabled">
+                      <span class="material-icons-outlined pr-1">open_in_new</span>
+                      <span class="">{{ __('Publish campaign') }}</span>
+                  </x-basic-button>
+                  <x-basic-button wire:click="preview({{$this->campaign_id}})" wire:loading.attr="disabled">
+                      <span class="material-icons-outlined pr-1">remove_red_eye</span>
+                      <span class="">{{ __('Preview') }}</span>
+                  </x-basic-button>
+              </div>
+              @endif
               <!-- Teams Dropdown -->
               @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
                   <div class="ml-3 relative">
@@ -172,106 +162,45 @@
                       </x-slot>
                   </x-dropdown>
               </div>
-              <div class="ml-3">
-                <button wire:click="shared" type="button" 
-                class="border border-yellow-500 text-black py-1 px-2 font-bold rounded-md text-base
-                hover:bg-yellow-100 focus:outline-none focus:border-yellow-500 shadow-sm focus:shadow-outline-yellow active:bg-yelow-400 transition ease-in-out duration-150">
-                    {{__('Share')}}
-                </button>
-              </div>
-              <div class="ml-3">
-                @if ($this->campaign->categoryCampaign->type == 'SOCIAL_IMPACT')
-                    <button type="button" 
-                        class="border bg-yellow-300 border-yellow-500 text-black py-1 px-2 font-bold rounded-md text-base
-                        hover:bg-yellow-400 focus:outline-none focus:border-yellow-500 shadow-sm focus:shadow-outline-yellow active:bg-yelow-400 transition ease-in-out duration-150">
-                        {{__('Donate now')}}
-                    </button>
-                @elseif ($this->campaign->categoryCampaign->type == 'PROJECT')
-                    <button type="button" 
-                        class="border bg-yellow-300 border-yellow-500 text-black py-1 px-2 font-bold rounded-md text-base
-                        hover:bg-yellow-400 focus:outline-none focus:border-yellow-500 shadow-sm focus:shadow-outline-yellow active:bg-yelow-400 transition ease-in-out duration-150">
-                        {{__('Back this project')}}
-                    </button>
-                @endif
-              </div>
               @else
-              <div class="hidden space-x-3 sm:-my-px sm:ml-5 sm:flex items-center">
+              <div class="hidden space-x-8 sm:-my-px sm:ml-6 sm:flex">
+
                   <a class="font-bold text-sm text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
-                      <span class="py-2 px-3 rounded-lg text-gray-700 font-bold ">{{ __('Login') }}</span>
+                      <span class="border border-ys1 py-2 px-3 rounded-lg text-ys1 font-bold ">{{ __('Login') }}</span>
                   </a>
-                    <button wire:click="shared" type="button" 
-                        class="border border-yellow-500 text-black py-1 px-2 font-bold rounded-md text-base
-                        hover:bg-yellow-100 focus:outline-none focus:border-yellow-500 shadow-sm focus:shadow-outline-yellow active:bg-yelow-400 transition ease-in-out duration-150">
-                        {{__('Share')}}
-                    </button>
               </div>
               @endauth
           </div>
          
           <!-- Hamburger -->
-          <div class="-mr-2 flex items-center sm:hidden">
-                <button wire:click="shared" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
-                    <span class="material-icons-outlined ">
-                        file_upload</span>
-                </button>
-                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-800 hover:text-gray-900 hover:bg-gray-50 focus:outline-none focus:bg-gray-50 focus:text-gray-800 transition duration-150 ease-in-out">
-                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                        <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
+          <div class="-mr-2 flex items-center lg:hidden">
+
+            <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-800 hover:text-gray-900 hover:bg-gray-50 focus:outline-none focus:bg-gray-50 focus:text-gray-800 transition duration-150 ease-in-out">
+                <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                    <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
           </div>
       </div>
   </div>
 
-  <!-- Responsive Navigation Menu -->
-  <div :class="{'block': open, 'hidden': ! open}" x-on:click.away="open = false" class="hidden sm:hidden">
-        <div class="relative text-gray-600  mx-4 mb-2">
-            <input type="text" name="serch" placeholder="{{__('Search Campaigns')}}" 
-            class="border border-gray-200 bg-white h-11 px-5 pr-10 rounded-full text-sm w-full focus:border-green-500 focus:ring focus:ring-green-50 focus:ring-opacity-50 rounded-md shadow-sm">
-            <button type="submit" class="absolute right-0 mt-3 mr-2">
-                <span class="material-icons-outlined cursor-pointer">
-                    search
-                </span>
-            </button>
-        </div> 
+    <!-- Responsive Navigation Menu -->
 
-        @auth
-            @else
-            <div class="space-y-1">
-                <x-responsive-nav-link href="{{ route('login') }}" :active="request()->routeIs('login')">
-                        <span>{{ __('Login') }}</span>
-                </x-responsive-nav-link>
-            </div>
-        @endauth
+    <div :class="{'block': open, 'hidden': ! open}" x-on:click.away="open = false" class="hidden lg:hidden shadow-lg">
 
-        <div class="space-y-1">
-            <x-responsive-nav-link href="{{ route('campaign/create') }}" :active="request()->routeIs('campaign/create')">
-                {{ __('Start a campaign') }}
-            </x-responsive-nav-link>
+        @if ($this->status_register == 'COMPLETE')
+        <div class="flex flex-col leading-tight px-4 space-y-4 pb-2">
+            <x-button wire:click="reviewConfirm" wire:loading.attr="disabled">
+                <span class="material-icons-outlined pr-1">open_in_new</span>
+                <span class="">{{ __('Publish campaign') }}</span>
+            </x-button>
+            <x-secondary-button wire:click="preview({{$this->campaign_id}})" wire:loading.attr="disabled">
+                <span class="material-icons-outlined pr-1">remove_red_eye</span>
+                <span class="">{{ __('Preview') }}</span>
+            </x-secondary-button>
         </div>
-
-        <div class="space-y-1">
-            <x-responsive-nav-link href="{{ route('campaigns/discover') }}" :active="request()->routeIs('campaigns/discover')">
-                {{ __('Campaigns') }}
-            </x-responsive-nav-link>
-        </div>
-
-        <div class="px-4 pt-3">
-            <button wire:click="shared" type="button" 
-            class="w-full py-2 border border-yellow-500 text-black py-1 px-2 font-bold rounded-md text-lg
-            hover:bg-yellow-100 focus:outline-none focus:border-yellow-500 shadow-md focus:shadow-outline-yellow active:bg-yelow-400 transition ease-in-out duration-150">
-                {{__('Share')}}
-            </button>
-        </div>
-        <div class="px-4 py-4 ">
-            <button type="button" 
-            class="w-full py-2 border bg-yellow-400 border-yellow-500 text-black py-1 px-2 font-bold rounded-md text-lg
-                hover:bg-yellow-300 focus:outline-none focus:border-yellow-500 shadow-md focus:shadow-outline-yellow active:bg-yelow-400 transition ease-in-out duration-150">
-                {{__('Back this campaign')}}
-            </button>
-        </div>
-
+        @endif
       @auth
       <!-- Responsive Settings Options -->
       <div class="mt-2 pt-4 pb-2 border-t border-gray-200 ">
@@ -331,6 +260,7 @@
               <!-- Authentication -->
               <form method="POST" action="{{ route('logout') }}">
                   @csrf
+
                   <x-responsive-nav-link href="{{ route('logout') }}"
                                  onclick="event.preventDefault();
                                   this.closest('form').submit();">
@@ -371,8 +301,16 @@
           </div>
       </div>
       @else
-
+          <div class="border-t border-gray-200"></div>
+          <div class="pt-3 pb-3 space-y-1">
+              <x-responsive-nav-link href="{{ route('login') }}" :active="request()->routeIs('login')">
+                    <span class="border border-ys1 py-2 px-3 rounded-lg text-ys1 font-bold ">{{ __('Login') }}</span>
+              </x-responsive-nav-link>
+          </div>
       @endauth
-  </div>
-  @include('livewire.campaigns.published.shared-published')
+    </div>
+    <!-- Send to review Modal -->
+    @if($this->campaign)
+        @include('livewire.campaigns.create.send-to-review')
+    @endif
 </nav>

@@ -26,8 +26,8 @@
             <div class="mt-0 sm:mt-5">
                 <div class="border border-gray-100 shadow rounded-lg">
                     <div class="bg-gray-100 text-center py-4 space-y-2">
-                        <div class="font-bold text-lg">{{__('Collection number')}}</div>
-                        <div class="font-bold text-2xl">{{$paymentOrder->code_collection}}</div>
+                        <div class="font-bold text-lg uppercase">{{__('Collection code')}}</div>
+                        <div class="font-bold text-3xl">{{$paymentOrder->code_collection}}</div>
                     </div>
                     <div class="grid grid-cols-3 gap-5 p-4 font-bold">
                         <div class="text-right">
@@ -76,7 +76,7 @@
                     <img src="{{asset('images/banco-bo/banco-ecofuturo.png')}}" class="h-6 sm:h-10" alt="">
                 </div>
                 <div class="flex justify-center">
-                    <img src="{{asset('images/banco-bo/banco-facil.png')}}" class="h-6 sm:h-10" alt="">
+                    <img src="{{asset('images/banco-bo/banco-facil.png')}}" class="h-6 sm:h-8" alt="">
                 </div>
                 <div class="flex justify-end">
                     <img src="{{asset('images/banco-bo/banco-visa.png')}}" class="h-6 sm:h-12" alt="">
@@ -85,7 +85,7 @@
                     <img src="{{asset('images/banco-bo/banco-laprimera.png')}}" class="h-6 sm:h-12" alt="">
                 </div>
                 <div class="flex justify-center">
-                    <img src="{{asset('images/banco-bo/farmacorp.png')}}" class="h-6 sm:h-10" alt="">
+                    <img src="{{asset('images/banco-bo/farmacorp.png')}}" class="h-6 sm:h-9" alt="">
                 </div>
                 <div class="flex justify-center">
                     <img src="{{asset('images/banco-bo/hipermaxi-farmacias.png')}}" class="h-6 sm:h-12" alt="">

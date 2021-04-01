@@ -17,3 +17,6 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+/* ------------- PAGOSNET -----------*/
+use App\Http\Controllers\Bolivia\Pagosnet\NotificationCashController;
+Route::post('/pagosnet/notification/cash', [NotificationCashController::class, 'store']);

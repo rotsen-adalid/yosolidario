@@ -15,7 +15,7 @@ class Country extends Model
         'name',
         'slug',
         'code',
-        'telephone_prefix',
+        'phone_prefix',
         'status_published_campaign',
         'search'
     ];

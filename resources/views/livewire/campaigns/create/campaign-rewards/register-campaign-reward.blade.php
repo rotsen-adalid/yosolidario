@@ -9,55 +9,44 @@
    
 </x-slot>
 <x-slot  name="menu">
-    <livewire:menu.navigation-app/>
+    <livewire:menu.navigation-campaign-create :campaign="$campaign"/>
 </x-slot>
       
-<div class="mt-20 bg-gray-50">
-<x-section-content>
-    <x-slot name="header">
-        <header class="bg-white shadow pt-2 mb-10"> 
-            <div class="sm:flex justify-between items-start max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 space-y-2">
-                <h2 class="flex items-center font-semibold text-xl text-gray-800 leading-tight pt-4">
-                    <span class="material-icons-outlined text-base">arrow_back</span>
-                    <a class="underline hover:text-gray-900" href="{{ route('campaign/rewards/show', $this->campaign) }}">
-                        <span>{{ __('Show rewards') }}</span>
-                    </a>
-                </h2>
-            </div>
-        </header>
-    </x-slot>
-    <x-slot  name="content" >
-        <x-form-section submit="StoreOrUpdate" class="mt-10 sm:mt-0">
-            <x-slot name="title">
-                @if ($campaign_reward_id)
-                    {{__('Update reward')}}
-                @else
-                    {{ __('Register new reward') }}
-                @endif
-            </x-slot>
-        
-            <x-slot name="description">
-                <div class="sm:pt-3">
+<div class="pt-20 bg-gray-50">
+    <div class="max-w-2xl mx-auto px-4 sm:px-2 py-0 sm:py-10">
+        <div class="border border-gray-100 my-5 py-4 sm:py-10 px-4 sm:px-20 rounded shadow bg-white">
+
+            <div class="hidden lg:flex space-x-16 items-center">
+                <a class="underline hover:text-gray-900" href="{{ route('campaign/rewards/show', $this->campaign) }}">
+                    <span class="material-icons-outlined">arrow_back_ios_new</span>
+                </a>
+                <div class="font-bold text-2xl -mt-1">
                     @if ($campaign_reward_id)
-                        {{__('Update data, the reward can be physical, symbolic or digital.')}}
+                        {{__('Update reward')}}
                     @else
-                        {{ __('Enter a new reward, it can be physical, symbolic or digital.') }}
+                        {{ __('Register new reward') }}
                     @endif
                 </div>
-                <div class="hidden sm:block sm:mt-2">
-                    {{ __('Picture and delivery date is optional') }}
+            </div>
+            <!-- Responsive -->
+            <div class="lg:hidden">
+                <a  href="{{ route('campaign/rewards/show', $this->campaign) }}" class="cursor-pointer border border-gray-300 py-1 px-2 flex space-x-1 w-20">
+                    <span class="material-icons-outlined text-sm">arrow_back_ios</span>
+                    <span class="font-bold">{{__('Back')}}</span>
+                </a>
+                <div class="text-center font-bold text-2xl mt-8">
+                    {{__('Let’s start with the basics')}}
                 </div>
-            </x-slot>
-            <x-slot name="form">
-
-            <!-- amount -->
-            <div class="col-span-6 sm:col-span-4">
+            </div>
+            <form wire:submit.prevent="StoreOrUpdate">
+                        <!-- amount -->
+            <div class="mt-8">
                 <div class="sm:flex sm:space-x-2">
                     <div>
                         <x-label for="amount" class="text-base" value="{{ __('Amount') }}" required/>
                         <div class="flex">
-                            <x-input id="amount" type="number" class="mt-1 block w-50" wire:model.defer="amount"  autocomplete="off"  minlength="1" maxlength="3"/>
-                            <x-input id="amount" disabled type="text" class="mt-1 ml-1 block w-16" placeholder="{{$currency_symbol}}" autocomplete="off"/>
+                            <x-input id="amount" type="text" class="mt-1 block w-50" wire:model.defer="amount"  autocomplete="off"  minlength="1" maxlength="3" onKeyPress="return validar(event)"/>
+                            <x-input id="amount" disabled type="text" class="mt-1 ml-1 block w-16 font-bold" placeholder="{{$currency_symbol}}" autocomplete="off"/>
                         </div>
                         <x-input-error for="amount" class="mt-2" />
                     </div>
@@ -70,13 +59,13 @@
                 </div>
             </div>
             <!-- description -->
-            <div class="col-span-6 sm:col-span-4">
+            <div class="mt-6">
                 <x-label for="description" class="text-base" value="{{ __('Description') }}" required/>
                 <x-textarea id="description" class="mt-1 block w-full" wire:model.defer="description" autocomplete="off"/>
                 <x-input-error for="description" class="mt-2" />
             </div>
             <!-- limiter -->
-            <div class="col-span-6 sm:col-span-4">
+            <div class="mt-6">
                 <div class="flex space-x-1">
                     <div class="w-48">
                         <x-label for="limiter" class="text-base" value="{{ __('Limit quantity?') }}" required/>
@@ -99,7 +88,7 @@
                 </div>
             </div>
             <!-- Photo -->
-            <div x-data="{photoName: null, photoPreview: null}" class="col-span-6 sm:col-span-4">
+            <div x-data="{photoName: null, photoPreview: null}" class="mt-6">
                 <!-- Profile Photo File Input -->
                 <input type="file" class="hidden" accept="image/*"
                     wire:model="photoOne"
@@ -119,9 +108,9 @@
                     <x-icon-button wire:click="deleteOne" class="absolute m-1 opacity-70">
                         <span class="material-icons-outlined">delete</span>
                     </x-icon-button>
-                        <img src="{{ URL::to('/') }}{{$image_url}}" alt="" class="rounded-sm w-full h-60 sm:h-64 object-cover">
+                        <img src="{{ URL::to('/') }}{{$image_url}}" alt="" class="rounded-sm w-full h-36 sm:h-64 object-cover">
                     @else 
-                        <div class="mt-1 flex justify-center items-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md w-full h-60 sm:h-64">
+                        <div class="mt-1 flex justify-center items-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md w-full h-36 sm:h-64">
                             <div class="space-y-1 text-center">
                             <span class="material-icons-outlined text-5xl text-gray-500">add_a_photo</span>
                             <p class="text-xs text-gray-500">
@@ -134,14 +123,14 @@
                 <!-- Image Preview -->
                 <div class="mt-2" x-show="photoPreview">
                     @if($photoOne)
-                        <span class="block rounded-sm w-full h-60 sm:h-64"
+                        <span class="block rounded-sm w-full h-36 sm:h-64"
                             x-bind:style="'background-size: cover; background-repeat: no-repeat; background-position: center center; background-image: url(\'' + photoPreview + '\');'">
                             <x-icon-button wire:click="deleteOne" class="m-1 opacity-70">
                                 <span class="material-icons-outlined">delete</span>
                             </x-icon-button>
                         </span>
                     @else
-                        <div class="mt-1 flex justify-center items-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md w-full h-60 sm:h-64">
+                        <div class="mt-1 flex justify-center items-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md w-full h-36 sm:h-64">
                             <div class="space-y-1 text-center">
                             <span class="material-icons-outlined text-5xl text-gray-500">add_a_photo</span>
                             <p class="text-xs text-gray-500">
@@ -158,14 +147,35 @@
 
                 <x-input-error for="photoOne" class="mt-2" />
             </div>
-            </x-slot>
-            <x-slot name="actions">
-                <x-button class="text-sm" wire:loading.attr="disabled">
-                    {{ __('Save') }}
+            <!-- button --> 
+            <div class="mt-6 flex justify-center">
+                <x-button wire:loading.attr="disabled">
+                   <div class="my-2 mx-3">
+                        <span class="px-2 font-bold sm:text-base"> {{ __('Save') }}</span>
+                   </div>
                 </x-button>
-            </x-slot>
-        </x-form-section>
-
-    </x-slot>
-</x-section-content>
-<livewire:footer.footer-app/>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    function validar(e) {
+        tecla = (document.all) ? e.keyCode : e.which;
+        if (tecla==8) return true; //Tecla de retroceso (para poder borrar)
+        if (tecla==44) return true; //Coma ( En este caso para diferenciar los decimales )
+        if (tecla==48) return true;
+        if (tecla==49) return true;
+        if (tecla==50) return true;
+        if (tecla==51) return true;
+        if (tecla==52) return true;
+        if (tecla==53) return true;
+        if (tecla==54) return true;
+        if (tecla==55) return true;
+        if (tecla==56) return true;
+        patron = /1/; //ver nota
+        te = String.fromCharCode(tecla);
+        return patron.test(te);
+    }
+</script>
+<livewire:footer.footer-collaborate/>

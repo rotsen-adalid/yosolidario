@@ -1,6 +1,6 @@
 <x-dialog-modal wire:model="confirmingSendReview">
     <x-slot name="title">
-        <div class="font-semibold text-xl">
+        <div class="font-bold text-2xl">
             {{ __('Publish campaign') }}?
         </div>
     </x-slot>

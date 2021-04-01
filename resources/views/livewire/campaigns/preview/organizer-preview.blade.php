@@ -21,8 +21,12 @@
 
                 @if($this->campaign->user->profile)
                     <div>
-                        {{$this->campaign->user->profile->country->name}},
-                        {{$this->campaign->user->profile->locality}}
+                        @if ($this->campaign->user->profile->locality)
+                            {{$this->campaign->user->profile->country->name}},
+                            {{$this->campaign->user->profile->locality}}
+                        @else
+                            {{$this->campaign->user->profile->country->name}}
+                        @endif
                     </div> 
                 @endif
                 

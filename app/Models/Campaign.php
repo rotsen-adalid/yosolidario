@@ -34,8 +34,8 @@ class Campaign extends Model
         'followers',
 
         'locality',
-        'telephone_country_id',
-        'telephone',
+        'phone_prefix',
+        'phone',
 
         'user_id',
         'category_campaign_id',
@@ -108,6 +108,12 @@ class Campaign extends Model
     public function campaignTeam() {
         return $this->hasMany(CampaignTeam::class);
     }
+
+    // uno a muchos 
+    public function paymentOrders() {
+        return $this->hasMany(PaymentOrder::class);
+    }
+
     // relacion polimorfica uno a uno
     public function image() {
         return $this->morphOne(Image::class, 'imageable');
@@ -127,11 +133,6 @@ class Campaign extends Model
         return $this->morphOne(Image::class, 'telegramable');
     }
     
-    // uno a uno
-    public function paymentOrder() {
-        return $this->hasOne(PaymentOrder::class);
-    }
-
     // relacion polimorfica uno a muchos
     public function userHistories() {
         return $this->morphMany(UserHistory::class, 'userhistoriesable');

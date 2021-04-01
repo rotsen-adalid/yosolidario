@@ -123,9 +123,9 @@
       <div class="flex justify-between mt-5 sm:mt-3 h-9 items-center">
         @if ($item->status == 'DRAFT')
             <span wire:click="editCampaign({{$item->id}})" wire:loading.attr="disabled" 
-                class="material-icons-outlined cursor-pointer">edit</span>
+                class="material-icons-outlined text-xl font-bold cursor-pointer border border-gray-100 shadow-lg px-2 py-1 rounded-lg">edit</span>
             <span wire:click="view({{$item->id}})" wire:loading.attr="disabled"
-                class="material-icons-outlined cursor-pointer">remove_red_eye</span>
+                class="material-icons-outlined text-xl font-bold cursor-pointer border border-gray-100 shadow-lg px-2 py-1 rounded-lg">remove_red_eye</span>
         @elseif ($item->status == 'IN_REVIEW')
             <x-secondary-button class="w-full justify-center" wire:click="view({{$item->id}})" wire:loading.attr="disabled">
                 <span class="material-icons-outlined pr-1">remove_red_eye</span>

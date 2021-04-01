@@ -17,9 +17,11 @@
                 <hr class="item-center w-12 h-1 bg-orange-500 rounded-full mt-4 sm:mt-8">
             -->
                 <p class="text-xl sm:text-2xl text-center sm:text-left text-white leading-relaxed mt-6 sm:mt-8 font-thin">
-                    {{ __('Starting is easy.') }}
-                    {{$this->commission_percentage}}%
-                    {{ __('platform fee for organizers*.') }}
+                    {{__('Get Started Today.')}}
+                    <!-- { __('Starting is easy.') }}
+                    {$this->commission_percentage}}%
+                    { __('platform fee for organizers*.') }}
+                    -->
                 </p>
                 <div class="get-app flex space-x-5 mt-2 sm:mt-10 justify-center md:justify-start">
                     <button wire:click="createCampaign" wire:loading.attr="disabled" 

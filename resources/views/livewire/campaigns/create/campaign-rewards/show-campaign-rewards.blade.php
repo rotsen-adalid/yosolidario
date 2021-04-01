@@ -5,43 +5,11 @@
 
 </x-slot>
 <x-slot  name="menu">
-    <livewire:menu.navigation-app/>
+    <livewire:menu.navigation-campaign-create :campaign="$campaign"/>
 </x-slot>
       
-<div class="mt-20 bg-gray-50">
-<x-section-content>
-    <x-slot name="header">
-        <header class="bg-white shadow pt-2 mb-10"> 
-            <div class="sm:flex justify-between items-start max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 space-y-2">
-                <h2 class="flex items-center font-semibold text-xl text-gray-800 leading-tight pt-4">
-                    <a class="underline hover:text-gray-900" href="{{ route('campaign/update', $this->campaign) }}">
-                        {{ __('Details') }}
-                    </a>
-                    <span class="ml-1 mr-1">/</span>
-                    <a class="underline hover:text-gray-900" href="{{ route('campaign/update/questions', $this->campaign) }}">
-                        {{ __('Questions') }}
-                    </a>
-                    <span class="ml-1 mr-1">/</span>
-                    {{ __('Rewards') }}
-                </h2>
-                
-                @if ($this->status_register == 'COMPLETE')
-                <div class="flex items-center leading-tight space-x-2">
-                    <x-button wire:click="reviewConfirm" wire:loading.attr="disabled">
-                        <span class="material-icons-outlined pr-1">open_in_new</span>
-                        <span class="">{{ __('Publish campaign') }}</span>
-                    </x-button>
-                    <x-secondary-button wire:click="preview({{$this->campaign_id}})" wire:loading.attr="disabled">
-                        <span class="material-icons-outlined pr-1">remove_red_eye</span>
-                        <span class="">{{ __('Preview') }}</span>
-                    </x-secondary-button>
-                </div>
-                @endif
-    
-            </div>
-        </header>
-    </x-slot>
-    <x-slot  name="content" >
+<div class="pt-20 bg-gray-50">
+    <div class="max-w-6xl mx-auto px-4 sm:px-2 py-5 sm:py-10">
         <x-section-title>
             <x-slot name="title">
                 <x-secondary-button wire:click="register" wire:loading.attr="disabled">
@@ -141,9 +109,7 @@
         </div>
     </div>
         @endif
-       <!-- Send to review Modal -->
-       @include('livewire.campaigns.create.send-to-review')
-    </x-slot>
-</x-section-content>
+
+    </div>
 </div>
-<livewire:footer.footer-app/>
+<livewire:footer.footer-collaborate/>

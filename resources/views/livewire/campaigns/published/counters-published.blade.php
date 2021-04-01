@@ -71,12 +71,22 @@
     -->
     <!-- -->
     <div class="mt-5">
-        <button 
-            wire:click="backThisCampaign({{$this->campaign->id}})" wire:loading.attr="disabled" 
-            class=" w-full px-4 py-2 sm:py-4 text-center bg-yellow-400 border border-yellow-500 rounded-md font-bold text-base text-black uppercase tracking-widest hover:bg-yellow-500 active:bg-yellow-500 focus:outline-none focus:border-gray-100 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
-            <!-- <img src="{asset('images/icono.png')}}" class="h-7" alt=""> -->
-            <span>{{__('Back this campaign')}}</span>
-        </button>
+        @if ($this->campaign->categoryCampaign->type == 'SOCIAL_IMPACT')
+            <button 
+                wire:click="backThisCampaign({{$this->campaign->id}})" wire:loading.attr="disabled" 
+                class=" w-full px-4 py-2 sm:py-4 text-center bg-yellow-400 border border-yellow-500 rounded-md font-bold text-base text-black uppercase tracking-widest hover:bg-yellow-500 active:bg-yellow-500 focus:outline-none focus:border-gray-100 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
+                <!-- <img src="{asset('images/icono.png')}}" class="h-7" alt=""> -->
+                <span>{{__('Donate now')}}</span>
+            </button>
+        @elseif ($this->campaign->categoryCampaign->type == 'PROJECT')
+            <button 
+                wire:click="backThisCampaign({{$this->campaign->id}})" wire:loading.attr="disabled" 
+                class=" w-full px-4 py-2 sm:py-4 text-center bg-yellow-400 border border-yellow-500 rounded-md font-bold text-base text-black uppercase tracking-widest hover:bg-yellow-500 active:bg-yellow-500 focus:outline-none focus:border-gray-100 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
+                <!-- <img src="{asset('images/icono.png')}}" class="h-7" alt=""> -->
+                <span>{{__('Back this project')}}</span>
+            </button>
+        @endif
+        
     </div>
 
     <div class="flex mt-2 space-x-2">

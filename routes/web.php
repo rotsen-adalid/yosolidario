@@ -127,10 +127,24 @@ use App\Http\Livewire\Campaigns\Collaborate\RegisterNoRewardCollaborate;
 Route::middleware(['access'])->get('/campaign/collaborate/{campaign}', RegisterNoRewardCollaborate::class)
 ->name('campaign/collaborate');
 
-// PagosNet
+//------------------------------------------PAGOSNET----------------------------------------
 use App\Http\Livewire\Campaigns\Collaborate\Pagosnet\ViewCodePagosNet;
 Route::middleware(['access'])->get('/campaign/collaborate/pagosnet/cash/{paymentOrder}', ViewCodePagosNet::class)
 ->name('campaign/collaborate/pagosnet/cash');
+
+use App\Http\Livewire\Campaigns\Collaborate\Pagosnet\IframePagosnet;
+Route::middleware(['access'])->get('/campaign/collaborate/pagosnet/card/{paymentOrder}', IframePagosnet::class)
+->name('campaign/collaborate/pagosnet/card');
+
+//------------------------------------------PAGOFACILCHECKOUT----------------------------------------
+
+// esta ruta es la vista inicial, que muestra un formulario basico para datos del cliente
+use App\Http\Controllers\PagoFacilCheckoutClient;
+Route::get('/campaign/collaborate/pagofacil/{paymentOrder}/PagoFacilCheckout', [PagoFacilCheckoutClient::class, 'inicio'])
+->name('campaign/collaborate/pagofacil/PagoFacilCheckout');
+
+//esta ruta recibe los parametros del formulario inicial del cliente y pasa a encriptar los datos antes de enviarlos para ser procesados en PagoFacil Bolivia
+Route::post('campaign/collaborate/pagofacil/{paymentOrder}/PagoFacilCheckoutEncript', [PagoFacilCheckoutClient::class, 'Encript']);
 
 // ++++++++++++++++++++++++++ User 
 
@@ -185,3 +199,4 @@ Route::middleware(['access'])->get('/about/know-us', ShowKnowUs::class)
 use App\Http\Livewire\About\AboutUs\ShowAboutUs;
 Route::middleware(['access'])->get('/about/about-us', ShowAboutUs::class)
 ->name('about/about-us');
+

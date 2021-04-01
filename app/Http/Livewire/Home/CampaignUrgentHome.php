@@ -14,9 +14,9 @@ class CampaignUrgentHome extends Component
 
     public function render()
     {
-        $response = Http::get('http://api.ipapi.com/179.58.47.20?access_key=c161289d6c8bc62e50f1abad0c4846aa');
-        $ipapi = $response->json();
-
+        //$response = Http::get('http://api.ipapi.com/179.58.47.20?access_key=c161289d6c8bc62e50f1abad0c4846aa');
+        $ipapi = session()->get('ipapi');
+        
         if ($ipapi != null) {
             $country_code = $ipapi['country_code'];
             // $country_code = 'US';
@@ -34,7 +34,11 @@ class CampaignUrgentHome extends Component
                                 ->get();
            }
         } else {
-            $collection = [];
+            $collection = CampaignUrgent::
+                        join('campaigns', 'campaign_urgents.campaign_id', '=', 'campaigns.id')
+                        // ->where('campaigns.user_id', ' >= ' , 50)
+                        ->where('campaigns.user_id', '>' , 500000)
+                        ->get();
         }
 
         return view('livewire.home.campaign-urgent-home',[

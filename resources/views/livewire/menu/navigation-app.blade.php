@@ -1,4 +1,4 @@
-<nav x-data="{ open: false, open0:false }" class=" bg-white border-b border-gray-100  header w-full  fixed top-0">
+<nav x-data="{ open: false, open0:false }" class=" bg-white border-b border-gray-100  header w-full  fixed shadow-md top-0">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
       <div class="flex justify-between h-20">
@@ -237,9 +237,9 @@
               @else
               <div class="hidden space-x-8 sm:-my-px sm:ml-6 sm:flex">
 
-                  <a class="font-bold text-sm text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
-                      <span class="border border-ys1 py-2 px-3 rounded-lg text-ys1 font-bold ">{{ __('Login') }}</span>
-                  </a>
+                    <a class="font-bold text-sm text-sm text-gray-600 hover:text-gray-900 underline" href="{{ route('login') }}">
+                        <span class=" font-semibold ">{{ __('Sign in') }}</span>
+                    </a>
               </div>
               @endauth
           </div>
@@ -251,7 +251,7 @@
                 <span class="material-icons-outlined text-3xl">notifications</span>
             </button>
             
-            <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
+            <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-800 hover:text-gray-900 hover:bg-gray-50 focus:outline-none focus:bg-gray-50 focus:text-gray-800 transition duration-150 ease-in-out">
                 <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                     <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                     <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -426,7 +426,7 @@
           <div class="border-t border-gray-200"></div>
           <div class="pt-3 pb-3 space-y-1">
               <x-responsive-nav-link href="{{ route('login') }}" :active="request()->routeIs('login')">
-                    <span class="border border-ys1 py-2 px-3 rounded-lg text-ys1 font-bold ">{{ __('Login') }}</span>
+                    <span class="py-2 px-3 rounded-lg text-gray-900 font-semibold ">{{ __('Login') }}</span>
               </x-responsive-nav-link>
           </div>
       @endauth

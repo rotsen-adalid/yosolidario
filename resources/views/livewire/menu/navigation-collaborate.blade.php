@@ -1,6 +1,6 @@
-<nav x-data="{ open: false }" class=" bg-white border-b border-gray-100  header w-full  fixed top-0">
+<nav x-data="{ open: false }" class=" bg-white border-b border-gray-100 shadow-md header w-full  fixed top-0">
     <!-- Primary Navigation Menu -->
-    <div class="max-w-5xl mx-auto px-4 md:px-6 lg:px-8">
+    <div class="max-w-5xl mx-auto px-4 sm:px-0">
       <div class="flex justify-between h-20">
           <div class="flex">
               <!-- Logo -->
@@ -17,7 +17,7 @@
           <div class="hidden lg:flex sm:items-center sm:ml-6">
 
               @auth
-
+                <span>{{Auth::user()->name}}</span>
               <!-- Teams Dropdown -->
               @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
                   <div class="ml-3 relative">
@@ -152,11 +152,13 @@
                   </x-dropdown>
               </div>
               @else
-              <div class="hidden space-x-8 sm:-my-px sm:ml-6 sm:flex">
-
-                  <a class="font-bold text-sm text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
-                      <span class="border border-ys1 py-2 px-3 rounded-lg text-ys1 font-bold ">{{ __('Login') }}</span>
-                  </a>
+              <div class="hidden space-x-2 sm:-my-px sm:ml-6 sm:flex">
+                <div>
+                    {{__('Already have an account?')}}
+                </div>
+                <a class="font-bold text-sm text-sm text-gray-600 hover:text-gray-900 underline" href="{{ route('login') }}">
+                    <span class=" font-semibold ">{{ __('Sign in') }}</span>
+                </a>
               </div>
               @endauth
           </div>
@@ -164,7 +166,7 @@
           <!-- Hamburger -->
           <div class="-mr-2 flex items-center lg:hidden">
 
-            <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
+            <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-800 hover:text-gray-900 hover:bg-gray-50 focus:outline-none focus:bg-gray-50 focus:text-gray-800 transition duration-150 ease-in-out">
                 <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                     <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                     <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -295,7 +297,7 @@
           <div class="border-t border-gray-200"></div>
           <div class="pt-3 pb-3 space-y-1">
               <x-responsive-nav-link href="{{ route('login') }}" :active="request()->routeIs('login')">
-                    <span class="border border-ys1 py-2 px-3 rounded-lg text-ys1 font-bold ">{{ __('Login') }}</span>
+                    <span class=" py-2 px-3 rounded-lg text-gray-900 font-semibold ">{{ __('Login') }}</span>
               </x-responsive-nav-link>
           </div>
       @endauth

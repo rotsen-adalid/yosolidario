@@ -24,7 +24,7 @@ class CampaignDetails extends Component
     use WithFileUploads;
 
     public $title, $slug, $extract, $type_campaign, $period = 60, $amount_target, $locality, $user_id, $category_campaign_id, $country_id, $organization_id, $agency_id;
-    public $telephone, $video_url, $status_register;
+    public $phone_prefix, $phone, $video_url, $status_register;
 
     public $collection_category_campaign;
     public $collection_organization;
@@ -38,8 +38,6 @@ class CampaignDetails extends Component
 
     public $photoOne;
     public $photo_url;
-
-    public $confirmingSendReview = false;
     
     public $amountOne;
     public $amountTwo;
@@ -47,7 +45,6 @@ class CampaignDetails extends Component
     public $amountFour;
     public $amountFive;
 
-    public $terms;
     public $amount_min;
     public $amount_max;
 
@@ -67,10 +64,10 @@ class CampaignDetails extends Component
         }
 
         // general values
-        $response = Http::get('http://api.ipapi.com/179.58.47.20?access_key=c161289d6c8bc62e50f1abad0c4846aa');
-        $this->ipapi = $response->json();
-        $this->country_code = $this->ipapi['country_code'];
-        $this->languaje_code = $this->ipapi['location']['languages'][0]['code'];
+        //$response = Http::get('http://api.ipapi.com/179.58.47.20?access_key=c161289d6c8bc62e50f1abad0c4846aa');
+        //$this->ipapi = $response->json();
+        //$this->country_code = $this->ipapi['country_code'];
+        //$this->languaje_code = $this->ipapi['location']['languages'][0]['code'];
     } 
 
     public function render()
@@ -111,7 +108,7 @@ class CampaignDetails extends Component
                 'country_id' => 'required',
                 'amount_target' => "required|numeric|between:$this->amount_min,$this->amount_max",
                 //'period' => 'required',
-                'telephone' => 'required|digits_between:7,15',
+                'phone' => 'required|digits_between:7,15',
                 'video_url' => 'required|url'
             ]);
         }
@@ -129,7 +126,7 @@ class CampaignDetails extends Component
                 'amount_target' => "required|numeric|between:$this->amount_min,$this->amount_max",
                 //'period' => 'required',
 
-                'telephone' => 'required|digits_between:7,15',
+                'phone' => 'required|digits_between:7,15',
                 'video_url' => 'required|url'
             ]);
             $this->organization_id = null;
@@ -156,7 +153,8 @@ class CampaignDetails extends Component
             'shareds' => 0,
             'followers' => 0,
             'locality' => addslashes($this->locality),
-            'telephone' => $this->telephone,
+            'phone_prefix' => $this->telephone_prefix,
+            'phone' => $this->phone,
 
             'user_id' => auth()->user()->id,
             'category_campaign_id' => $this->category_campaign_id,
@@ -227,7 +225,7 @@ class CampaignDetails extends Component
                 'amount_target' => "required|numeric|between:$this->amount_min,$this->amount_max",
                 //'period' => 'required',
 
-                'telephone' => 'required|digits_between:7,15',
+                'phone' => 'required|digits_between:7,15',
                 'video_url' => 'required|url'
 
             ]);
@@ -245,7 +243,7 @@ class CampaignDetails extends Component
                 'amount_target' => "required|numeric|between:$this->amount_min,$this->amount_max",
                 //'period' => 'required',
 
-                'telephone' => 'required|digits_between:7,15',
+                'phone' => 'required|digits_between:7,15',
                 'video_url' => 'required|url'
             ]);
             $this->organization_id = null;
@@ -310,7 +308,8 @@ class CampaignDetails extends Component
             'shared' => 0,
             'followers' => 0,
             'locality' => addslashes($this->locality),
-            'telephone' => $this->telephone,
+            'phone_prefix' => $this->telephone_prefix,
+            'phone' => $this->phone,
 
             'user_id' => auth()->user()->id,
             'category_campaign_id' => $this->category_campaign_id,
@@ -360,7 +359,8 @@ class CampaignDetails extends Component
         $this->locality = $record->locality;
         $this->amount_target = $record->campaignCollected->amount_target;
        // $this->period = $record->period;
-        $this->telephone = $record->telephone;
+        $this->phone_prefix = $record->phone_prefix;
+        $this->phone = $record->phone;
         $this->status_register =  $record->status_register;
 
         $this->photo_url = $record->image->url;
@@ -395,7 +395,7 @@ class CampaignDetails extends Component
         if($this->agency_id) {
             $record = Agency::find($this->agency_id);
             $this->currency_symbol = $record->agencySetting->money->currency_symbol;
-            $this->telephone_prefix = $record->country->telephone_prefix;
+            $this->phone_prefix = $record->country->telephone_prefix;
             $this->amount_min = $record->agencySetting->amount_min;
             $this->amount_max = $record->agencySetting->amount_max;
 
@@ -407,92 +407,10 @@ class CampaignDetails extends Component
 
         } else {
             $this->currency_symbol = null;
-            $this->telephone_prefix = null;
+            $this->phone_prefix = null;
             $this->collection_organization = null;
         }
 
-    }
-
-    // +++++++++++++++++++++++++++++++++++++++++++ send review
-    //open review
-    public function reviewConfirm() {
-        $this->confirmingSendReview = true;
-    }
-
-    //send review
-    public function sendReview() {
-        $this->validate([
-            'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['required', 'accepted'] : '',
-        ]);
-        $record = Campaign::find($this->campaign_id);
-        // we update the info
-        $record->update([
-            'status' => 'IN_REVIEW'
-        ]);
-        if($record->campaignOpeningRequest == null) {
-            $record->campaignOpeningRequest()->create([
-                'order_number' => time(),
-                'date_send' => Carbon::now()
-            ]);
-            
-            $extract = 'Send to campaign review: '.$record->id;
-            $record->userHistories()->create([
-                'photo_path' => null,
-                'extract' => $extract,
-                'data' => $record,
-                'action' =>  'CREATE',
-                'user_id' => auth()->user()->id,
-                'site_id' => 1,
-                //'agency_id' => 1
-                ]);
-        } else {
-            $record->campaignOpeningRequest()->update([
-                'date_send' => Carbon::now()
-            ]);
-            
-            $extract = 'Send to campaign review: '.$record->id;
-            $record->userHistories()->create([
-                'photo_path' => null,
-                'extract' => $extract,
-                'data' => $record,
-                'action' =>  'UPDATE',
-                'user_id' => auth()->user()->id,
-                'site_id' => 1,
-                //'agency_id' => 1
-                ]);
-        }
-       
-        // notification telegram
-        $host= $_SERVER["HTTP_HOST"];
-        if($host == 'yosolidario.test') {
-            $host = 'http://yosolidario.test';
-        } elseif($host == 'yosolidario.com') {
-            $host = 'https://yosolidario.com';
-        }
-
-        $notice = new Notice([
-            'telegramid' => $record->agency->telegram->çhat_id,
-            'notice' => 'Nueva camapaña',
-            'linkOne' => $host.'/'.$record->slug,
-            'linkTwo' => $host.'/user'.'/'.$record->user->slug,
-            'action' => 'CAMPAIGN_IN_REVIEW'
-        ]);
-        $notice->notify(new TelegramNotification);
-        // end notification telegram
-
-        $this->confirmingSendReview = false;
-        return redirect()->route('your/campaigns');
-    }
-
-    // redirect preview
-    public function preview($id) {
-        $record = Campaign::findOrFail($id);
-        return redirect()->route('campaign/preview', ['slug' => $record->slug]);
-    }
-
-    // redirect edti prfile
-    public function editProfile() {
-        return redirect()->route('setting/profile');
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++ default 

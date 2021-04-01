@@ -18,15 +18,16 @@ class PaymentOrder extends Model
         'name',
         'lastname',
         'email',
+        'phone_prefix',
         'phone',
         'show_name',
         'commentary',
-        
+
         'amount_total',
         'amount_collaborator',
         'amount_yosolidario',
         'amount_percentage_yosolidario',
-
+        
         'payment_method',
         'money_id',
         'campaign_id',
@@ -55,11 +56,6 @@ class PaymentOrder extends Model
         return $this->belongsTo(User::class);
     }
 
-     // uno a uno inversa
-     public function campaign() {
-        return $this->belongsTo(Campaign::class);
-    }
-
     // uno a uno inversa
     public function campaignReward() {
         return $this->belongsTo(CampaignReward::class);
@@ -73,6 +69,11 @@ class PaymentOrder extends Model
     // uno a uno inversa
     public function money() {
         return $this->belongsTo(Money::class);
+    }
+
+    // uno a uno inversa
+    public function campaign() {
+        return $this->belongsTo(Campaign::class);
     }
 
     // relacion polimorfica uno a muchos

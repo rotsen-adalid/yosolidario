@@ -6,8 +6,6 @@ use Illuminate\Support\Facades\Http;
 use App\Models\Campaign;
 use App\Models\Country;
 use App\Models\Money;
-use App\Models\PagosnetRegistroplan;
-use App\Models\PagosnetRegistroth;
 use App\Models\PaymentOrder;
 
 use DOMDocument;
@@ -41,7 +39,7 @@ class RegisterNoRewardCollaborate extends Component
             } else {
                 $this->country_code = 'US';
             }
-            //$this->country_code = 'US';
+            $this->country_code = 'US';
             if($this->campaign->agency->country->code == $this->country_code) {
                 $this->currency = $this->campaign->agency->agencySetting->money->currency_symbol;
                 $this->money_id = $this->campaign->agency->agencySetting->money->id;
@@ -89,7 +87,7 @@ class RegisterNoRewardCollaborate extends Component
 
     public function amountTotal() {
         if($this->amount_collaborator != '') {
-            /*
+
             if($this->amount_collaborator >= 5 and $this->amount_collaborator <= 14) {
                 $this->collected_percentage_ys = array(
                     array("value" => "1","amount_collaborator" => 1),
@@ -99,8 +97,8 @@ class RegisterNoRewardCollaborate extends Component
                 $this->amount_percentage_yosolidario = 1;
                 $this->amount_yosolidario = $this->amount_percentage_yosolidario;
                 $this->amount_total = (float)$this->amount_collaborator + (float)$this->amount_percentage_yosolidario;
-            */
-            if($this->amount_collaborator >= 5) {
+                
+            } elseif($this->amount_collaborator >= 15) {
                 $x7 = $this->amount_collaborator * 7 / 100;
                 $x10 = $this->amount_collaborator * 10 / 100;
                 $x12 = $this->amount_collaborator * 12 / 100;
@@ -135,12 +133,11 @@ class RegisterNoRewardCollaborate extends Component
     public function percentageAmountTotal() {
         if($this->amount_collaborator) {
             if($this->amount_percentage_yosolidario != 'OTHER') {
-                /*
+
                 if($this->amount_collaborator >= 5 and $this->amount_collaborator <= 14) {
                     $this->amount_yosolidario = $this->amount_percentage_yosolidario;
                     $this->amount_total = (float)$this->amount_collaborator + (float)$this->amount_percentage_yosolidario;
-                */
-                if($this->amount_collaborator >= 5) { 
+                } elseif($this->amount_collaborator >= 15) { 
                     $this->amount_yosolidario = (float)($this->amount_collaborator * $this->amount_percentage_yosolidario / 100);
                     $this->amount_total = $this->amount_collaborator + (float)($this->amount_collaborator * $this->amount_percentage_yosolidario / 100);
                 } else { 
@@ -205,7 +202,7 @@ class RegisterNoRewardCollaborate extends Component
 
     private function conexionPagosNet() {
         // URL WS ambiente de PRE-PRODUCCION
-        define("WSDL_PAGOSNET", "http://test.sintesis.com.bo/WSApp-war/ComelecWS?WSDL");
+        define("WSDL_PAGOSNET", "https://test.sintesis.com.bo/WSApp-war/ComelecWS?WSDL");
         //URL ambiente de PRODUCCION
         // wwwwwwwwww.wsdl produccion
     }
@@ -229,8 +226,7 @@ class RegisterNoRewardCollaborate extends Component
                 $this->pagosNetEfectivo();
                 
             }elseif($this->payment_method == 'CARD') { 
-                // $this->pagofacil('CARD');
-                $this->pagosNetTarjeta();
+                $this->pagofacil('CARD');
             }elseif($this->payment_method == 'MOBILE_WALLET') { 
                 $this->pagofacil('MOBILE_WALLET');
             }elseif($this->payment_method == 'QR_PAYMENT') { 
@@ -243,15 +239,8 @@ class RegisterNoRewardCollaborate extends Component
                 'name' => 'required',
                 'lastname' => 'required',
             ]);
-
-            if($this->payment_method == 'CARD') { 
-                $this->pagofacil('CARD');
-            }elseif($this->payment_method == 'MOBILE_WALLET') { 
-                $this->pagofacil('MOBILE_WALLET');
-            }elseif($this->payment_method == 'QR_PAYMENT') { 
-                $this->pagofacil('QR_PAYMENT');
-            }
         }
+        
     }
 
     public function store($payment_method, $agency_pp_id) {
@@ -298,7 +287,7 @@ class RegisterNoRewardCollaborate extends Component
             'campaign_id' => $this->campaign->id,
             'agency_id' => $this->campaign->agency->id,
             'payment_method' => $payment_method,
-            'money_id' => $this->money_id,
+            'money_id' => 1,
             'agency_pp_id' => $agency_pp_id,
             'user_id' => $user_id,
             'type_user' => $type_user,
@@ -306,6 +295,7 @@ class RegisterNoRewardCollaborate extends Component
             'type_collaboration' => 'NO_REWARD',
             'status' => 'PETITION'
         ]);
+        // $this->money_id,
         return $record->id;
     }
 
@@ -315,7 +305,7 @@ class RegisterNoRewardCollaborate extends Component
          $record = PaymentOrder::find($paymentOrderId);
          $record->update([
              'status' => 'PENDING_PAYMENT',
-             'code_collection' => 'YS-'.$paymentOrderId,
+             'code_collection' => $paymentOrderId,
          ]);
         //redirect
         return redirect()->route('campaign/collaborate/pagofacil/PagoFacilCheckout', ['paymentOrder' => $record]);
@@ -486,17 +476,15 @@ class RegisterNoRewardCollaborate extends Component
             $monedaPn = 'US';
         }
 
-        $paymentOrderId = $this->store('CASH', 1);
-        $codigoRecaudacionPn = 'YS-'.$paymentOrderId;
-
         $this->conexionPagosNet();
         
         // echo ("Datos para registroPlan"); 
 
         //-----------------------   Registro Plan    ----------------------------
         //Request
+        $codigoRecaudacionPn = 'YS' . date("Ymd") . '-' . date("His") ;
         
-        $categoriaProducto           = 3;
+        $categoriaProducto           = 1;
         $codigoComprador             = $codigoRecaudacionPn;      //código interno del cliente
         $codigoRecaudacion           = $codigoRecaudacionPn;  //identificador propio, el formato lo define el cliente
         $correoElectronico           = $this->email;
@@ -600,11 +588,12 @@ class RegisterNoRewardCollaborate extends Component
             $nombre                      = $this->name;
             $apellido                    = $this->lastname;
             $email                       = $this->email;
-            $telefono                    = $this->phone;
+            $telefono                    = '77272728';
             $pais                        = 'Bolivia';
             $departamento                = 'La Paz';
             $ciudad                      = 'La Paz';
             $direccion                   = 'B/Abc Def C/Ghi Jkl Nro.477';
+
 
             $datosTarjetaHabiente = array(
                 'apellido'          => $apellido,
@@ -647,62 +636,21 @@ class RegisterNoRewardCollaborate extends Component
             //Metodo para registrar transacciones hacia cybersource.
             //------------------------------------------------------------------------------------
             $comercioId                  = '760';  
-            $id                          = '0';	  //id transaccion del MDD
+            $id                          = '1';	  //id transaccion del MDD
             $transaccionMdd              = 'A';   // A=Alta, M=Modificacion, B=Baja de datos de un transaccion Cybersource .
             $vertical                    = 'Servicios'; //Tipo de servicio puede ser: Servicios,Retail Servicios, Delivery Foods, Retail, Travel, Hoteles (Sintesis lo provee)
             
-            if(auth()->user()) {
-                $entry= array(
-                    array(
-                    'key'     => "merchant_defined_data1",   // Se describe en un excel que provee Sintesis
-                    'value'	  => 'SI',
-                    ),
-                    /*array(
-                    'key'     => "merchant_defined_data2",
-                    'value'	  => auth()->user->created_at,
-                    ),*/
-                    array(
-                        'key'     => "merchant_defined_data12",
-                        'value'	  => $this->phone,
-                    ),
-                    array(
-                        'key'     => "merchant_defined_data18",
-                        'value'	  => $this->name.' '.$this->lastname,
-                    ),
-                    array(
-                        'key'     => "merchant_defined_data87",
-                        'value'	  => $codigoRecaudacionPn,
-                    ),
-                    array(
-                        'key'     => "merchant_defined_data88",
-                        'value'	  => $this->campaign->title,
-                    )
-                );
-            } else {
-                $entry= array(
-                    array(
-                    'key'     => "merchant_defined_data1",   // Se describe en un excel que provee Sintesis
-                    'value'	  => 'NO',
-                    ),
-                    array(
-                        'key'     => "merchant_defined_data12",
-                        'value'	  => $this->phone,
-                    ),
-                    array(
-                        'key'     => "merchant_defined_data18",
-                        'value'	  => $this->name.' '.$this->lastname,
-                    ),
-                    array(
-                        'key'     => "merchant_defined_data87",
-                        'value'	  => $codigoRecaudacionPn,
-                    ),
-                    array(
-                        'key'     => "merchant_defined_data88",
-                        'value'	  => $this->campaign->title,
-                    )
-                );
-            }
-
+        
+            $entry= array(
+                array(
+                'key'     => "merchant_defined_data1",   // Se describe en un excel que provee Sintesis
+                'value'	  => 'SI',
+                ),
+                array(
+                'key'     => "merchant_defined_data11",
+                'value'	  => '4837235LP',
+                )
+            );
 
             $mdd = array(
                 'entry'          => $entry,
@@ -749,62 +697,6 @@ class RegisterNoRewardCollaborate extends Component
                 $this->escribirHandler($client->__getLastResponse(), $metodo, 'Response');
             }
         }
-
-        // updating data
-        $record_order = PaymentOrder::find($paymentOrderId);
-        $record_order->update([
-            'status' => 'PENDING_PAYMENT',
-            'code_collection' => $codigoRecaudacion,
-            'id_transaction' => $resultPlan['idTransaccion'],
-        ]);
-
-        $recordRp = PagosnetRegistroplan::create([
-            'payment_order_id' => $record_order->id,
-            'transaccion' => $transaccion,
-            'documentoIdentidadComprador' => $documentoIdentidadComprador,
-            'codigoComprador' => $codigoComprador,
-            'fecha' => $fecha,
-            'hora' => $hora,
-            'correoElectronico' => $correoElectronico,
-            'moneda' => $moneda,
-            'codigoRecaudacion' => $codigoRecaudacion,
-            'descripcionRecaudacion' => $descripcionRecaudacion,
-            'fechaVencimiento' => $fechaVencimiento,
-            'horaVencimiento' => $horaVencimiento,
-            'categoriaProducto' => $categoriaProducto,
-            'precedenciaCobro' => $precedenciaCobro,
-            'numeroPago' => $numeroPago,
-            'montoPago' => $montoPago,
-            'descripcion' => $descripcion,
-            'montoCreditoFiscal' => $montoCreditoFiscal,
-            'nombreFactura' => $nombreFactura,
-            'nitFactura' => $nitFactura,
-            'idTransaccion' => $resultPlan['idTransaccion'],
-            'codigoError' => $resultPlan['codigoError'],
-            'descripcionError' => $this->messagePn
-        ]);
-        $recordRp->pagosnetRegistroth()->create([
-            'transaccionTH' => $transaccionTH,
-            'nombre' => $nombre,
-            'email' => $email,
-            'telefono' => $telefono,
-            'pais' => $pais,
-            'departamento' => $departamento,
-            'ciudad' => $ciudad,
-            'direccion' => $direccion,
-            'idTransaccion' => $resultPlan['idTransaccion'],
-            'codigoError' => $responseRegistroTarjetaHabiente['codigoError'],
-            'descripcionError' => $this->messagePn
-        ]);
-        $recordRp->pagosnetRegistromdd()->create([
-            'comercioId' => $comercioId,
-            'id_mdd' => $id,
-            'transaccionMdd' => $transaccionMdd,
-            'vertical' => $vertical,
-        ]);
-
-       //redirect
-       return redirect()->route('campaign/collaborate/pagosnet/card', ['paymentOrder' => $record_order]);
     }
 
     //Funciones auxiliares 
