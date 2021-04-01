@@ -136,6 +136,9 @@ use App\Http\Livewire\Campaigns\Collaborate\Pagosnet\IframePagosnet;
 Route::middleware(['access'])->get('/campaign/collaborate/pagosnet/card/{paymentOrder}', IframePagosnet::class)
 ->name('campaign/collaborate/pagosnet/card');
 
+use App\Http\Controllers\Bolivia\Pagosnet\NotificationCashController;
+Route::get('/pagosnet/notification/cash', [NotificationCashController::class, 'index']);
+
 //------------------------------------------PAGOFACILCHECKOUT----------------------------------------
 
 // esta ruta es la vista inicial, que muestra un formulario basico para datos del cliente
