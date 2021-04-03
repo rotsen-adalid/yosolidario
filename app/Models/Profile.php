@@ -12,14 +12,14 @@ class Profile extends Model
     protected $table = 'profiles';
 
     protected $fillable = [
-        'country_id',
-        'locality',
 
         'biography', 
-        'telephone', 
+        'phone_prefix', 
+        'phone',
         'facebook', 
         'twitter', 
         'instagram',
+        'whatsapp_prefix',
         'whatsapp',
         'telegram',
         'website',
@@ -32,12 +32,6 @@ class Profile extends Model
     // uno a uno inversa
     public function user() {
         return $this->belongsTo(user::class);
-    }
-
-    // uno a muchos inversa
-    public function country()
-    {
-        return $this->belongsTo(Country::class);
     }
 
     // relacion polimorfica uno a muchos

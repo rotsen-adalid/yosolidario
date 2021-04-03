@@ -14,9 +14,11 @@ class CoverPagePreview extends Component
     public function mount(Campaign $campaign)
     {
         $this->campaign =  $campaign;
-        $video_array = explode("/",$this->campaign->video->url);
-        if($video_array[2] == 'youtu.be') {
-            $this->video_url =  $video_array[3];
+        if($this->campaign->video) {
+            $video_array = explode("/",$this->campaign->video->url);
+            if($video_array[2] == 'youtu.be') {
+                $this->video_url =  $video_array[3];
+            }
         }
     } 
     public function render()

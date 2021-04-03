@@ -28,27 +28,33 @@
  
 <livewire:home.hero-home/>
 
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <livewire:home.campaign-urgent-home/>
-    <livewire:home.top-fundraising-home/>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <livewire:home.campaign-urgent-home/>
+        <livewire:home.top-fundraising-home/>
 
-    @include('livewire.home.about-ys-home')
-    @include('livewire.home.categories-home')
-</div>
+        @include('livewire.home.about-ys-home')
+        @include('livewire.home.categories-home')
+    </div>
 
-<!-- Start a campaign -->
-<div class=" bg-gray-50 py-16 sm:py-20">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 sm:mt-5">
-        <div class="text-center text-xl sm:text-3xl font-bold">{{__('Ready to start fundraising?')}}</div>
-        <div class="get-app flex space-x-5 mt-2 sm:mt-2 justify-center md:justify-center">
-            <button wire:click="createCampaign" wire:loading.attr="disabled" 
-            class="font-bold focus:outline-none text-white text-lg font-semibold bg-ys1 shadow-lg px-6 py-3 rounded-md flex items-center space-x-4 hover:text-white mt-4 hover:bg-ys2">
-            {{ __('Start a campaign') }}
-            </button>
+    <!-- Start a campaign -->
+    <div class=" bg-gray-50 py-16 sm:py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 sm:mt-5">
+            <div class="text-center text-xl sm:text-3xl font-bold">{{__('Ready to start fundraising?')}}</div>
+            <div class="get-app flex space-x-5 mt-2 sm:mt-2 justify-center md:justify-center">
+                <button wire:click="createCampaign" wire:loading.attr="disabled" 
+                class="font-bold focus:outline-none text-white text-lg font-semibold bg-ys1 shadow-lg px-6 py-3 rounded-md flex items-center space-x-4 hover:text-white mt-4 hover:bg-ys2">
+                {{ __('Start a campaign') }}
+                </button>
+            </div>
         </div>
     </div>
-</div>
-<!-- End Start -->
-
+    <!-- End Start -->
+    <div class="flex items-end justify-end fixed bottom-0 right-0 mb-4 mr-4 z-10">
+        <div>
+            <a href="https://telegram.me/yosolidario" target="_blank" title="YoSolidario" class="block w-10 h-10 rounded-full transition-all shadow hover:shadow-lg transform hover:scale-110 hover:rotate-12">
+                <img class="object-cover object-center w-full h-full rounded-full" src="data:image/svg+xml;base64,PHN2ZyBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCAyNCAyNCIgaGVpZ2h0PSI1MTIiIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjUxMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiBmaWxsPSIjMDM5YmU1IiByPSIxMiIvPjxwYXRoIGQ9Im01LjQ5MSAxMS43NCAxMS41Ny00LjQ2MWMuNTM3LS4xOTQgMS4wMDYuMTMxLjgzMi45NDNsLjAwMS0uMDAxLTEuOTcgOS4yODFjLS4xNDYuNjU4LS41MzcuODE4LTEuMDg0LjUwOGwtMy0yLjIxMS0xLjQ0NyAxLjM5NGMtLjE2LjE2LS4yOTUuMjk1LS42MDUuMjk1bC4yMTMtMy4wNTMgNS41Ni01LjAyM2MuMjQyLS4yMTMtLjA1NC0uMzMzLS4zNzMtLjEyMWwtNi44NzEgNC4zMjYtMi45NjItLjkyNGMtLjY0My0uMjA0LS42NTctLjY0My4xMzYtLjk1M3oiIGZpbGw9IiNmZmYiLz48L3N2Zz4=" />
+            </a>
+        </div>
+    </div>
 </div>
 <livewire:footer.footer-app/>

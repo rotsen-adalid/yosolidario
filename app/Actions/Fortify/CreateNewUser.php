@@ -29,6 +29,7 @@ class CreateNewUser implements CreatesNewUsers
     {
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
+            'lastname' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => $this->passwordRules(),
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['required', 'accepted'] : '',
@@ -42,6 +43,7 @@ class CreateNewUser implements CreatesNewUsers
 
             $user = tap(User::create([
                 'name' => $input['name'],
+                'lastname' => $input['name'],
                 'slug' => Str::slug($input['name']).'-'.time(),
                 'email' => $input['email'],
                 'password' => Hash::make($input['password']),
@@ -67,7 +69,7 @@ class CreateNewUser implements CreatesNewUsers
             $notice = new Notice([
                 'telegramid' => $agencyBO->telegram->çhat_id,    //Config::get('services.telegram_id')
                 'notice' => 'Nuevo usuario registrado',
-                'description' => $input['email']."\n".$input['name'],
+                'description' => $input['email']."\n".$input['name'].$input['lastname'],
                 'action' => 'USER_REGISTER'
               
             ]);

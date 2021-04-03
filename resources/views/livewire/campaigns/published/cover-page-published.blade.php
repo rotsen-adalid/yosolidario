@@ -6,19 +6,21 @@
   -->
   <div class="flex items-center justify-center u-ratio u-ratio--16by9" :class="{ 'hidden': isPlaying }">
     <img src="{{ URL::to('/').$this->campaign->image->url}}" alt="placeholder image" class="object-cover u-ratio__item">
-    <div class="u-ratio__item">
-      <div class="h-full flex justify-center items-center">
-        <button class="flex items-center justify-center absolute hover:scale-125 
-                        transition-transform transform duration-300 
-                        focus:outline-none focus:shadow-outline
-                        text-5xl" 
-                        @click="
-                      isPlaying = !isPlaying;
-                      $nextTick(() => { $refs.iframeElement.setAttribute('src', iframe_url()) });">
-              <span class="material-icons-outlined text-white text-7xl">play_circle</span>
-        </button>
-      </div>
-    </div>
+      @if ($this->campaign->video)
+        <div class="u-ratio__item">
+          <div class="h-full flex justify-center items-center">
+            <button class="flex items-center justify-center absolute hover:scale-125 
+                            transition-transform transform duration-300 
+                            focus:outline-none focus:shadow-outline
+                            text-5xl" 
+                            @click="
+                          isPlaying = !isPlaying;
+                          $nextTick(() => { $refs.iframeElement.setAttribute('src', iframe_url()) });">
+                <span class="material-icons-outlined text-white text-7xl">play_circle</span>
+            </button>
+          </div>
+        </div>
+      @endif
   </div>
   <div class="u-ratio u-ratio--16by9 bg-transparent"  :class="{ 'bg-black' : isPlaying }" x-show.transition.in.opacity.duration.500ms="isPlaying" x-cloak>
     <iframe x-ref="iframeElement" src="" class="object-cover u-ratio__item" frameborder="0" 

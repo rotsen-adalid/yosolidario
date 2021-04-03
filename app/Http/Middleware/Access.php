@@ -2,6 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Agency;
+use App\Models\Notice;
+use App\Notifications\TelegramNotification;
 use Closure;
 use Illuminate\Http\Request;
 
@@ -18,13 +21,23 @@ class Access
      * @return mixed
      */
     public function handle(Request $request, Closure $next)
-    {
+    {   //session()->forget('ipapi');
         if($request->session()->has('ipapi')) {
 
         } else {
             $response = Http::get('http://api.ipapi.com/179.58.47.20?access_key=71c541e8146a77bd640a0255d0a82e04');
             $ipapi = $response->json();
             session()->put('ipapi', $ipapi);
+
+            $agencyBO = Agency::find(1);
+            $notice = new Notice([
+                'telegramid' => $agencyBO->telegram->çhat_id,    //Config::get('services.telegram_id')
+                'latitude' => $ipapi['latitude'],
+                'longitude' => $ipapi['longitude'],
+                'action' => 'USER_GEOLOCATION'
+              
+            ]);
+            $notice->notify(new TelegramNotification);
         }
 
         if($request->session()->has('locale')) {

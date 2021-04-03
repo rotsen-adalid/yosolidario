@@ -5,6 +5,7 @@ use Livewire\Component;
 use Illuminate\Support\Facades\Http;
 use App\Models\Campaign;
 use App\Models\Country;
+use App\Models\CountryState;
 use App\Models\Money;
 use App\Models\PagosnetRegistroplan;
 use App\Models\PagosnetRegistroth;
@@ -21,9 +22,9 @@ class RegisterNoRewardCollaborate extends Component
 
     // data ys
     public $amount_collaborator, $amount_percentage_yosolidario, $amount_total, $amount_yosolidario;
-    public $name, $lastname, $show_name, $email, $phone, $phone_prefix, $country_id, $payment_method, $commentary;
+    public $name, $lastname, $show_name, $email, $phone, $phone_prefix, $country_id, $country_estate_id, $payment_method, $commentary;
 
-    public $collected_percentage_ys, $collection_countries;
+    public $collected_percentage_ys, $collection_countries, $collection_country_states, $states_denomination;
     public $loadindPay;
     // data pagosNet
     public $messagePn, $ipapi, $codigoRecaudacionPn, $idTransaccionPn;
@@ -58,8 +59,13 @@ class RegisterNoRewardCollaborate extends Component
 
             }
             $this->collection_countries = Country::
-                                        orderBy('name', 'asc')
+                                        where('country_estates', '=', 'YES')
+                                        ->orderBy('name', 'asc')
                                         ->get();
+            $records = Country::
+                        where('code', $this->ipapi['country_code'])
+                        ->get();
+            $this->country_id = $records[0]->id;
 
         } else {
             return redirect()->route('home');
@@ -80,6 +86,8 @@ class RegisterNoRewardCollaborate extends Component
 
     public function render()
     {
+        $this->countryState();
+
         return view('livewire.campaigns.collaborate.register-no-reward-collaborate');
     }
 
@@ -201,6 +209,16 @@ class RegisterNoRewardCollaborate extends Component
     }
     // end convert
     
+    // country state 
+    public function countryState() {
+        if($this->country_id) {
+            $this->collection_country_states = CountryState::
+                                            where('country_id', $this->country_id)
+                                            ->orderBy('name', 'asc')
+                                            ->get();
+        }
+    }
+
     //--------------------------------------- pagosNet
 
     private function conexionPagosNet() {

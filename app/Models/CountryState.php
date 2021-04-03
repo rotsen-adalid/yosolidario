@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CountryEstate extends Model
+class CountryState extends Model
 {
     use HasFactory;
 
-    protected $table = 'country_estates';
+    protected $table = 'country_states';
     
     protected $fillable = [
         'name',
@@ -22,5 +22,15 @@ class CountryEstate extends Model
     // uno a muchos inversa
     public function country() {
         return $this->belongsTo(Country::class);
+    }
+
+    // uno a muchos
+    public function paymentOrders() {
+        return $this->hasMany(PaymentOrder::class);
+    }
+
+    // uno a muchos 
+    public function campaigns() {
+        return $this->hasMany(Campaign::class);
     }
 }

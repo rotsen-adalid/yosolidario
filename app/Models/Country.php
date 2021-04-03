@@ -16,18 +16,20 @@ class Country extends Model
         'slug',
         'code',
         'phone_prefix',
-        'status_published_campaign',
+        'states_denomination',
+        'country_estates',
+        'status',
         'search'
     ];
-    
+
     // uno a uno
     public function money() {
         return $this->hasOne(Money::class);
     }
 
     // uno a muchos 
-    public function countryEstates() {
-        return $this->hasMany(CountryEstate::class);
+    public function countryStates() {
+        return $this->hasMany(CountryState::class);
     }
 
     // uno a muchos 
@@ -41,13 +43,13 @@ class Country extends Model
     }
 
     // uno a muchos
-    public function profiles() {
-        return $this->hasMany(Profile::class);
+    public function personalInformation() {
+        return $this->hasMany(PersonalInformation::class);
     }
 
     // uno a muchos
-    public function personalInformation() {
-        return $this->hasMany(PersonalInformation::class);
+    public function paymentOrders() {
+        return $this->hasMany(PaymentOrder::class);
     }
 
     // relacion polimorfica uno a muchos

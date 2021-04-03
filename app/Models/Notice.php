@@ -22,6 +22,8 @@ class Notice extends Model
         'telegramid',
         'notice',
         'description',
+        'latitude',
+        'longitude',
         'linkOne',
         'linkTwo',
         'action'

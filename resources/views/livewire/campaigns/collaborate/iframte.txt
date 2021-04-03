@@ -1,5 +1,0 @@
-{{$messagePn}} <br>
-                            {{$idTransaccionPn}}
-                            <iframe src=“https://web.sintesis.com.bo/payment-cybersource/#/cybersource?
-entidad=760&ref={{$idTransaccionPn}}&red=https://www.abc.com” width=”800” height=”800”>
-</iframe>

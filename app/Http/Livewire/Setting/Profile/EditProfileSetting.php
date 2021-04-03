@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Livewire\Setting;
+namespace App\Http\Livewire\Setting\Profile;
+use Livewire\Component;
 
 use App\Models\Country;
-use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Storage;
 
@@ -11,17 +11,16 @@ use Illuminate\Support\Str as Str;
 use App\Models\Profile;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
-
-class EditProfile extends Component
+class EditProfileSetting extends Component
 {
     use WithFileUploads;
 
-    public $user_id, $profile_id, $name, $slug, $profile_photo_path,  $email, $country_id, $locality, $telephone;
+    public $user_id, $profile_id, $name, $slug, $profile_photo_path,  $email, $country_id, $locality, $phone;
     public $facebook, $twitter, $instagram, $biography, $status_profile;
     public $whatsapp, $telegram, $website;
     public $collection_countries;
     public $user, $telephone_prefix;
-    public $message;
+    public $bannerStyle, $message;
     public $photoOne;
 
     protected $rules = [
@@ -30,7 +29,7 @@ class EditProfile extends Component
         // 'slug' => ['required', 'unique:users','alpha_dash', 'slug', '$this->user_id'],
         'email'=> 'required',
         'country_id' => 'required',
-        'telephone' => 'required',
+        //'phone' => 'required',
         'status_profile' => 'required'
     ];
 
@@ -49,12 +48,12 @@ class EditProfile extends Component
         $this->profile_photo_path = $this->user->profile_photo_path;
         $this->photoOne = "";
         $this->collection_countries = Country::orderBy('name', 'asc')->get();
-
-        return view('livewire.setting.edit-profile');
+        return view('livewire.setting.profile.edit-profile-setting');
     }
     // show the info of the record to edit
     public function edit($id) {
         $record = User::findOrFail($id);
+        $this->user_id = $record->id;
         $this->name = $record->name;
         $this->slug = $record->slug;
         $this->email = $record->email;
@@ -62,14 +61,14 @@ class EditProfile extends Component
         if($record->profile) {
             $data = $record->profile;
             $this->profile_id = $data->id;
-            $this->country_id = $data->country_id;
-            $this->locality = $data->locality;
-            $this->telephone = $data->telephone;
+            //$this->country_id = $data->country_id;
+            //$this->locality = $data->locality;
+            //$this->phone = $data->phone;
 
             $this->facebook = $data->facebook;
             $this->twitter = $data->twitter;
             $this->instagram = $data->instagram;
-            $this->whatsapp = $data->whatsapp;
+            //$this->whatsapp = $data->whatsapp;
             $this->telegram = $data->telegram;
             $this->website = $data->website;
 
@@ -86,23 +85,15 @@ class EditProfile extends Component
     public function StoreOrUpdate() {
         
         //$this->validate();
-        $this->validate([
-            'name' => 'required|min:3|max:55',
-            'slug' => "required|alpha_dash|unique:users,slug,$this->user_id",//['required', 'unique:users','alpha_dash', 'slug', $this->user_id],
-            'email'=> "required|email|unique:users,email,$this->user_id",
-            //'telephone' => 'required|digits_between:7,15',
-            'country_id' => 'required',
-            'status_profile' => 'required'
-        ]);
         
         if($this->whatsapp) {
             $this->validate([
-                //'telephone' => 'required|digits_between:7,15',
-                'whatsapp' => 'required|digits_between:7,15',
+                //'phone' => 'required|digits_between:7,15',
+                //'whatsapp' => 'required|digits_between:7,15',
             ]);
         } else {
             //$this->country_id = null;
-            //$this->telephone = null;
+            //$this->phone = null;
             $this->whatsapp = null;
         }
 
@@ -113,8 +104,24 @@ class EditProfile extends Component
         }
 
         if($this->profile_id <= 0) {
+            $this->validate([
+                'name' => 'required|min:3|max:55',
+                'slug' => "required|alpha_dash|unique:users,slug,$this->user_id",//['required', 'unique:users','alpha_dash', 'slug', $this->user_id],
+                'email'=> "required|email|unique:users,email,$this->user_id",
+                //'phone' => 'required|digits_between:7,15',
+                //'country_id' => 'required',
+                'status_profile' => 'required'
+            ]);
             $this->StoreData();
         } else {
+            $this->validate([
+                'name' => 'required|min:3|max:55',
+                'slug' => "required|alpha_dash|unique:users,slug,$this->user_id",//['required', 'unique:users','alpha_dash', 'slug', $this->user_id],
+                'email'=> "required|email|unique:users,email,$this->user_id",
+                //'phone' => 'required|digits_between:7,15',
+                //'country_id' => 'required',
+                'status_profile' => 'required'
+            ]);
             $this->UpdateData();
         }
     }
@@ -131,8 +138,6 @@ class EditProfile extends Component
         $search_lower = strtolower($search_upper);
         $search_all =  $search_upper.' '.$search_lower;
 
-        $record = User::findOrFail($this->user_id);
-
         // insert profile
         // user update
         $record = User::findOrFail($this->user_id);
@@ -145,21 +150,24 @@ class EditProfile extends Component
 
         // create profile
         $record->profile()->create([
-            'country_id' => $this->country_id,
-            'locality' => addslashes($this->locality),
-            'telephone' =>  addslashes($this->telephone),
+            //'country_id' => $this->country_id,
+            //'locality' => addslashes($this->locality),
+            //'phone' =>  addslashes($this->phone),
             'facebook' =>  addslashes($this->facebook),
             'twitter'=>  addslashes($this->twitter),
             'instagram' =>  addslashes($this->instagram),
-            'whatsapp' =>  addslashes($this->whatsapp),
+            //'whatsapp' =>  addslashes($this->whatsapp),
             'telegram' =>  addslashes($this->telegram),
             'website' =>  addslashes($this->website),
             'biography' =>  addslashes($this->biography),
             'status' => $this->status_profile
         ]);
 
-        $this->emit('message');
+        $this->emit('saved');
+        $this->bannerStyle = "success";
         $this->message = "Saved correctly";
+
+        $this->edit($record->id);
     }
 
     public function UpdateData() {
@@ -189,20 +197,21 @@ class EditProfile extends Component
         $data = $record->profile;
         $record = Profile::find($data->id);
         $record->update([
-            'country_id' => $this->country_id,
-            'locality' => addslashes( $this->locality),
-            'telephone' =>  addslashes($this->telephone),
+            //'country_id' => $this->country_id,
+            //'locality' => addslashes( $this->locality),
+            //'phone' =>  addslashes($this->phone),
             'facebook' =>  addslashes($this->facebook),
             'twitter'=>  addslashes($this->twitter),
             'instagram' =>  addslashes($this->instagram),
-            'whatsapp' =>  addslashes($this->whatsapp),
+            //'whatsapp' =>  addslashes($this->whatsapp),
             'telegram' =>  addslashes($this->telegram),
             'website' =>  addslashes($this->website),
             'biography' =>  addslashes($this->biography),
             'status' => $this->status_profile
         ]);  
         
-        $this->emit('message');
+        $this->emit('saved');
+        $this->bannerStyle = "success";
         $this->message = "Saved correctly";
     }
     
@@ -227,8 +236,9 @@ class EditProfile extends Component
                 'profile_photo_path' => $profile_photo_path
             ]);
 
-            $this->emit('messagePhoto');
-            $this->message = "Was saved successfully";
+            $this->emit('saved');
+            $this->bannerStyle = "success";
+            $this->message = "Saved correctly";
             //return redirect()->route('setting/profile');
         }
     }
@@ -243,7 +253,8 @@ class EditProfile extends Component
         ]);
         $this->profile_photo_path = null;
         $this->photoOne = null;
-        $this->emit('messagePhoto');
+        $this->emit('saved');
+        $this->bannerStyle = "danger";
         $this->message = "Was removed successfully";
         $this->user = User::findOrFail($this->user_id);
         //return redirect()->route('setting/profile');

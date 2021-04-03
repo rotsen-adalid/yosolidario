@@ -43,7 +43,7 @@
             <div class="mt-8">
                 <div class="sm:flex sm:space-x-2">
                     <div>
-                        <x-label for="amount" class="text-base" value="{{ __('Amount') }}" required/>
+                        <x-label for="amount" class="font-semibold" value="{{ __('Amount') }}" required/>
                         <div class="flex">
                             <x-input id="amount" type="text" class="mt-1 block w-50" wire:model.defer="amount"  autocomplete="off"  minlength="1" maxlength="3" onKeyPress="return validar(event)"/>
                             <x-input id="amount" disabled type="text" class="mt-1 ml-1 block w-16 font-bold" placeholder="{{$currency_symbol}}" autocomplete="off"/>
@@ -52,7 +52,7 @@
                     </div>
                     <div class="mt-4 sm:mt-0">
                         <!-- delivery_date -->
-                        <x-label for="delivery_date" class="text-base" value="{{ __('Estimated delivery date') }}" />
+                        <x-label for="delivery_date" class="font-semibold" value="{{ __('Estimated delivery date') }}" />
                         <x-input id="delivery_date" type="date" class="mt-1 block w-50" wire:model.defer="delivery_date" autocomplete="off" />
                         <x-input-error for="delivery_date" class="mt-2" />
                     </div>
@@ -60,7 +60,7 @@
             </div>
             <!-- description -->
             <div class="mt-6">
-                <x-label for="description" class="text-base" value="{{ __('Description') }}" required/>
+                <x-label for="description" class="font-semibold" value="{{ __('Description') }}" required/>
                 <x-textarea id="description" class="mt-1 block w-full" wire:model.defer="description" autocomplete="off"/>
                 <x-input-error for="description" class="mt-2" />
             </div>
@@ -68,7 +68,7 @@
             <div class="mt-6">
                 <div class="flex space-x-1">
                     <div class="w-48">
-                        <x-label for="limiter" class="text-base" value="{{ __('Limit quantity?') }}" required/>
+                        <x-label for="limiter" class="font-semibold" value="{{ __('Limit quantity?') }}" required/>
                         <x-select class="block w-full" id="limiter" wire:model="limiter">
                             <x-slot name="option">
                                 <option value="" >{{ __('Chosse') }} </option>
@@ -80,7 +80,7 @@
                     </div>
                     <div class="w-36">
                         @if ($limiter == 'YES')
-                            <x-label for="limiter" class="ml-2 text-base" value="{{ __('Quantity') }}" />
+                            <x-label for="limiter" class="ml-2 font-semibold" value="{{ __('Quantity') }}" />
                             <x-input id="quantity" type="number" class="ml-2 block w-full" wire:model.defer="quantity" placeholder="{{ __('Quantity') }}" autocomplete="off" />
                             <x-input-error for="quantity" class="mt-2" />
                         @endif
@@ -101,7 +101,7 @@
                             };
                             reader.readAsDataURL($refs.photo.files[0]);
                     " />
-                    <x-label for="description" class="text-base" value="{{ __('Image') }} ({{ __('optional') }})"/>
+                    <x-label for="photoOne" class="font-semibold" value="{{ __('Image') }} ({{ __('optional') }})"/>
                 <!-- Current Profile Photo -->
                 <div class="mt-2" x-show="!photoPreview">
                     @if( $image_url)

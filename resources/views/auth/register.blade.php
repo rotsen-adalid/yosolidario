@@ -10,9 +10,15 @@
         <form method="POST" action="{{ route('register') }}">
             @csrf
 
-            <div class="mt-4">
-                <x-label for="name" value="{{ __('Name') }}" />
-                <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
+            <div class="flex space-x-2">
+                <div class="mt-4">
+                    <x-label for="name" value="{{ __('Name') }}" />
+                    <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
+                </div>
+                <div class="mt-4">
+                    <x-label for="lastname" value="{{ __('Lastnames') }}" />
+                    <x-input id="lastname" class="block mt-1 w-full" type="text" name="lastname" :value="old('lastname')" required autofocus autocomplete="lastname" />
+                </div>
             </div>
 
             <div class="mt-4">

@@ -17,6 +17,11 @@ class PaymentOrder extends Model
 
         'name',
         'lastname',
+        'locality',
+        'address',
+        'country_id',
+        'country_estate_id',
+
         'email',
         'phone_prefix',
         'phone',
@@ -74,6 +79,16 @@ class PaymentOrder extends Model
     // uno a uno inversa
     public function campaign() {
         return $this->belongsTo(Campaign::class);
+    }
+
+    // uno a muchos inversa
+    public function country() {
+        return $this->belongsTo(Country::class);
+    }
+    
+    // uno a muchos inversa
+    public function countryState() {
+        return $this->belongsTo(CountryState::class);
     }
 
     // relacion polimorfica uno a muchos

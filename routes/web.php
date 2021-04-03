@@ -158,13 +158,13 @@ Route::middleware(['access'])->get('user/{slug}', Profile::class)->name('user');
 // ++++++++++++++++++++++++++ Setting
 
 // Setting Account
-use App\Http\Livewire\Setting\Account;
-Route::middleware(['auth:sanctum', 'verified', 'access'])->get('/setting/account', Account::class)
+use App\Http\Livewire\Setting\Acount\AcountSetting;
+Route::middleware(['auth:sanctum', 'verified', 'access'])->get('/setting/account', AcountSetting::class)
 ->name('setting/account');
 
 // Setting Edit Profile
-use App\Http\Livewire\Setting\EditProfile;
-Route::middleware(['auth:sanctum', 'verified', 'access'])->get('/setting/profile', EditProfile::class)
+use App\Http\Livewire\Setting\Profile\EditProfileSetting;
+Route::middleware(['auth:sanctum', 'verified', 'access'])->get('/setting/profile', EditProfileSetting::class)
 ->name('setting/profile');
 
 // Setting Notifications

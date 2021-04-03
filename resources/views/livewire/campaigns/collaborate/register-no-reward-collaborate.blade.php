@@ -27,12 +27,7 @@
                             <span class="material-icons-outlined text-sm">arrow_back_ios</span>
                             <span>{{__('Return to fundraiser')}}</span>
                         </a>
-                       
-                        <!-- 
-                        <iframe src="https://test.sintesis.com.bo/payment-cybersource/#/cybersource?entidad=760&ref=202103310000040&red=https://yosolidario.com" width="800" height="800">
-                        </iframe>
-                        -->
-                        {{$messagePn}}
+
                         <div class="flex flex-col sm:flex-row space-x-2 items-center">
                             <div>
                                 <img src="{{ URL::to('/').$this->campaign->image->url}}" alt="" class="h-28">
@@ -143,50 +138,84 @@
                             </div>
                         </div>
 
-                        <!-- email -->
+                        
+                        <!-- country -->
                         <div class="col-span-6 sm:col-span-4">
-                            <x-label for="email" class="font-bold" value="{{ __('Your email address') }}"/>
-                            <x-input id="email" type="text" class="mt-1 block w-full" wire:model.defer="email" autocomplete="off"/>
-                            <x-input-error for="email" class="mt-2" />
+                            <div class="sm:flex space-y-4 sm:space-y-0 sm:space-x-2">
+                                <div class="w-full">
+                                    <x-label for="phone" class="font-bold" value="{{ __('Your country') }}"/>
+                                    <x-select class="mt-1 block w-full" id="country_id" name="country_id" wire:model="country_id">
+                                        <x-slot name="option">
+                                                <option value="">{{ __('Country') }}</option>
+                                            @foreach ($collection_countries as $item)
+                                                <option value="{{$item->id}}">{{ __($item->name) }}</option>
+                                            @endforeach
+                                        </x-slot>
+                                    </x-select>
+                                </div>
+                                <div class="w-full">
+                                    <x-label for="phone" class="font-bold" value="{{__('Your')}} {{__($this->states_denomination)}}"/>
+                                    <x-select class="mt-1 block w-full" id="country_id" name="country_id" wire:model="country_id">
+                                        <x-slot name="option">
+                                                <option value="">{{__($this->states_denomination)}}</option>
+                                            @foreach ($collection_country_states as $item)
+                                                <option value="{{$item->id}}">{{ __($item->name) }}</option>
+                                            @endforeach
+                                        </x-slot>
+                                    </x-select>
+                                </div>
+                            </div>
                         </div>
 
-                        <!-- phone -->
-                        @if ($this->campaign->agency->country->code == $this->country_code)
-                            <div class="col-span-6 sm:col-span-4">
-                                <x-label for="phone" class="font-bold" value="{{ __('Your number phone') }}"/>
-                                <div class="mt-1 flex rounded-md shadow-sm">
-                                    <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-white text-gray-900 text-sm font-bold">
-                                        {{$this->phone_prefix}}
-                                    </span>
-                                    <input type="text" name="phone" id="phone" wire:model="phone"   minlength="6" maxlength="20"
-                                    class="focus:ring focus:ring-gray-50 focus:ring-opacity-50 focus:border-gray-200 flex-1 block rounded-r border-gray-200 shadow-xs  bg-white w-20"> <!-- placeholder="{__('Number phone')}}" -->
+                        <!-- email -->
+                        <div class="col-span-6 sm:col-span-4">
+                            <div class="sm:flex space-y-4 sm:space-y-0 sm:space-x-2">
+                                <div class="w-full">
+                                    <x-label for="email" class="font-bold" value="{{ __('Your email address') }}"/>
+                                    <x-input id="email" type="text" class="mt-1 block w-full" wire:model.defer="email" autocomplete="off"/>
+                                    <x-input-error for="email" class="mt-2" />
                                 </div>
-                                <x-input-error for="phone" class="mt-2" />
-                            </div>
-                        @else
-                            <div class="col-span-6 sm:col-span-4">
-                                <x-label for="locality" class="font-bold" value="{{ __('Your number phone') }}"/>
-                                <div class="flex space-x-1">
-                                    <div class="w-56">
-                                        <x-select class="mt-1 block w-full" id="country_id" name="country_id" wire:model.defer="country_id">
-                                            <x-slot name="option">
-                                                    <option value="">{{ __('Country') }}</option>
-                                                @foreach ($collection_countries as $item)
-                                                    <option value="{{$item->id}}">{{ __($item->name) }}</option>
-                                                @endforeach
-                                            </x-slot>
-                                        </x-select>
-                                    </div>
-                                    <div class="w-full">
-                                        <x-input id="phone" type="text" class="mt-1 block w-full" wire:model.defer="phone" autocomplete="off" minlength="6" maxlength="20"/>
-                                        <x-input-error for="phone" class="mt-2" />
-                                    </div>
+                                <div class="w-full">
+                                    <!-- phone -->
+                                    @if ($this->campaign->agency->country->code == $this->country_code)
+                                        <div class="col-span-6 sm:col-span-4">
+                                            <x-label for="phone" class="font-bold" value="{{ __('Your number phone') }}"/>
+                                            <div class="mt-1 flex rounded-md shadow-sm">
+                                                <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-white text-gray-900 text-sm font-bold">
+                                                    {{$this->phone_prefix}}
+                                                </span>
+                                                <input type="text" name="phone" id="phone" wire:model="phone"   minlength="6" maxlength="20"
+                                                class="focus:ring focus:ring-gray-50 focus:ring-opacity-50 focus:border-gray-200 flex-1 block rounded-r border-gray-200 shadow-xs  bg-white w-20"> <!-- placeholder="{__('Number phone')}}" -->
+                                            </div>
+                                            <x-input-error for="phone" class="mt-2" />
+                                        </div>
+                                    @else
+                                        <div class="col-span-6 sm:col-span-4">
+                                            <x-label for="locality" class="font-bold" value="{{ __('Your number phone') }}"/>
+                                            <div class="flex space-x-1">
+                                                <div class="w-56">
+                                                    <x-select class="mt-1 block w-full" id="country_id" name="country_id" wire:model.defer="country_id">
+                                                        <x-slot name="option">
+                                                                <option value="">{{ __('Country') }}</option>
+                                                            @foreach ($collection_countries as $item)
+                                                                <option value="{{$item->id}}">{{ __($item->name) }}</option>
+                                                            @endforeach
+                                                        </x-slot>
+                                                    </x-select>
+                                                </div>
+                                                <div class="w-full">
+                                                    <x-input id="phone" type="text" class="mt-1 block w-full" wire:model.defer="phone" autocomplete="off" minlength="6" maxlength="20"/>
+                                                    <x-input-error for="phone" class="mt-2" />
+                                                </div>
+                                            </div>
+                                            <x-input-error for="country_id" class="mt-2" />
+                                            <x-input-error for="phone" class="mt-2" />
+                                        </div>
+                                    @endif
                                 </div>
-                                <x-input-error for="country_id" class="mt-2" />
-                                <x-input-error for="phone" class="mt-2" />
                             </div>
-                        @endif
-                        
+                        </div>
+
                         <!-- commentary -->
                         <div class="col-span-6 sm:col-span-4">
                             <x-label for="commentary" class="font-semibold" value="{{ __('Write here what you want to say to the beneficiary of the campaign') }}"/>

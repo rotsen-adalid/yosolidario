@@ -41,7 +41,7 @@
                     <span class="font-bold">{{__('Organizator')}}: </span>
                     {{Auth::user()->name}}
                 </div>
-                <a href="tel:{{$campaign->country->telephone_prefix}}{{$campaign->telephone}}" class="flex space-x-1 items-center">
+                <a href="tel:{{$campaign->phone_prefix}}{{$campaign->phone}}" class="flex space-x-1 items-center">
                     <span class="material-icons-outlined">call</span>
                     <span class="font-bold">
                         {{$campaign->telephone}}
@@ -70,7 +70,7 @@
 
         @else 
         <div class="flex justify-start items-center space-x-1">
-            <i class="uil uil-times-circle text-red-500 text-2xl"></i>
+            <span class="material-icons-outlined text-red-500 text-3xl">error_outline</span>
             <div class="font-bold text-lg">
                 {{ __('You need to complete your profile') }}
             </div>

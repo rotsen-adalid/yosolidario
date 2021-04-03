@@ -58,7 +58,6 @@
           
     </head>
     <body class="font-sans antialiased text-sm">
-        <x-banner />
         <div class="min-h-screen">
             <div>
                 {{$menu}}
@@ -72,5 +71,6 @@
         @stack('modals')
 
         @livewireScripts
+        
     </body>
 </html>

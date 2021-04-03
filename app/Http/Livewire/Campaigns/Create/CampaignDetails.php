@@ -9,6 +9,7 @@ use Illuminate\Support\Str as Str;
 use App\Models\Campaign;
 use App\Models\CampaignQuestion;
 use App\Models\CampaignReward;
+use App\Models\CountryState;
 use App\Models\Notice;
 use App\Models\Organization;
 use App\Notifications\TelegramNotification;
@@ -23,14 +24,14 @@ class CampaignDetails extends Component
 {
     use WithFileUploads;
 
-    public $title, $slug, $extract, $type_campaign, $period = 60, $amount_target, $locality, $user_id, $category_campaign_id, $country_id, $organization_id, $agency_id;
+    public $title, $slug, $extract, $type_campaign, $period = 60, $amount_target, $locality, $user_id, $category_campaign_id, $country_id, $country_state_id, $organization_id, $agency_id;
     public $phone_prefix, $phone, $video_url, $status_register;
 
     public $collection_category_campaign;
     public $collection_organization;
     public $collection_agency;
     public $collection_agencies;
-    public $collection_countries;
+    public $collection_country_states, $states_denomination = 'State';
     public $currency_symbol, $telephone_prefix;
     public $campaign_id;
     public $campaign;
@@ -60,24 +61,17 @@ class CampaignDetails extends Component
             $this->campaign = $campaign;
             $this->edit($campaign->id);
         } else {
-            //return redirect()->route('campaign/create');
+            //return redirect()->route('home');
         }
 
         // general values
-        //$response = Http::get('http://api.ipapi.com/179.58.47.20?access_key=c161289d6c8bc62e50f1abad0c4846aa');
-        //$this->ipapi = $response->json();
-        //$this->country_code = $this->ipapi['country_code'];
-        //$this->languaje_code = $this->ipapi['location']['languages'][0]['code'];
+        $this->ipapi = session()->get('ipapi');
     } 
 
     public function render()
     { 
         $this->agency();
         $this->collection_agencies = Agency::All();
-        $this->collection_countries = DB::table('countries')
-                                        ->where('status_published_campaign', 'ACTIVE')
-                                        ->orderBy('name', 'asc')
-                                        ->get();
         $this->collection_category_campaign = DB::table('category_campaigns')->where('status', 'ACTIVE')->get();
         return view('livewire.campaigns.create.campaign-details');
     }
@@ -105,11 +99,11 @@ class CampaignDetails extends Component
                 'organization_id' => 'required',
                 'locality' => 'required|min:3|max:100',
                 'agency_id' => 'required',
-                'country_id' => 'required',
+                //'country_id' => 'required',
+                'country_state_id' => 'required',
                 'amount_target' => "required|numeric|between:$this->amount_min,$this->amount_max",
                 //'period' => 'required',
                 'phone' => 'required|digits_between:7,15',
-                'video_url' => 'required|url'
             ]);
         }
         else {
@@ -122,14 +116,20 @@ class CampaignDetails extends Component
                 'type_campaign' => 'required',
                 'locality' => 'required|min:3|max:100',
                 'agency_id' => 'required',
-                'country_id' => 'required',
+                //'country_id' => 'required',
+                'country_state_id' => 'required',
                 'amount_target' => "required|numeric|between:$this->amount_min,$this->amount_max",
                 //'period' => 'required',
 
                 'phone' => 'required|digits_between:7,15',
-                'video_url' => 'required|url'
             ]);
             $this->organization_id = null;
+        }
+
+        if($this->video_url) {
+            $this->validate([
+                'video_url' => 'required|url'
+            ]);
         }
 
         $search_upper =  strtoupper(
@@ -153,14 +153,15 @@ class CampaignDetails extends Component
             'shareds' => 0,
             'followers' => 0,
             'locality' => addslashes($this->locality),
-            'phone_prefix' => $this->telephone_prefix,
+            'phone_prefix' => $this->phone_prefix,
             'phone' => $this->phone,
 
             'user_id' => auth()->user()->id,
             'category_campaign_id' => $this->category_campaign_id,
             'agency_id' => $this->agency_id,
             'country_id' => $this->country_id,
-            
+            'country_state_id' => $this->country_state_id,
+
             'search' => addslashes($search_all),
             
             'status' => 'DRAFT'
@@ -198,9 +199,12 @@ class CampaignDetails extends Component
                 ]);
             }
     
-            $record->video()->create([
-                'url' => $this->video_url
-            ]);
+            if($this->video_url)
+            {
+                $record->video()->create([
+                    'url' => $this->video_url
+                ]);
+            }
         }
         $this->createQuestions($campaign_id);
         $this->createRewars($campaign_id);
@@ -221,12 +225,12 @@ class CampaignDetails extends Component
                 'organization_id' => 'required',
                 'locality' => 'required|min:3|max:100',
                 'agency_id' => 'required',
-                'country_id' => 'required',
+                //'country_id' => 'required',
+                'country_state_id' => 'required',
                 'amount_target' => "required|numeric|between:$this->amount_min,$this->amount_max",
                 //'period' => 'required',
 
                 'phone' => 'required|digits_between:7,15',
-                'video_url' => 'required|url'
 
             ]);
         else {
@@ -239,14 +243,20 @@ class CampaignDetails extends Component
                 'type_campaign' => 'required',
                 'locality' => 'required|min:3|max:100',
                 'agency_id' => 'required',
-                'country_id' => 'required',
+                //'country_id' => 'required',
+                'country_state_id' => 'required',
                 'amount_target' => "required|numeric|between:$this->amount_min,$this->amount_max",
                 //'period' => 'required',
 
                 'phone' => 'required|digits_between:7,15',
-                'video_url' => 'required|url'
             ]);
             $this->organization_id = null;
+        }
+
+        if($this->video_url) {
+            $this->validate([
+                'video_url' => 'required|url'
+            ]);
         }
 
         $search_upper =  strtoupper(
@@ -308,14 +318,14 @@ class CampaignDetails extends Component
             'shared' => 0,
             'followers' => 0,
             'locality' => addslashes($this->locality),
-            'phone_prefix' => $this->telephone_prefix,
+            'phone_prefix' => $this->phone_prefix,
             'phone' => $this->phone,
 
             'user_id' => auth()->user()->id,
             'category_campaign_id' => $this->category_campaign_id,
             'agency_id' =>  $this->agency_id,
             'country_id' => $this->country_id,
-            
+            'country_state_id' => $this->country_state_id,
             'search' => addslashes($search_all),
             
             //'status' => 'DRAFT',
@@ -338,10 +348,18 @@ class CampaignDetails extends Component
         $this->emit('message');
         $this->message = "Saved correctly";
 
-        $record->video()->update([
-            'url' => $this->video_url
-        ]);
-
+        if($this->video_url) {
+            if($record->video) {
+                $record->video()->update([
+                    'url' => $this->video_url
+                ]);
+            } else {
+                $record->video()->create([
+                    'url' => $this->video_url
+                ]);
+            }
+        }
+        
         return redirect()->route('campaign/update/questions', ['campaign' => $record]);
     }
 
@@ -356,6 +374,7 @@ class CampaignDetails extends Component
         $this->organization_id = $record->organization_id;
         $this->agency_id = $record->agency_id;
         $this->country_id = $record->country_id;
+        $this->country_state_id = $record->country_state_id;
         $this->locality = $record->locality;
         $this->amount_target = $record->campaignCollected->amount_target;
        // $this->period = $record->period;
@@ -364,7 +383,10 @@ class CampaignDetails extends Component
         $this->status_register =  $record->status_register;
 
         $this->photo_url = $record->image->url;
-        $this->video_url = $record->video->url;
+        if($record->video) {
+            $this->video_url = $record->video->url;
+        }
+       
 
         $this->agency($this->agency_id);
     }
@@ -395,15 +417,21 @@ class CampaignDetails extends Component
         if($this->agency_id) {
             $record = Agency::find($this->agency_id);
             $this->currency_symbol = $record->agencySetting->money->currency_symbol;
-            $this->phone_prefix = $record->country->telephone_prefix;
+            $this->phone_prefix = $record->country->phone_prefix;
             $this->amount_min = $record->agencySetting->amount_min;
             $this->amount_max = $record->agencySetting->amount_max;
+            $this->states_denomination =  $record->country->states_denomination;
+            $this->country_id = $record->country->id;
+            $this->collection_country_states = CountryState::
+                where('country_id', $record->country->id)
+                ->orderBy('name', 'asc')
+                ->get();
 
             $this->collection_organization = Organization::
-            join('organization_agreements', 'organizations.id', '=', 'organization_agreements.organization_id')
-            ->where('organization_agreements.status', '=', 'ACTIVE')
-            //->where('organizations.agency_id', '=' , $this->agency_id)
-            ->get();
+                join('organization_agreements', 'organizations.id', '=', 'organization_agreements.organization_id')
+                ->where('organization_agreements.status', '=', 'ACTIVE')
+                //->where('organizations.agency_id', '=' , $this->agency_id)
+                ->get();
 
         } else {
             $this->currency_symbol = null;

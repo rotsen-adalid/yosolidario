@@ -32,7 +32,8 @@ class User extends Authenticatable // implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 
+        'name',
+        'lastname', 
         'slug',
         'email', 
         'password', 
@@ -117,6 +118,11 @@ class User extends Authenticatable // implements MustVerifyEmail
         return $this->hasMany(PaymentOrder::class);
     }
     
+    // uno a muchos 
+    public function geolocationUsers() {
+        return $this->hasMany(GeolocationUser::class);
+    }
+
     // relacion muchos a muchos
     public function sites()
     {
@@ -129,6 +135,7 @@ class User extends Authenticatable // implements MustVerifyEmail
         abort_unless($this->hasAnySite($sites), 401);
         return true;
     }
+
     public function hasAnySite($sites)
     {
         if (is_array($sites)) {

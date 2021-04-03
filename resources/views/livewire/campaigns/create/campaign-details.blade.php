@@ -26,7 +26,7 @@
             <form wire:submit.prevent="StoreOrUpdate">
             <!-- Agency -->
             <div class="mt-6">
-                <x-label for="agency_id" value="{{ __('Tell us where you mainly reside.') }}" required />
+                <x-label for="agency_id" class="font-semibold" value="{{ __('Tell us where you mainly reside.') }}" required />
                 <div class="flex">
                     <x-select class="mt-1 block w-full" id="agency_id" name="agency_id" wire:model="agency_id" autofocus> <!-- wire:change="agency" -->
                         <x-slot name="option">
@@ -41,7 +41,7 @@
             </div> 
             <!-- amount -->
             <div class="mt-6">
-                <x-label for="amount_target" value="{{ __('Amount to raise') }}" required/>
+                <x-label for="amount_target" class="font-semibold" value="{{ __('Amount to raise') }}" required/>
                 <div class="flex">
 
                     <x-input id="amount_target" type="text" class="mt-1 block w-full font-bold text-xl" wire:model.defer="amount_target"  autocomplete="off"  minlength="3" Number maxlength="8" onKeyPress="return validar(event)"/>
@@ -65,19 +65,19 @@
             </div>
             <!-- title -->
             <div class="mt-6">
-                <x-label for="title" value="{{ __('Title') }}" required/>
+                <x-label for="title" class="font-semibold" value="{{ __('Title') }}" required/>
                 <x-input id="title" type="text" class="mt-1 block w-full" wire:model.defer="title"  autocomplete="off" minlength="5" maxlength="60" wire:keyup="generateSlug" /> <!-- wire:keyup="generateSlug"  -->
                 <x-input-error for="title" class="mt-2" />
             </div>
             <!-- extract -->
             <div class="mt-6">
-                <x-label for="extract" value="{{ __('Short description') }}" required/>
+                <x-label for="extract" class="font-semibold" value="{{ __('Short description') }}" required/>
                 <x-textarea id="extract" class="mt-1 block w-full" rows="3" wire:model.defer="extract" autocomplete="off" minlength="5" maxlength="170"/>
                 <x-input-error for="extract" class="mt-2" />
             </div>
             <!-- category campaign-->
             <div class="mt-6">
-                <x-label for="category_campaign_id" value="{{ __('Category campaign') }}" required/>
+                <x-label for="category_campaign_id" class="font-semibold" value="{{ __('Category campaign') }}" required/>
                 <div class="flex">
                     <x-select class="mt-1 block w-full" id="category_campaign_id" name="category_campaign_id" wire:model.defer="category_campaign_id">
                         <x-slot name="option">
@@ -104,7 +104,7 @@
             </div>
             <!-- type campaña -->
             <div class="mt-6">
-                <x-label for="type_campaign" value="{{ __('Who do you raise the money for?') }}" required/>
+                <x-label for="type_campaign" class="font-semibold" value="{{ __('Who do you raise the money for?') }}" required/>
                 <div class="flex">
                     <x-select class="mt-1 block w-full" id="type_campaign" wire:model="type_campaign">
                         <x-slot name="option">
@@ -120,7 +120,7 @@
             @if($this->type_campaign == 'ORGANIZATION')
               @if ($collection_organization)
               <div class="mt-6">
-                  <x-label for="organization_id" value="{{ __('Foundation, ONG, Social Organizacion or Company') }}" required/>
+                  <x-label for="organization_id" class="font-semibold" value="{{ __('Foundation, ONG, Social Organizacion or Company') }}" required/>
                   <div class="flex">
                       <x-select class="mt-1 block w-full" id="organization_id" name="organization_id" wire:model.defer="organization_id">
                           <x-slot name="option">
@@ -137,28 +137,33 @@
             @endif
             <!-- locality -->
             <div class="mt-6">
-                <x-label for="locality" value="{{ __('Campaign location: locality or city') }}" required/>
+                <x-label for="locality" class="font-semibold" value="{{ __('Campaign location: locality or city') }}" required/>
                 <div class="flex space-x-1">
-                    <div class="w-56">
-                        <x-select class="mt-1 block w-full" id="country_id" name="country_id" wire:model.defer="country_id">
-                            <x-slot name="option">
-                                    <option value="">{{ __('Country') }}</option>
-                                @foreach ($collection_countries as $item)
-                                    <option value="{{$item->id}}">{{ __($item->name) }}</option>
-                                @endforeach
-                            </x-slot>
-                        </x-select>
-                        <x-input-error for="country_id" class="mt-2" />
-                    </div>
+                    @if ($collection_country_states)
+                        <div class="w-56">
+                            <x-select class="mt-1 block w-full" id="country_state_id" name="country_state_id" wire:model.defer="country_state_id">
+                                <x-slot name="option">
+                                    <!--
+                                        <option value="">{__($states_denomination)}}</option>
+                                        <option value=""></option>
+                                    -->
+                                    @foreach ($collection_country_states as $item)
+                                        <option value="{{$item->id}}">{{ __($item->name) }}</option>
+                                    @endforeach
+                                </x-slot>
+                            </x-select>
+                        </div>
+                    @endif
                     <div class="w-full">
                         <x-input id="locality" type="text" class="mt-1 block w-full" wire:model.defer="locality" autocomplete="off" minlength="3" maxlength="100"/>
-                        <x-input-error for="locality" class="mt-2" />
                     </div>
                 </div>
+                <x-input-error for="country_state_id" class="mt-2" />
+                <x-input-error for="locality" class="mt-2" />
             </div>
             <!-- Telephone -->
             <div class="mt-6">
-                <x-label for="phone" value="{{ __('Telephone') }}" required/>
+                <x-label for="phone" class="font-semibold" value="{{ __('Telephone') }}" required/>
                 <div class="flex space-x-1">
                     <div class="w-16">
                         <x-input disabled id="phone_prefix" type="text" wire:model.defer="phone_prefix" class="block w-16" placeholder="{{$this->phone_prefix}}" autocomplete="off"/>
@@ -171,7 +176,7 @@
             </div>
             <!-- slug -->
             <div class="mt-6">
-                <x-label for="slug" value="{{ __('Slug') }}" required/><span class="text-gray-500 w-full">https://yosolidario.com/</span>
+                <x-label for="slug" class="font-semibold" value="{{ __('Slug') }}" required/><span class="text-gray-500 w-full">https://yosolidario.com/</span>
                 <x-input id="slug" type="text" class="mt-1 block w-full" wire:model.defer="slug" autocomplete="off" minlength="3" maxlength="200"/>
                 <x-input-error for="slug" class="mt-2" />
             </div>
@@ -190,7 +195,7 @@
                             reader.readAsDataURL($refs.photo.files[0]);
                     " />
 
-                <x-label for="photoOne" value="{{ __('Image') }}" required/>
+                <x-label for="photoOne" class="font-semibold" value="{{ __('Image') }}" required/>
                 <!-- Current Profile Photo -->
                 <div class="mt-2" x-show="!photoPreview">
                     @if( $this->photo_url)
@@ -237,7 +242,7 @@
             </div>
             <!-- Video link -->
             <div class="mt-6">
-                <x-label for="video_url" value="{{ __('Video link YouTube ') }}" required/>
+                <x-label for="video_url" class="font-semibold" value="{{ __('Video link YouTube ') }}" required/>
                 <x-input id="video_url" type="text" class="mt-1 block w-full" wire:model.defer="video_url"  autocomplete="off" minlength="3" maxlength="50"/>
                 <x-input-error for="video_url" class="mt-2" />
             </div>

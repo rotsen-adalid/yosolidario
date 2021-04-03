@@ -17,7 +17,7 @@
             <form wire:submit.prevent="StoreOrUpdate">
              <!-- about -->
              <div class="mt-6">
-                <x-label for="about" class="font-bold" value="{{ __('What is it about?') }}" required/>
+                <x-label for="about" class="font-semibold" value="{{ __('What is it about?') }}" required/>
                 <x-textarea id="about" class="mt-1 block w-full h-36 sm:h-36" wire:model.defer="about" autofocus autocomplete="off"/>
                 <x-input-error for="about" class="mt-2"/>
             </div>
@@ -36,7 +36,7 @@
                             reader.readAsDataURL($refs.photo.files[0]);
                     " />
 
-                <x-label for="photoOne"  class="font-bold" value="{{ __('Image') }}" />
+                <x-label for="photoOne"  class="font-semibold" value="{{ __('Image') }}" />
                 <!-- Current Profile Photo -->
                 <div class="mt-2" x-show="!photoPreview">
                     @if( $this->about_url)
@@ -84,7 +84,7 @@
             </div>
             <!-- use_of_money -->
             <div class="mt-6">
-                <x-label for="use_of_money"  class="font-bold" value="{{ __('How will I use the money?') }}" required/>
+                <x-label for="use_of_money"  class="font-semibold" value="{{ __('How will I use the money?') }}" required/>
                 <x-textarea id="use_of_money" class="mt-1 block w-full h-36 sm:h-36" wire:model.defer="use_of_money" autocomplete="off"/>
                 <x-input-error for="use_of_money" class="mt-2" />
             </div>
@@ -103,7 +103,7 @@
                             reader.readAsDataURL($refs.photo.files[0]);
                     " />
 
-                <x-label for="photoTwo"  class="font-bold" value="{{ __('Image') }}" />
+                <x-label for="photoTwo"  class="font-semibold" value="{{ __('Image') }}" />
                 <!-- Current Profile Photo -->
                 <div class="mt-2" x-show="!photoPreview">
                     @if( $this->use_of_money_url)
@@ -151,7 +151,7 @@
             </div>
             <!-- about_organizer -->
             <div class="mt-6">
-                <x-label for="about_organizer"  class="font-bold" value="{{ __('About the organizer') }}" required/>
+                <x-label for="about_organizer"  class="font-semibold" value="{{ __('About the organizer') }}" required/>
                 <x-textarea id="about_organizer" class="mt-1 block w-full h-36 sm:h-36" wire:model.defer="about_organizer" autocomplete="off"/>
                 <x-input-error for="about_organizer" class="mt-2"/>
             </div>
@@ -170,7 +170,7 @@
                             reader.readAsDataURL($refs.photo.files[0]);
                     " />
 
-                <x-label for="photoThree"  class="font-bold" value="{{ __('Image') }}" />
+                <x-label for="photoThree"  class="font-semibold" value="{{ __('Image') }}" />
                 <!-- Current Profile Photo -->
                 <div class="mt-2" x-show="!photoPreview">
                     @if( $this->about_organizer_url)
@@ -218,7 +218,7 @@
             </div>
             <!-- delivery_of_rewards -->
             <div class="mt-6">
-                <x-label for="delivery_of_rewards"  class="font-bold" value="{{ __('How and when are the rewards delivered?') }}" required/>
+                <x-label for="delivery_of_rewards"  class="font-semibold" value="{{ __('How and when are the rewards delivered?') }}" required/>
                 <x-textarea id="delivery_of_rewards" class="mt-1 block w-full h-36 sm:h-36" wire:model.defer="delivery_of_rewards" autocomplete="off"/>
                 <x-input-error for="delivery_of_rewards" class="mt-2" />
             </div>
@@ -237,7 +237,7 @@
                             reader.readAsDataURL($refs.photo.files[0]);
                     " />
 
-                <x-label for="photoFour"  class="font-bold" value="{{ __('Image') }}" />
+                <x-label for="photoFour"  class="font-semibold" value="{{ __('Image') }}" />
                 <!-- Current Profile Photo -->
                 <div class="mt-2" x-show="!photoPreview">
                     @if( $this->delivery_of_rewards_url)
@@ -285,7 +285,7 @@
             </div>
             <!-- contact_organizer -->
             <div class="mt-6">
-                <x-label for="contact_organizer"  class="font-bold" value="{{ __('Organizer contact details') }}" required/>
+                <x-label for="contact_organizer"  class="font-semibold" value="{{ __('Organizer contact details') }}" required/>
                 <x-textarea id="contact_organizer" class="mt-1 block w-full h-36 sm:h-36" wire:model.defer="contact_organizer" autocomplete="off"/>
                 <x-input-error for="contact_organizer" class="mt-2" />
             </div>
@@ -304,7 +304,7 @@
                             reader.readAsDataURL($refs.photo.files[0]);
                     " />
 
-                <x-label for="photoFive"  class="font-bold" value="{{ __('Image') }}" />
+                <x-label for="photoFive"  class="font-semibold" value="{{ __('Image') }}" />
                 <!-- Current Profile Photo -->
                 <div class="mt-2" x-show="!photoPreview">
                     @if( $this->contact_organizer_url)
@@ -352,13 +352,13 @@
             </div>
             <!-- Title -->
             <div class="mt-6">
-                <x-label for="question_title_add"  class="font-bold" value="{{ __('Question title') }} ({{ __('optional') }})" />
+                <x-label for="question_title_add"  class="font-semibold" value="{{ __('Question title') }} ({{ __('optional') }})" />
                 <x-input id="question_title_add" type="text" class="mt-1 block w-full" wire:model.defer="question_title_add" autocomplete="off" />
                 <x-input-error for="question_title_add" class="mt-2" />
             </div>
             <!-- Body -->
             <div class="mt-6">
-                <x-label for="question_body_add"  class="font-bold" value="{{ __('Answer to the question') }} ({{ __('optional') }})" />
+                <x-label for="question_body_add"  class="font-semibold" value="{{ __('Answer to the question') }} ({{ __('optional') }})" />
                 <x-textarea id="question_body_add" class="mt-1 block w-full h-36 sm:h-36" wire:model.defer="question_body_add" autocomplete="off"/>
                 <x-input-error for="question_body_add" class="mt-2" />
             </div>
@@ -377,7 +377,7 @@
                             reader.readAsDataURL($refs.photo.files[0]);
                     " />
 
-                <x-label for="photoSix"  class="font-bold" value="{{ __('Image') }} ({{ __('optional') }})" />
+                <x-label for="photoSix"  class="font-semibold" value="{{ __('Image') }} ({{ __('optional') }})" />
                 <!-- Current Profile Photo -->
                 <div class="mt-2" x-show="!photoPreview">
                     @if( $this->question_url_add)

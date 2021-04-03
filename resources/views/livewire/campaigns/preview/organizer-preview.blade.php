@@ -18,17 +18,6 @@
                     <span class="font-bold">{{__('Organizator')}}: </span>
                     {{$this->campaign->user->name}}
                 </div>
-
-                @if($this->campaign->user->profile)
-                    <div>
-                        @if ($this->campaign->user->profile->locality)
-                            {{$this->campaign->user->profile->country->name}},
-                            {{$this->campaign->user->profile->locality}}
-                        @else
-                            {{$this->campaign->user->profile->country->name}}
-                        @endif
-                    </div> 
-                @endif
                 
                 @if($this->campaign->user->profile)
                 <div class="flex item-center space-x-3">
