@@ -22,6 +22,7 @@ class ShowCampaignRewards extends Component
     public $recognition_currency_symbol;
     public $campaign;
     public $confirmingDeletion;
+    public $bannerStyle, $message;
 
     public function mount(Campaign $campaign)
     {
@@ -78,6 +79,9 @@ class ShowCampaignRewards extends Component
                 //'agency_id' => 1
                 ]);
         }
+        $this->emit('saved');
+        $this->bannerStyle = "danger";
+        $this->message = "Was removed successfully";
         $this->confirmingDeletion = false;
     }
 }

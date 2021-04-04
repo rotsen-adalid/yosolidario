@@ -7,12 +7,14 @@ use App\Models\Notice;
 use App\Notifications\TelegramNotification;
 use Closure;
 use Illuminate\Http\Request;
-
+use App\Http\Traits\Geolocation;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Http;
 
 class Access
 {
+    use Geolocation;
+
     /**
      * Handle an incoming request.
      *
@@ -38,6 +40,7 @@ class Access
               
             ]);
             $notice->notify(new TelegramNotification);
+            $this->registerGeolocation();
         }
 
         if($request->session()->has('locale')) {

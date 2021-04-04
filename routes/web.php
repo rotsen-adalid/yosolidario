@@ -106,6 +106,7 @@ Route::middleware(['auth:sanctum', 'verified', 'access'])->get('/campaign/manage
 ->name('campaign/manage/collaborations');
 
 // Updates
+
 use App\Http\Livewire\Campaigns\Manage\Updates\ShowUpdates;
 Route::middleware(['auth:sanctum', 'verified', 'access'])->get('/campaign/manage/communications/show/{campaign}', ShowUpdates::class)
 ->name('campaign/manage/communications/show');

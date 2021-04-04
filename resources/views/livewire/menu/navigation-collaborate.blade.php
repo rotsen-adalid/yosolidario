@@ -1,3 +1,4 @@
+<x-banner-session class="top-20"/>
 <nav x-data="{ open: false }" class=" bg-white border-b border-gray-100 shadow-md header w-full  fixed top-0">
     <!-- Primary Navigation Menu -->
     <div class="max-w-5xl mx-auto px-4 sm:px-0">

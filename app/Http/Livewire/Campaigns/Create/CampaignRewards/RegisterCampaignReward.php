@@ -5,13 +5,13 @@ use Livewire\Component;
 
 use App\Models\Campaign;
 use App\Models\CampaignReward;
-use Carbon\Carbon;
-use Laravel\Jetstream\Jetstream;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Traits\InteractsWithBanner;
 
 class RegisterCampaignReward extends Component
 {
+    use InteractsWithBanner;
     use WithFileUploads;
 
     public $status_register;
@@ -19,7 +19,8 @@ class RegisterCampaignReward extends Component
     public $photoOne;
     public $currency_symbol;
     public $campaign;
-
+    public $bannerStyle, $message;
+    
     public function mount(Campaign $campaign, CampaignReward $campaignReward)
     {
         if($campaign->status == 'DRAFT' and $campaign->user_id == auth()->user()->id) {
@@ -111,6 +112,7 @@ class RegisterCampaignReward extends Component
             //'agency_id' => 1
             ]);
         $this->resetInput();
+        $this->banner('Successfully saved!');
         return redirect()->route('campaign/rewards/show', ['campaign' => $this->campaign]);
     }
 
@@ -156,6 +158,7 @@ class RegisterCampaignReward extends Component
             ]);
 
         $this->resetInput();
+        $this->banner('Successfully updated!');
         return redirect()->route('campaign/rewards/show', ['campaign' => $this->campaign]);
     }
 

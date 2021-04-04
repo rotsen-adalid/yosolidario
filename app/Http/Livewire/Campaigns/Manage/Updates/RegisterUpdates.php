@@ -17,13 +17,16 @@ class RegisterUpdates extends Component
 
     public $campaign;
 
-    public function mount(Campaign $campaign, CampaignUpdate $campaignUpdate)
+    public $storeUpdateDialog, $button;
+
+    public function mount(Campaign $campaign, $campaign_update_id, $button)
     {
         if($campaign->status == 'PUBLISHED' and $campaign->user_id == auth()->user()->id) {
             $this->campaign = $campaign;
-            if($campaignUpdate->id) {
-                $this->edit($campaignUpdate->id);
+            if($campaign_update_id) {
+                $this->campaign_update_id = $campaign_update_id;
             }
+            $this->button = $button;
         } else {
             return redirect()->route('campaign/create');
         }
@@ -32,6 +35,15 @@ class RegisterUpdates extends Component
     public function render()
     {
         return view('livewire.campaigns.manage.updates.register-updates');
+    }
+
+    public function addUpdates() {
+        $this->storeUpdateDialog = true;
+    }
+
+    public function editUpdates($campaign_update_id) {
+        $this->edit($campaign_update_id);
+        $this->storeUpdateDialog = true;
     }
 
     public function StoreOrUpdate() {
@@ -52,7 +64,10 @@ class RegisterUpdates extends Component
         } else {
             $this->Add();
         } 
-        return redirect()->route('campaign/manage/communications/show', ['campaign' => $this->campaign]);
+        //return redirect()->route('campaign/manage/communications/show', ['campaign' => $this->campaign]);
+        $this->reset('storeUpdateDialog', 'campaign_update_id', 'title', 'body', 'update_photo_path', 'campaign_id', 'video_url');
+        $this->emit('render');
+        $this->storeUpdateDialog = false;
     }
 
     public function Add() {

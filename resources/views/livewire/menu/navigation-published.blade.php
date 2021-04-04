@@ -1,3 +1,4 @@
+<x-banner-session class="top-20"/>
 <nav x-data="{ open: false }" class=" bg-white border-b border-gray-100  header w-full ">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -173,11 +174,7 @@
                   </x-dropdown>
               </div>
               <div class="ml-3">
-                <button wire:click="shared" type="button" 
-                class="border border-yellow-500 text-black py-1 px-2 font-bold rounded-md text-base
-                hover:bg-yellow-100 focus:outline-none focus:border-yellow-500 shadow-sm focus:shadow-outline-yellow active:bg-yelow-400 transition ease-in-out duration-150">
-                    {{__('Share')}}
-                </button>
+                @livewire('campaigns.published.shared-published', ['campaign' => $campaign, 'buttonShared' => 2])
               </div>
               <div class="ml-3">
                 @if ($this->campaign->categoryCampaign->type == 'SOCIAL_IMPACT')
@@ -374,5 +371,5 @@
 
       @endauth
   </div>
-  @include('livewire.campaigns.published.shared-published')
+
 </nav>

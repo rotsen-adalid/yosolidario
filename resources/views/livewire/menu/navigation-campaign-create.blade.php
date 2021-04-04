@@ -1,3 +1,4 @@
+<x-banner-session class="top-20"/>
 <nav x-data="{ open: false }" class=" bg-white border-b border-gray-100 shadow-md header w-full  fixed top-0">
     <!-- Primary Navigation Menu -->
     <div class="max-w-5xl mx-auto px-4 md:px-6 lg:px-8">
@@ -20,10 +21,7 @@
 
                     @if ($this->status_register == 'COMPLETE')
                         <div class="flex items-center leading-tight space-x-0">
-                            <x-basic-button wire:click="reviewConfirm" wire:loading.attr="disabled">
-                                <span class="material-icons-outlined pr-1">open_in_new</span>
-                                <span class="">{{ __('Publish campaign') }}</span>
-                            </x-basic-button>
+                            <livewire:campaigns.create.send-review :campaign="$campaign"/>
                             <x-basic-button wire:click="preview({{ $this->campaign_id }})" wire:loading.attr="disabled">
                                 <span class="material-icons-outlined pr-1">remove_red_eye</span>
                                 <span class="">{{ __('Preview') }}</span>
@@ -213,10 +211,7 @@
 
         @if ($this->status_register == 'COMPLETE')
             <div class="flex flex-col leading-tight px-4 space-y-4 pb-2">
-                <x-button wire:click="reviewConfirm" wire:loading.attr="disabled">
-                    <span class="material-icons-outlined pr-1">open_in_new</span>
-                    <span class="">{{ __('Publish campaign') }}</span>
-                </x-button>
+                <livewire:campaigns.create.send-review :campaign="$campaign"/>
                 <x-secondary-button wire:click="preview({{ $this->campaign_id }})" wire:loading.attr="disabled">
                     <span class="material-icons-outlined pr-1">remove_red_eye</span>
                     <span class="">{{ __('Preview') }}</span>
@@ -340,7 +335,5 @@
         @endauth
     </div>
     <!-- Send to review Modal -->
-    @if ($this->campaign)
-        @include('livewire.campaigns.create.send-to-review')
-    @endif
+   
 </nav>

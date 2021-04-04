@@ -1,18 +1,16 @@
-@props(['style' => session('flash.bannerStyle', 'success'), 'message' => session('flash.banner')])
+@props(['style' => session('flash.bannerStyle', 'success'), 'message' => session('flash.banner'), ])
 
 <div  
-    {{ $attributes->merge(['class' => '']) }}
-        x-data="{{ json_encode(['show' => true, 'style' => $style, 'message' => $message]) }}"
+    {{ $attributes->merge(['class' => 'fixed w-full']) }}
+        x-data="{{ json_encode(['show' => true, 'style' => $style, 'message' => $message, 'timeout' => null]), }}"
         :class="{ 'bg-green-500': style == 'success', 'bg-red-700': style == 'danger' }"
         style="display: none;"
-        x-show="show && message"
+        
+        x-show.transition.opacity.out.duration.1500ms="show && message"
         x-init="
-            document.addEventListener('banner-message', event => {
-                style = event.detail.style;
-                message = event.detail.message;
-                show = true;
-            });
-        ">
+            () => { clearTimeout(timeout); show = true; timeout = setTimeout(() => { show = false }, 2000);  }
+            "
+            >
     <div class="max-w-screen-xl mx-auto py-2 px-3 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between flex-wrap">
             <div class="w-0 flex-1 flex items-center min-w-0">
@@ -20,7 +18,9 @@
                     <span class="material-icons-outlined text-white ">check_circle</span>
                 </span>
 
-                <p class="ml-3 font-medium text-base text-white truncate" x-text="message"></p>
+                <p class="ml-3 font-medium text-base text-white truncate">
+                    {{__(session('flash.banner'))}}
+                </p>
             </div>
 
             <div class="flex-shrink-0 sm:ml-3">

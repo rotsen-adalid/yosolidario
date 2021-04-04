@@ -1,15 +1,17 @@
 <?php
 
 namespace App\Http\Livewire\Home;
-
 use Livewire\Component;
+use App\Http\Traits\Geolocation;
 
 class ShowHome extends Component
 {
-    public $language;
+    use Geolocation;
+
+    public $ipapi;
 
     public function mount() {
-
+        $this->registerGeolocation();
     }
 
     public function render()

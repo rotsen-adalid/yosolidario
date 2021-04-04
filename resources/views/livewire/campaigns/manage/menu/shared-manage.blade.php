@@ -1,3 +1,22 @@
+<div>
+    @if ($buttonShared == 1)
+        <div wire:click="shared" class="cursor-pointer">
+            <div class="flex justify-center">
+                <div class="rounded-full h-12 w-12 flex items-center justify-center bg-ys1">
+                    <span class="material-icons-outlined text-white text-3xl">file_upload</span>
+                </div>
+            </div>
+            <div class="mt-1 flex justify-center font-bold underline">{{__('Share')}}</div>
+        </div>
+    @elseif($buttonShared == 2)
+        <div class="flex justify-center mt-10">
+            <x-secondary-button class=" justify-center" wire:click="shared" wire:loading.attr="disabled">
+                <span class="text-base font-bold">{{ __('Share fundraiser') }}</span>
+            </x-secondary-button>
+        </div>
+    @elseif($buttonShared == 3)
+
+    @endif
 <x-dialog-modal wire:model="shared">
     <x-slot name="title">
         <div class="font-bold text-2xl">
@@ -140,4 +159,5 @@
         
     </x-slot>
 </x-dialog-modal>
+</div>
     

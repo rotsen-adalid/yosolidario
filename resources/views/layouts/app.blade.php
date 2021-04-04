@@ -58,6 +58,7 @@
           
     </head>
     <body class="font-sans antialiased text-sm">
+
         <div class="min-h-screen">
             <div>
                 {{$menu}}

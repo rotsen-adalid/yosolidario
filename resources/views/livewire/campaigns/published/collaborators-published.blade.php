@@ -12,6 +12,7 @@
                         <!-- <img src="{asset('images/icono.png')}}" class="h-7" alt=""> -->
                         <span>{{__('Back this campaign')}}</span>
                     </button>
+                    
                 </div>
             </div>
         </div>

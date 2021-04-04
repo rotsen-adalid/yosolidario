@@ -23,6 +23,7 @@ class CountersPublished extends Component
     public $saveStatus;
     public $campaign_save_id;
     public $save_collection;
+    public $buttonShared;
 
     public function mount(Campaign $campaign)
     {

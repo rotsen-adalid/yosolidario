@@ -2,14 +2,21 @@
 
 namespace App\Http\Livewire\Campaigns\YourCampaigns;
 use Livewire\Component;
-
 use App\Models\Campaign;
+
+use App\Http\Traits\InteractsWithBanner;
 
 class ShowYourCampaigns extends Component
 {
-    
+    use InteractsWithBanner;
+
+    public function mount() {
+
+        // $this->banner('Successfully saved!');
+    }
+
     public function render()
-    {
+    { 
         $collection = Campaign::where('user_id', auth()->user()->id)
                             ->latest('id')
                             ->paginate(8);

@@ -103,13 +103,6 @@
                 {{__('Remind me')}}
             </button>
         @endif
-
-        <button  wire:click="shared" 
-            class="flex justify-center items-center w-full text-center px-4  py-1 sm:py-3 bg-white border border-gray-300 rounded-md font-bold text-sm text-black uppercase tracking-widest shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">
-            <span class="material-icons-outlined">share</span>
-            {{__('Share')}}
-        </button>
+        @livewire('campaigns.published.shared-published', ['campaign' => $campaign, 'buttonShared' => 1])
     </div>
-    @include('livewire.campaigns.published.shared-published')
-    
 </div>

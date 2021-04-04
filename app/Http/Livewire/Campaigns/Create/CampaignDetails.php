@@ -10,18 +10,15 @@ use App\Models\Campaign;
 use App\Models\CampaignQuestion;
 use App\Models\CampaignReward;
 use App\Models\CountryState;
-use App\Models\Notice;
 use App\Models\Organization;
-use App\Notifications\TelegramNotification;
-use Carbon\Carbon;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Storage;
 
-use Laravel\Jetstream\Jetstream;
-use Illuminate\Support\Facades\Http;
+use App\Http\Traits\InteractsWithBanner;
 
 class CampaignDetails extends Component
 {
+    use InteractsWithBanner;
     use WithFileUploads;
 
     public $title, $slug, $extract, $type_campaign, $period = 60, $amount_target, $locality, $user_id, $category_campaign_id, $country_id, $country_state_id, $organization_id, $agency_id;
@@ -35,7 +32,6 @@ class CampaignDetails extends Component
     public $currency_symbol, $telephone_prefix;
     public $campaign_id;
     public $campaign;
-    public $message;
 
     public $photoOne;
     public $photo_url;
@@ -52,6 +48,8 @@ class CampaignDetails extends Component
     public $ipapi;
     public $country_code;
     public $languaje_code;
+
+    public $bannerStyle, $message;
 
     public function mount(Campaign $campaign)
     {
@@ -208,6 +206,7 @@ class CampaignDetails extends Component
         }
         $this->createQuestions($campaign_id);
         $this->createRewars($campaign_id);
+        $this->banner('Successfully saved!');
         return redirect()->route('campaign/create/questions', ['campaign' => $record]);
     }
 
@@ -359,7 +358,7 @@ class CampaignDetails extends Component
                 ]);
             }
         }
-        
+        $this->banner('Successfully updated!');
         return redirect()->route('campaign/update/questions', ['campaign' => $record]);
     }
 

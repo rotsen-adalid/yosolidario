@@ -34,16 +34,12 @@
                 <h2 class="mt-2 text-center font-light">
                     {{ __('Collaborations will show up here. Start by sharing your fundraiser with friends and family.') }}
                 </h2>
-                <div class="flex justify-center mt-10">
-                    <x-secondary-button class=" justify-center" wire:click="shared" wire:loading.attr="disabled">
-                        <span class="text-base font-bold">{{ __('Share fundraiser') }}</span>
-                    </x-secondary-button>
-                </div>
+                @livewire('campaigns.manage.menu.shared-manage', ['campaign' => $campaign, 'buttonShared' => 2])
               </div>
             </div>
         </div>
     </x-slot>
 </x-section-content>
-@include('livewire.campaigns.manage.menu.modal-menu-header')
+
 </div>
 <livewire:footer.footer-app/>

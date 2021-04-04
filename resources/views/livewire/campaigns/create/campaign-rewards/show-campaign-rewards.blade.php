@@ -9,6 +9,9 @@
 </x-slot>
       
 <div class="pt-20 bg-gray-50">
+    <x-banner on="saved" style="{{$this->bannerStyle}}">
+        {{ __($this->message) }}
+    </x-banner>
     <div class="max-w-6xl mx-auto px-4 sm:px-2 py-5 sm:py-10">
         <x-section-title>
             <x-slot name="title">

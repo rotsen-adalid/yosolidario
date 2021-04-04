@@ -13,9 +13,11 @@ use App\Notifications\TelegramNotification;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Laravel\Jetstream\Jetstream;
+use App\Http\Traits\InteractsWithBanner;
 
 class CampaignQuestions extends Component
 {
+    use InteractsWithBanner;
     use WithFileUploads;
 
     public $status_register;
@@ -24,7 +26,6 @@ class CampaignQuestions extends Component
     public $question_title_add, $question_body_add, $question_url_add;
     public $campaign_question_id;
     public $campaign;
-    public $message;
     public $question_url_add_upload;
 
     public $slug;
@@ -40,6 +41,7 @@ class CampaignQuestions extends Component
     public $file;
     public $filerespuesta;
 
+    public $bannerStyle, $message;
 
     public function mount(Campaign $campaign)
     {
@@ -226,6 +228,13 @@ class CampaignQuestions extends Component
             ]);
         }
 
+        if($this->about) {
+            $this->banner('Successfully updated!');
+        } else {
+            $this->banner('Successfully saved!');
+        }
+        
+        
         // redirect
         return redirect()->route('campaign/rewards/show', ['campaign' => $this->campaign]);
     }

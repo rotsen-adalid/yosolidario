@@ -47,14 +47,7 @@
             </div>
         </div>
         <div class="flex space-x-8 pt-5">
-            <div wire:click="shared" class="cursor-pointer">
-                <div class="flex justify-center">
-                    <div class="rounded-full h-12 w-12 flex items-center justify-center bg-ys1">
-                        <span class="material-icons-outlined text-white text-3xl">file_upload</span>
-                    </div>
-                </div>
-                <div class="mt-1 flex justify-center font-bold underline">{{__('Share')}}</div>
-            </div>
+            @livewire('campaigns.manage.menu.shared-manage', ['campaign' => $campaign, 'buttonShared' => 1])
             <div>
                 <div class="flex justify-center">
                     <div class="rounded-full h-12 w-12 flex items-center justify-center border border-ys1">
@@ -119,6 +112,4 @@
             -->
         </div>
     </div>
-    @include('livewire.campaigns.manage.menu.modal-menu-header')
-
 </div>

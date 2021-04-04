@@ -18,6 +18,9 @@
     
 </x-slot>
 <div class="pt-20 bg-gray-50">
+    <x-banner on="saved" style="{{$this->bannerStyle}}">
+        {{ __($this->message) }}
+    </x-banner>
     <div class="max-w-2xl mx-auto px-4 sm:px-2 py-0 sm:py-10">
         <div class="border border-gray-100 my-5 py-10 px-4 sm:px-20 rounded shadow bg-white">
             <div class="text-center font-bold text-2xl">
