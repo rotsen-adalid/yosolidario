@@ -2,79 +2,77 @@
 
 namespace App\Http\Livewire\Campaigns\Published;
 use Livewire\Component;
-
+use Livewire\WithPagination;
 use App\Models\Campaign;
 use App\Models\CampaignUpdate;
 
 class UpdatesPublished extends Component
 {
-    public $campaign;
-    public $shared;
-    public $embed;
-    public $widget = 'large';
-    public $copyLarge;
-    public $copyMedium;
-    public $copySmall;
-    public $host;
-    public $message;
+    use WithPagination;
+
+    public $campaign, $campaign_id;
+    protected $listeners = ['comunication' => 'update'];
+    public $search, $paginate = 2; 
 
     public function mount(Campaign $campaign)
     {
-        if($campaign->status == 'PUBLISHED' or $campaign->status == 'IN_REVIEW') {
-            $this->campaign = $campaign;
-        } else {
-            //return redirect()->route('campaign/create');
-        }
-
-        if($campaign->id) {
-            $this->campaign = $campaign;
-            $this->copyLarge = '<iframe src="http://yosolidario.com/'.$campaign->slug.'/widget/large/?iframe=true" height="420></iframe>';
-            $this->copyMedium = '<iframe src="http://yosolidario.com/'.$campaign->slug.'/widget/medium/?iframe=true" height="245"></iframe>';
-            $this->copySmall = '<iframe src="http://yosolidario.com/'.$campaign->slug.'/widget/small/?iframe=true" height="60"></iframe>';
-        } else {
-            // return redirect()->route('home');
-        }
-        
-        $host= $_SERVER["HTTP_HOST"];
-        if($host == 'yosolidario.test') {
-            $this->host = 'http://yosolidario.test';
-        } elseif($host == 'yosolidario.com') {
-            $this->host = 'https://yosolidario.com';
-        }
+        //$this->campaign_id = $campaign->id;
     } 
     
     public function render()
-    {
-        $collection = CampaignUpdate::where('campaign_id', $this->campaign->id)
-                    ->latest('id')
-                    ->paginate(8);
+    { 
+        if($this->campaign_id) {
+            $this->campaign = Campaign::find($this->campaign_id);
+            $collection = CampaignUpdate::where('campaign_id', $this->campaign_id)
+                        ->orderBy('created_at', 'desc')
+                        ->paginate($this->paginate);
+        } else {
+            $this->campaign_id = 0;
+            $collection = CampaignUpdate::where('campaign_id', $this->campaign_id)
+                        ->orderBy('created_at', 'desc')
+                        ->paginate($this->paginate);
+        }
+
         return view('livewire.campaigns.published.updates-published',[
                     'collection' => $collection
                     ]);
     }
 
-    public function shared() {
-        $this->shared = true;
+    //for searches with paging
+    public function updatingSearch(): void 
+    {
+        $this->gotoPage(1);
     }
 
-    public function messageCopy() {
-        $this->emit('message');
-        $this->message = "Copied";
+    public function resetCollection() {
+        //$this->search = "";
+        $this->gotoPage(1);
     }
-    public function emberHTML($nro) {
-        if($nro == 1) {
-            $this->embed = true;
-        } elseif($nro == 0) {
-            $this->embed = false;
-        }
+
+    public function update($campaign_id) {
+       $this->campaign_id = $campaign_id;
     }
 
     // convert url video
-    public function urlVideo($url) {
+    public function urlVideo0($url) {
         $video_array = explode("/",$url);
         if($video_array[2] == 'youtu.be') {
             $video_url =  $video_array[3];
         }
         return $video_url;
     }
+
+    // convert url video
+    public function urlVideo($url) {
+        $video_htttp = explode("/",$url);
+        if($video_htttp[2] == 'www.facebook.com') {
+            $video_array = explode("=",$url);
+            $video_url =  $video_array[1];
+        } else {
+            $video_url = 0;
+        }
+        return $video_url;
+    }
 }
+
+

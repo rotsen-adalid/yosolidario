@@ -39,4 +39,8 @@ class NavigationCampaignCreate extends Component
         return view('livewire.menu.navigation-campaign-create');
     }
 
+    public function preview($id) {
+        $record = Campaign::findOrFail($id);
+        return redirect()->route('campaign/preview', ['slug' => $record->slug]);
+    }
 }

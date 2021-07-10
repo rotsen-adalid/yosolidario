@@ -7,9 +7,13 @@ use App\Models\Campaign;
 use App\Models\CampaignSave;
 use Illuminate\Support\Facades\Http;
 use App\Models\Money;
+use App\Http\Traits\Utilities;
+use Carbon\Carbon;
 
 class CountersPublished extends Component
 {
+    use Utilities;
+
     public $campaign;
     public $shared;
     public $embed;
@@ -29,6 +33,7 @@ class CountersPublished extends Component
     {
         if($campaign->id) {
             $this->campaign = $campaign;
+
             $this->copyLarge = '<iframe src="http://yosolidario.com/'.$campaign->slug.'/widget/large/?iframe=true" height="420></iframe>';
             $this->copyMedium = '<iframe src="http://yosolidario.com/'.$campaign->slug.'/widget/medium/?iframe=true" height="245"></iframe>';
             $this->copySmall = '<iframe src="http://yosolidario.com/'.$campaign->slug.'/widget/small/?iframe=true" height="60"></iframe>';
@@ -66,7 +71,7 @@ class CountersPublished extends Component
     public function render()
     {
         //
-        $ipapi = session()->get('ipapi');
+        $ipapi = $this->ipapiData();
 
         if ($ipapi != null) {
             $this->country_code = $ipapi['country_code'];
@@ -87,22 +92,6 @@ class CountersPublished extends Component
         return redirect()->route('campaign/collaborate', ['campaign' => $record]);
     }
 
-    public function shared() {
-        $this->shared = true;
-    }
-
-    public function messageCopy() {
-        $this->emit('message');
-        $this->message = "Copied";
-    }
-    public function emberHTML($nro) {
-        if($nro == 1) {
-            $this->embed = true;
-        } elseif($nro == 0) {
-            $this->embed = false;
-        }
-    }
-
     public function saveCampaign($campaign_id) {
 
         if(auth()->user()) {
@@ -115,7 +104,7 @@ class CountersPublished extends Component
                 $this->campaign_save_id = $record->id;
                 
                 $extract = 'Create campaign save: '.$record->id;
-                $record->userHistories()->create([
+                /*$record->userHistories()->create([
                     'photo_path' => null,
                     'extract' => $extract,
                     'data' => $record,
@@ -124,7 +113,7 @@ class CountersPublished extends Component
                     'site_id' => 1,
                     //'agency_id' => 1
                     ]);
-        
+                */
                 $this->saveStatus = true;
             }
         }
@@ -135,7 +124,7 @@ class CountersPublished extends Component
             $record = CampaignSave::find($campaign_save_id);
             $record->delete();
             $extract = 'Delete campaign follower: '.$record->id;
-            $record->userHistories()->create([
+            /*$record->userHistories()->create([
                 'photo_path' => null,
                 'extract' => $extract,
                 'data' => $record,
@@ -144,42 +133,18 @@ class CountersPublished extends Component
                 'site_id' => 1,
                 // 'agency_id' => $this->campaign->agency->id
                 ]);
+            */
         }
         $this->campaign_save_id = null;
         $this->saveStatus = false;
     }
 
-    // convert
-    public function cutLetter($letter, $number) {
+    public function calculateDateExpiration($date_expiration)
+    {
+        $currentDate = Carbon::createFromFormat('Y-m-d', date('Y-m-d'));
+        $expirationDate = Carbon::createFromFormat('Y-m-d', $date_expiration);
 
-        if(strlen($letter) > $number) {
-            $l = substr($letter, 0, $number);
-            return $l.'...';
-        } else {
-            $l = substr($letter, 0, $number);
-            return $l;
-        }
+        $days = $expirationDate->diffInDays($currentDate);
+        return $days;
     }
-    public function cutLetterTwo($letterOne, $letterTwo, $number) {
-
-        $letter = $letterOne.', '.$letterTwo;
-        
-        if(strlen($letter) > $number) {
-            $l = substr($letter, 0, $number);
-            return $l.'...';
-        } else {
-            $l = substr($letter, 0, $number);
-            return $l;
-        }
-    }
-
-    public function convertCurrency($amount, $buy_usd) {
-        if ($amount > 0) {
-            $convert = $amount / $buy_usd;
-            return $convert;
-        } else {
-            return $amount;
-        }
-    }
-    // end convert
 }

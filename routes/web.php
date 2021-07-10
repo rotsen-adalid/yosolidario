@@ -26,15 +26,18 @@ Route::middleware(['access'])->get('/offline', function () {
 // ++++++++++++++++++++++++++ Language
 Route::middleware(['access'])->get('set_language/{lang}', [Controller::class, 'set_language'])->name('set_language');
 
-// ++++++++++++++++++++++++++ Campaign
+//------------------------------------------CAMPAIGN----------------------------------------
+
+// ++++++++++++++++++++++++++ Campaign publish
 
 // publish 
 use App\Http\Livewire\Campaigns\Published\ShowPublished;
-Route::middleware(['access'])->get('/{slug}', ShowPublished::class)
+Route::middleware(['access'])->get('/{campaign}', ShowPublished::class)
 ->name('campaign/published');
+
 // widget
 use App\Http\Livewire\Campaigns\Published\Widget\LargeWidget;
-Route::get('/{slug}/widget/large', LargeWidget::class)
+Route::middleware(['access'])->get('/{slug}/widget/large', LargeWidget::class)
 ->name('campaign/widget/large');
 // widget medium
 use App\Http\Livewire\Campaigns\Published\Widget\MediumWidget;
@@ -77,6 +80,7 @@ use App\Http\Livewire\Campaigns\Preview\ShowPreview;
 Route::middleware(['access'])->get('/preview/{slug}', ShowPreview::class)
 ->name('campaign/preview');
 
+//------------------------------------------PANEL MANAGE----------------------------------------
 // ++++++++++++++++++++++++++ Panel
 
 // Your Campaigns
@@ -101,9 +105,14 @@ Route::middleware(['auth:sanctum', 'verified', 'access'])->get('/campaign/manage
 ->name('campaign/manage');
 
 // Show Collaborations
-use App\Http\Livewire\Campaigns\Manage\Collaborations\ShowCollaborations;
-Route::middleware(['auth:sanctum', 'verified', 'access'])->get('/campaign/manage/collaborations/{campaign}', ShowCollaborations::class)
+use App\Http\Livewire\Campaigns\Manage\Collaborations\ViewCollaborations;
+Route::middleware(['auth:sanctum', 'verified', 'access'])->get('/campaign/manage/collaborations/{campaign}', ViewCollaborations::class)
 ->name('campaign/manage/collaborations');
+
+// Reward collaborations
+use App\Http\Livewire\Campaigns\Manage\RewardCollaborators\ShowRewardCollaborators;
+Route::middleware(['auth:sanctum', 'verified', 'access'])->get('/campaign/manage/reward-collaborators/{campaign}', ShowRewardCollaborators::class)
+->name('campaign/manage/reward-collaborators');
 
 // Updates
 
@@ -117,25 +126,52 @@ Route::middleware(['auth:sanctum', 'verified', 'access'])->get('/campaign/manage
 
 Route::middleware(['auth:sanctum', 'verified', 'access'])->get('/campaign/manage/communications/update/{campaign}/{campaignUpdate}', RegisterUpdates::class)
 ->name('campaign/manage/communications/update');
+
+use App\Http\Livewire\Campaigns\Manage\Updates\SharedUpdates;
+Route::middleware(['auth:sanctum', 'verified', 'access'])->get('/communications/{campaignUpdateId}', SharedUpdates::class)
+->name('campaign/manage/communications/shared');
+
 // Show Coments
 use App\Http\Livewire\Campaigns\Manage\Comments\ShowComments;
 Route::middleware(['auth:sanctum', 'verified', 'access'])->get('/campaign/manage/comments/{campaign}', ShowComments::class)
 ->name('campaign/manage/comments');
 
-// ++++++++++++++++++++++++++ Collaborate 
+//------------------------------------------PANEL ORGANIZATION ----------------------------------------
+// ++++++++++++++++++++++++++ Panel
 
+// Your Campaigns
+use App\Http\Livewire\Campaigns\OrganizationCampaigns\ShowOrganizationCampaigns;
+Route::middleware(['auth:sanctum', 'verified', 'access'])->get('/organization/campaigns', ShowOrganizationCampaigns::class)
+->name('organization/campaigns');
+
+//------------------------------------------COLLABORATE----------------------------------------
+
+// ++++++++++++++++++++++++++ Collaborate  Campaign
 use App\Http\Livewire\Campaigns\Collaborate\RegisterNoRewardCollaborate;
 Route::middleware(['access'])->get('/campaign/collaborate/{campaign}', RegisterNoRewardCollaborate::class)
 ->name('campaign/collaborate');
 
-//------------------------------------------PAGOSNET----------------------------------------
-use App\Http\Livewire\Campaigns\Collaborate\Pagosnet\ViewCodePagosNet;
-Route::middleware(['access'])->get('/campaign/collaborate/pagosnet/cash/{paymentOrder}', ViewCodePagosNet::class)
-->name('campaign/collaborate/pagosnet/cash');
+use App\Http\Livewire\Campaigns\Collaborate\RegisterRewardCollaborate;
+Route::middleware(['access'])->get('/campaign/collaborate/reward/{campaign}/{campaignRewardId}', RegisterRewardCollaborate::class)
+->name('campaign/collaborate/reward');
 
-use App\Http\Livewire\Campaigns\Collaborate\Pagosnet\IframePagosnet;
-Route::middleware(['access'])->get('/campaign/collaborate/pagosnet/card/{paymentOrder}', IframePagosnet::class)
-->name('campaign/collaborate/pagosnet/card');
+// ++++++++++++++++++++++++++ Collaborate  Organization
+use App\Http\Livewire\Organization\Collaborate\RegisterNoRewardOrganizationCollaborate;
+Route::middleware(['access'])->get('/organization/collaborate/{organization}', RegisterNoRewardOrganizationCollaborate::class)
+->name('organization/collaborate');
+
+use App\Http\Livewire\Organization\Collaborate\RegisterRewardOrganizationCollaborate;
+Route::middleware(['access'])->get('/organization/collaborate/reward/{organization}/{organizationRewardId}', RegisterRewardOrganizationCollaborate::class)
+->name('organization/collaborate/reward');
+
+//------------------------------------------PAGOSNET----------------------------------------
+use App\Http\Livewire\Payment\Bolivia\Pagosnet\ViewCodePagosnet;
+Route::middleware(['access'])->get('/collaborate/pagosnet/cash/{paymentOrder}', ViewCodePagosNet::class)
+->name('collaborate/pagosnet/cash');
+
+use App\Http\Livewire\Payment\Bolivia\Pagosnet\IframePagosnet;
+Route::middleware(['access'])->get('/collaborate/pagosnet/card/{paymentOrder}', IframePagosnet::class)
+->name('collaborate/pagosnet/card');
 
 use App\Http\Controllers\Bolivia\Pagosnet\NotificationCashController;
 Route::get('/pagosnet/notification/cash', [NotificationCashController::class, 'index']);
@@ -143,18 +179,46 @@ Route::get('/pagosnet/notification/cash', [NotificationCashController::class, 'i
 //------------------------------------------PAGOFACILCHECKOUT----------------------------------------
 
 // esta ruta es la vista inicial, que muestra un formulario basico para datos del cliente
-use App\Http\Controllers\PagoFacilCheckoutClient;
-Route::get('/campaign/collaborate/pagofacil/{paymentOrder}/PagoFacilCheckout', [PagoFacilCheckoutClient::class, 'inicio'])
-->name('campaign/collaborate/pagofacil/PagoFacilCheckout');
+use App\Http\Controllers\Bolivia\Pagofacil\PagoFacilCheckoutClient;
+Route::get('/collaborate/pagofacil/{paymentOrder}/PagoFacilCheckout', [PagoFacilCheckoutClient::class, 'inicio'])
+->name('collaborate/pagofacil/PagoFacilCheckout');
 
 //esta ruta recibe los parametros del formulario inicial del cliente y pasa a encriptar los datos antes de enviarlos para ser procesados en PagoFacil Bolivia
-Route::post('campaign/collaborate/pagofacil/{paymentOrder}/PagoFacilCheckoutEncript', [PagoFacilCheckoutClient::class, 'Encript']);
+Route::post('collaborate/pagofacil/{paymentOrder}/PagoFacilCheckoutEncript', [PagoFacilCheckoutClient::class, 'Encript']);
+
+//------------------------------------------PROFILE----------------------------------------
 
 // ++++++++++++++++++++++++++ User 
 
 // profile 
 use App\Http\Livewire\User\Profile;
-Route::middleware(['access'])->get('user/{slug}', Profile::class)->name('user');
+Route::middleware(['access'])->get('user/{user}', Profile::class)->name('user');
+
+// ++++++++++++++++++++++++++ Organization 
+
+// profile 
+use App\Http\Livewire\Organization\Profile\ProfileOrganization;
+Route::middleware(['access'])->get('org/{organization}', ProfileOrganization::class)->name('org');
+
+// widget large
+use App\Http\Livewire\Organization\Profile\Widget\LargeWidgetOrganization;
+Route::middleware(['access'])->get('/org/{slug}/widget/large', LargeWidgetOrganization::class)
+->name('organization/widget/large');
+// widget medium
+use App\Http\Livewire\Organization\Profile\Widget\MediumWidgetOrganization;
+Route::middleware(['access'])->get('/org/{slug}/widget/medium', MediumWidgetOrganization::class)
+->name('organization/widget/medium');
+// widget small
+use App\Http\Livewire\Organization\Profile\Widget\SmallWidgetOrganization;
+Route::middleware(['access'])->get('/org/{slug}/widget/small', SmallWidgetOrganization::class)
+->name('organization/widget/small');
+
+// ++++++++++++++++++++++++++ ACCOUNT
+
+// Change Account
+use App\Http\Livewire\Account\ChangeAccount\ShowChangeAccount;
+Route::middleware(['auth:sanctum', 'verified', 'access'])->get('/change-account/view-account', ShowChangeAccount::class)
+->name('change-account/view-account');
 
 // ++++++++++++++++++++++++++ Setting
 
@@ -176,11 +240,13 @@ Route::middleware(['auth:sanctum', 'verified', 'access'])->get('/setting/notific
 // ++++++++++++++++++++++++++ Fraud
 // fraud register
 use App\Http\Livewire\Fraud\Register\RegisterFraud;
-Route::middleware(['verified', 'access'])->get('/fraud/register/{campaign}', RegisterFraud::class)
+Route::middleware(['auth:sanctum','verified', 'access'])->get('/fraud/register/{campaign}', RegisterFraud::class)
 ->name('fraud/register-campaign');
 
-Route::middleware(['verified', 'access'])->get('/fraud/register/', RegisterFraud::class)
+Route::middleware(['auth:sanctum','verified', 'access'])->get('/fraud/register/', RegisterFraud::class)
 ->name('fraud/register');
+
+//------------------------------------------PAGE----------------------------------------
 
 // ++++++++++++++++++++++++++ Discover
 

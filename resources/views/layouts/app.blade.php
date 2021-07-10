@@ -9,8 +9,9 @@
         <link rel="icon" type="image/png" href="{{asset('images/icono.png')}}" />
         
         <!-- seo  -->
-        {{$seo}}
-
+        @if (isset($seo))
+            {{$seo}}
+        @endif
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
         <!-- https://material.io/resources/icons/?style=baseline -->
@@ -55,7 +56,29 @@
             };
           </script>
           <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
-          
+
+        <meta name="globalsign-domain-verification" content="jpcnVg6kuHYyEz5op6ZzxI2E53gePoVqca7RgL0aNq">
+
+        <!-- Google Site Verification -->
+        <meta name="google-site-verification" content="GIdvoXEWAacQdvns1qHKxS_am1-4tQdidcoJUFj2aOY">
+        <script type="application/ld+json">
+            {
+                "@context": "http://schema.org",
+                "@type": "Organization",
+                "url": "http://www.yosolidario.com",
+                "logo": "https://febc376daf6131a28181-3721cc30b0d63259b2211381d1431a50.ssl.cf1.rackcdn.com/gfm-logo-single-2016@2x.png",
+                "name": "GoFundMe",
+                "alternateName": "Gofundme",
+                "sameAs": [
+                    "https://www.facebook.com/gofundme/",
+                    "https://twitter.com/gofundme",
+                    "https://www.instagram.com/gofundme/",
+                    "https://www.youtube.com/user/gofundme",
+                    "https://www.linkedin.com/company-beta/1271240"
+                ]
+            }
+        </script>
+
     </head>
     <body class="font-sans antialiased text-sm">
 
@@ -63,10 +86,17 @@
             <div>
                 {{$menu}}
             </div>
+            <div>
+                @livewire('banner.view-banner')
+            </div>
             <!-- Page Content -->
             <main>
                 {{ $slot }}
             </main>
+            <!-- Footer page -->
+            @if (isset($footer))
+                {{$footer}}
+            @endif
         </div>
 
         @stack('modals')

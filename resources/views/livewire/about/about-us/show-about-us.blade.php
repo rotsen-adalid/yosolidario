@@ -9,7 +9,7 @@
 </x-slot>
 <div>
 <div class="mt-20">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-20">
+    <div class="max-w-6xl mx-auto px-4 sm:px-4 lg:px-4 mt-20">
         <div class="w-full text-center space-y-5 py-10 sm:py-20">
             <div class="font-bold text-3xl sm:text-4xl">
                 {{__('Why YoSolidario')}}
@@ -20,8 +20,8 @@
         </div>
     </div>
 </div>
-<div class="bg-red-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-36 py-20">
+<div class="" style="background-color:#fbf8f6">
+    <div class="max-w-6xl mx-auto px-4 sm:px-4 md:px-36 py-20">
         <div class="w-full text-center space-y-5 pb-10">
             <div class="font-bold text-3xl sm:text-4xl">
                 {{__('What makes YoSolidario stand out from the rest')}}

@@ -36,17 +36,66 @@
                 <div class="h-full bg-green-500 absolute" style="width:{{$campaign->campaignCollected->amount_percentage_collected}}%"></div>
             </div>
             <!-- -->
-            <div class=" space-x-2 mt-3 campaigns-start">
-                <span class="text-2xl font-bold">
-                    {{ number_format($this->campaign->campaignCollected->amount_collected, 2 ) }}
-                    {{$this->campaign->agency->country->currency_symbol}}
-                </span>
-                <span>{{__('raised from the goal of')}} </span>
-                <span class="font-bold">
-                    {{ number_format($this->campaign->campaignCollected->amount_target, 2 ) }}
-                    {{$this->campaign->agency->country->currency_symbol}}
-                </span>
-            </div>
+            @if ($this->campaign->agency->country->code == $this->country_code)
+                <div class=" space-x-2 mt-3 campaigns-start">
+                    <span class="text-2xl font-bold">
+                        {{ number_format($this->campaign->campaignCollected->amount_collected, 2 ) }}
+                        {{$this->campaign->agency->country->currency_symbol}}
+                    </span>
+                    <span>{{__('raised from the goal of')}} </span>
+                    <span class="font-bold">
+                        {{ number_format($this->campaign->campaignCollected->amount_target, 2 ) }}
+                        {{$this->campaign->agency->country->currency_symbol}}
+                    </span>
+                </div>
+            @else 
+                <!-- sharing -->
+                @if($this->campaign->campaignSharing)
+                    <div class=" space-x-2 mt-3 campaigns-start">
+                        <span class="text-2xl font-bold">
+                            {{  number_format(
+                                $this->convertCurrency(
+                                    $this->campaign->campaignSharing->campaignSharingConvert->campaignCollected->amount_collected, 
+                                    $this->campaign->campaignSharing->campaignSharingConvert->agency->id,
+                                    $this->campaign->campaignSharing->campaignSharingConvert->agency->agencySetting->money_id
+                                ), 2 ) }}
+                            {{$this->currency}}
+                        </span>
+                        <span>{{__('raised from the goal of')}} </span>
+                        <span class="font-bold">
+                            {{  number_format(
+                                $this->convertCurrency(
+                                    $this->campaign->campaignSharing->campaignSharingConvert->campaignCollected->amount_target, 
+                                    $this->campaign->campaignSharing->campaignSharingConvert->agency->id,
+                                    $this->campaign->campaignSharing->campaignSharingConvert->agency->agencySetting->money_id
+                                ), 2 ) }}
+                            {{$this->currency}}
+                        </span>
+                    </div>
+                @else 
+                    <div class=" space-x-2 mt-3 campaigns-start">
+                        <span class="text-2xl font-bold">
+                            {{  number_format(
+                                $this->convertCurrency(
+                                    $this->campaign->campaignCollected->amount_collected, 
+                                    $this->campaign->agency->id,
+                                    $this->campaign->agency->agencySetting->money_id
+                                ), 2 ) }}
+                            {{$this->currency}}
+                        </span>
+                        <span>{{__('raised from the goal of')}} </span>
+                        <span class="font-bold">
+                            {{  number_format(
+                                $this->convertCurrency(
+                                    $this->campaign->campaignCollected->amount_target, 
+                                    $this->campaign->agency->id,
+                                    $this->campaign->agency->agencySetting->money_id
+                                ), 2 ) }}
+                            {{$this->currency}}
+                        </span>
+                    </div>
+                @endif
+            @endif
             <!-- -->
             <div class="flex mt-4 space-x-2 justify-beetwen items-center">
                 <a href="https://www.yosolidario.com/{{$this->campaign->slug}}" target="_blank" class="flex justify-center w-full px-4 py-2 sm:py-3 text-center bg-ys1 border border-ys2 rounded-md font-bold text-sm text-white uppercase tracking-widest hover:bg-ys2 active:bg-ys2 focus:outline-none focus:border-gray-100 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">

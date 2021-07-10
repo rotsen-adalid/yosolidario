@@ -41,8 +41,6 @@ class CampaignQuestions extends Component
     public $file;
     public $filerespuesta;
 
-    public $bannerStyle, $message;
-
     public function mount(Campaign $campaign)
     {
         if($campaign->status == 'DRAFT' and $campaign->user_id == auth()->user()->id) {
@@ -57,6 +55,50 @@ class CampaignQuestions extends Component
     public function render()
     { 
         return view('livewire.campaigns.create.campaign-questions');
+    }
+
+    // validate
+    protected $rules = [
+        'about' => 'required|min:50|max:5000',
+        'photoOne' => 'nullable|image|max:2048',
+        'use_of_money' => 'required|min:50|max:5000',
+        'photoTwo' => 'nullable|image|max:2048',
+        'about_organizer' => 'required|min:50|max:5000',
+        'photoThree' => 'nullable|image|max:2048',
+        'delivery_of_rewards' => 'required|min:50|max:5000',
+        'photoFour' => 'nullable|image|max:2048',
+        'contact_organizer' => 'required|min:10|max:1000',
+        'photoFive' => 'nullable|image|max:2048',
+
+        'question_title_add' => 'nullable|min:5|max:60',
+        'question_body_add' => 'nullable|min:10|max:1000',
+        'photoSix' => 'nullable|image|max:2048',
+    ];
+
+    protected $messages = [
+        //'agency_id.required' => 'The country field is required.',
+    ];
+
+    protected $validationAttributes = [
+        'about' => '',
+        'photoOne' => '',
+        'use_of_money' => '',
+        'photoTwo' =>'',
+        'about_organizer' => '',
+        'photoThree' => '',
+        'delivery_of_rewards' => '',
+        'photoFour' => '',
+        'contact_organizer' => '',
+        'photoFive' => '',
+
+        'question_title_add' => '',
+        'question_body_add' => '',
+        'photoSix' => '',
+    ];
+
+    public function updated($propertyName)
+    {
+        $this->validateOnly($propertyName);
     }
 
     // get information
@@ -83,20 +125,8 @@ class CampaignQuestions extends Component
 
     // updating date
     public function StoreOrUpdate() {
-
-        $this->validate([
-            'about' => 'required|min:50|max:5000',
-            // 'photoOne' => 'image|max:2048',
-            'use_of_money' => 'required|min:50|max:5000',
-            //*'photoTwo' => 'image|max:2048',
-            'about_organizer' => 'required|min:50|max:5000',
-            //'photoThree' => 'image|max:2048',
-            'delivery_of_rewards' => 'required|min:50|max:5000',
-            //*'photoFour' => 'image|max:2048',
-            'contact_organizer' => 'required|min:10|max:1000',
-            //*'photoFive' => 'image|max:2048',
-        ]);
         
+        $this->validate();
         // upload photos
         if($this->photoOne) {
             $record = CampaignQuestion::findOrFail($this->campaign_question_id);
@@ -229,11 +259,10 @@ class CampaignQuestions extends Component
         }
 
         if($this->about) {
-            $this->banner('Successfully updated!');
+            $this->bannerSuccess('Successfully updated!');
         } else {
-            $this->banner('Successfully saved!');
+            $this->bannerSuccess('Successfully saved!');
         }
-        
         
         // redirect
         return redirect()->route('campaign/rewards/show', ['campaign' => $this->campaign]);
@@ -249,6 +278,7 @@ class CampaignQuestions extends Component
         ]);
         $this->photoOne = null;
         $this->about_url = null;
+        $this->emit('bannerDanger', 'Was removed successfully');
     }
     public function deleteTwo() {
         $record = CampaignQuestion::findOrFail($this->campaign_question_id);
@@ -259,6 +289,7 @@ class CampaignQuestions extends Component
         ]);
         $this->photoTwo = null;
         $this->use_of_money_url = null;
+        $this->emit('bannerDanger', 'Was removed successfully');
     }
     public function deleteThree() {
         $record = CampaignQuestion::findOrFail($this->campaign_question_id);
@@ -269,6 +300,7 @@ class CampaignQuestions extends Component
         ]);
         $this->photoThree = null;
         $this->about_organizer_url = null;
+        $this->emit('bannerDanger', 'Was removed successfully');
     }
     public function deleteFour() {
         $record = CampaignQuestion::findOrFail($this->campaign_question_id);
@@ -279,6 +311,7 @@ class CampaignQuestions extends Component
         ]);
         $this->photoFour = null;
         $this->delivery_of_rewards_url = null;
+        $this->emit('bannerDanger', 'Was removed successfully');
     }
     public function deleteFive() {
         $record = CampaignQuestion::findOrFail($this->campaign_question_id);
@@ -289,6 +322,7 @@ class CampaignQuestions extends Component
         ]);
         $this->photoFive = null;
         $this->contact_organizer_url = null;
+        $this->emit('bannerDanger', 'Was removed successfully');
     }
 
     public function deleteSix() {
@@ -300,6 +334,7 @@ class CampaignQuestions extends Component
         ]);
         $this->photoSix = null;
         $this->question_url_add = null;
+        $this->emit('bannerDanger', 'Was removed successfully');
     }
 
 }

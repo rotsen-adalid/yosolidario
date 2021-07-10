@@ -8,13 +8,13 @@ use App\Notifications\TelegramNotification;
 use Closure;
 use Illuminate\Http\Request;
 use App\Http\Traits\Geolocation;
+use App\Http\Traits\Ipapi;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Http;
 
 class Access
 {
     use Geolocation;
-
+    use Ipapi;
     /**
      * Handle an incoming request.
      *
@@ -24,22 +24,20 @@ class Access
      */
     public function handle(Request $request, Closure $next)
     {   //session()->forget('ipapi');
-        if($request->session()->has('ipapi')) {
+        if(!$request->session()->has('ipapi')) {
 
-        } else {
-            $response = Http::get('http://api.ipapi.com/179.58.47.20?access_key=71c541e8146a77bd640a0255d0a82e04');
-            $ipapi = $response->json();
+            $ipapi = $this->ipapi();
             session()->put('ipapi', $ipapi);
 
             $agencyBO = Agency::find(1);
             $notice = new Notice([
-                'telegramid' => $agencyBO->telegram->çhat_id,    //Config::get('services.telegram_id')
+                'telegramid' => $agencyBO->telegram->çhat_id,
                 'latitude' => $ipapi['latitude'],
                 'longitude' => $ipapi['longitude'],
                 'action' => 'USER_GEOLOCATION'
-              
+                
             ]);
-            $notice->notify(new TelegramNotification);
+            //$notice->notify(new TelegramNotification);
             $this->registerGeolocation();
         }
 

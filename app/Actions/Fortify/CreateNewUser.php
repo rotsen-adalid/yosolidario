@@ -43,7 +43,7 @@ class CreateNewUser implements CreatesNewUsers
 
             $user = tap(User::create([
                 'name' => $input['name'],
-                'lastname' => $input['name'],
+                'lastname' => $input['lastname'],
                 'slug' => Str::slug($input['name']).'-'.time(),
                 'email' => $input['email'],
                 'password' => Hash::make($input['password']),
@@ -73,7 +73,7 @@ class CreateNewUser implements CreatesNewUsers
                 'action' => 'USER_REGISTER'
               
             ]);
-            $notice->notify(new TelegramNotification);
+            //$notice->notify(new TelegramNotification);
             return $user;
         });
     }

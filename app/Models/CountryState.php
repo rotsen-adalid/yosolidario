@@ -16,6 +16,7 @@ class CountryState extends Model
         'slug',
         'code',
         'country_id',
+        'status',
         'search'
     ];
 
@@ -32,5 +33,10 @@ class CountryState extends Model
     // uno a muchos 
     public function campaigns() {
         return $this->hasMany(Campaign::class);
+    }
+
+    // uno a muchos
+    public function personalInformations() {
+        return $this->hasMany(PersonalInformation::class);
     }
 }

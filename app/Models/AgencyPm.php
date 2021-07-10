@@ -11,7 +11,6 @@ class AgencyPm extends Model
     protected $table = 'agency_pms';
 
     protected $fillable = [
-        'payment_method',
         'commission_amount',
         'commission_percentage',
         'money_id',

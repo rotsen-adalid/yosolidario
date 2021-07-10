@@ -15,14 +15,18 @@ use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Storage;
 
 use App\Http\Traits\InteractsWithBanner;
+use App\Http\Traits\Utilities;
+use App\Http\Traits\Reward;
 
 class CampaignDetails extends Component
 {
     use InteractsWithBanner;
     use WithFileUploads;
+    use Utilities;
+    use Reward;
 
-    public $title, $slug, $extract, $type_campaign, $period = 60, $amount_target, $locality, $user_id, $category_campaign_id, $country_id, $country_state_id, $organization_id, $agency_id;
-    public $phone_prefix, $phone, $video_url, $status_register;
+    public $title, $slug, $extract, $type_campaign, $period, $amount_target, $locality, $user_id, $category_campaign_id, $country_id, $country_state_id, $organization_id, $agency_id;
+    public $phone_prefix, $phone, $video_url, $video_iframe, $status_register;
 
     public $collection_category_campaign;
     public $collection_organization;
@@ -49,8 +53,6 @@ class CampaignDetails extends Component
     public $country_code;
     public $languaje_code;
 
-    public $bannerStyle, $message;
-
     public function mount(Campaign $campaign)
     {
         if($campaign->status == 'DRAFT' and $campaign->user_id == auth()->user()->id) {
@@ -63,7 +65,7 @@ class CampaignDetails extends Component
         }
 
         // general values
-        $this->ipapi = session()->get('ipapi');
+        $this->ipapi = $this->ipapiData();
     } 
 
     public function render()
@@ -74,8 +76,58 @@ class CampaignDetails extends Component
         return view('livewire.campaigns.create.campaign-details');
     }
 
+    // validate
+    protected $rules = [
+        'agency_id' => 'required',
+        'amount_target' => 'required|numeric',
+        'title' => 'required|min:5|max:60',
+        'extract' => 'required|min:5|max:170',
+        'category_campaign_id' =>  'required',
+        'type_campaign' => 'required',
+        'period' => 'required|numeric|between:10, 90',
+        'country_state_id' => 'required',
+        'locality' => 'required',
+        'phone' => 'required|digits_between:7,15',
+        // 'slug' => 'required',
+        'photoOne' => 'required|image',
+        'video_url' => 'nullable|url'
+    ];
+
+    protected $messages = [
+        //'agency_id.required' => 'The country field is required.',
+        //'title.required' => 'The title field is required.',
+    ];
+
+    protected $validationAttributes = [
+        'title' => '',
+        'category_campaign_id' => '',
+        'slug' => "",
+        'photoOne' => '',
+        'extract' => '',
+        'type_campaign' => '',
+        'organization_id' => '',
+        'locality' => '',
+        'agency_id' => '',
+        //'country_id' => 'required',
+        'country_state_id' => '',
+        'amount_target' => "",
+        'period' => '',
+        'phone' => '',
+        'video_url' => '',
+    ];
+
+    public function updated($propertyName)
+    {
+        $this->validateOnly($propertyName);
+    }
+
     // create or update
     public function StoreOrUpdate() {
+
+        if($this->video_iframe == null) {
+            $this->video_url = null;
+        }
+
         if($this->campaign_id <= 0) {
             $this->Store();
         } else {
@@ -85,51 +137,60 @@ class CampaignDetails extends Component
 
     // create
     public function Store() {
-        if ($this->type_campaign == 'ORGANIZATION')
+        
+        if($this->type_campaign == 'PERSONAL')
         {
             $this->validate([
-                'title' => 'required|min:5|max:60',
-                'category_campaign_id' => 'required',
                 'slug' => "required|min:3|max:60|alpha_dash|unique:campaigns,slug",
-                'photoOne' => 'image|max:2048',
-                'extract' => 'required|min:5|max:170',
-                'type_campaign' => 'required',
-                'organization_id' => 'required',
-                'locality' => 'required|min:3|max:100',
-                'agency_id' => 'required',
-                //'country_id' => 'required',
-                'country_state_id' => 'required',
                 'amount_target' => "required|numeric|between:$this->amount_min,$this->amount_max",
-                //'period' => 'required',
-                'phone' => 'required|digits_between:7,15',
+
+                'agency_id' => 'required',
+                'title' => 'required',
+                'extract' => 'required',
+                'category_campaign_id' =>  'required',
+                'type_campaign' => 'required',
+                'period' => 'required',
+                'country_state_id' => 'required',
+                'locality' => 'required',
+                'phone' => 'required',
+                'photoOne' => 'required|image',
+                'video_url' => 'nullable'
+            ]);
+        } elseif($this->type_campaign == 'ORGANIZATION') {
+            $this->validate([
+                'slug' => "required|min:3|max:60|alpha_dash|unique:campaigns,slug",
+                'amount_target' => "required|numeric|between:$this->amount_min,$this->amount_max",
+
+                'agency_id' => 'required',
+                'title' => 'required',
+                'extract' => 'required',
+                'category_campaign_id' =>  'required',
+                'type_campaign' => 'required',
+                'period' => 'required',
+                'country_state_id' => 'required',
+                'locality' => 'required',
+                'phone' => 'nullable',
+                'photoOne' => 'required|image',
+                'video_url' => 'nullable'
             ]);
         }
-        else {
-            $this->validate([
-                'title' => 'required|min:5|max:60',
-                'category_campaign_id' => 'required',
-                'slug' => "required|min:3|max:60|alpha_dash|unique:campaigns,slug",
-                'photoOne' => 'image|max:2048',
-                'extract' => 'required|min:5|max:170',
-                'type_campaign' => 'required',
-                'locality' => 'required|min:3|max:100',
-                'agency_id' => 'required',
-                //'country_id' => 'required',
-                'country_state_id' => 'required',
-                'amount_target' => "required|numeric|between:$this->amount_min,$this->amount_max",
-                //'period' => 'required',
 
-                'phone' => 'required|digits_between:7,15',
-            ]);
+        $record = Campaign::
+                    where('slug', Str::slug($this->slug))
+                    ->get();
+
+        if($record->count() > 0)
+        {
+            $this->emit('bannerDanger', 'Ya existe slug');
+            return;
+        }
+
+        if ($this->type_campaign != 'ORGANIZATION')
+        {
             $this->organization_id = null;
         }
 
-        if($this->video_url) {
-            $this->validate([
-                'video_url' => 'required|url'
-            ]);
-        }
-
+        $record = 
         $search_upper =  strtoupper(
             $this->title.' '.
             $this->slug
@@ -146,7 +207,7 @@ class CampaignDetails extends Component
             'extract' => addslashes($this->extract),
             'type_campaign' => $this->type_campaign,
             'organization_id' => $this->organization_id,
-            //'period' => $this->period,
+            'period' => $this->period,
             'views' => 0,
             'shareds' => 0,
             'followers' => 0,
@@ -165,14 +226,13 @@ class CampaignDetails extends Component
             'status' => 'DRAFT'
         ]);
         $record->campaignCollected()->create([
-            'campaign_id' => $record->id,
             'collaborators' => 0,
             'amount_target' => $this->amount_target,
             'amount_collected' => 0,
             'amount_percentage_collected' => 0,
         ]);
         $extract = 'Create campaign: '.$record->id;
-        $record->userHistories()->create([
+        /*$record->userHistories()->create([
             'photo_path' => null,
             'extract' => $extract,
             'data' => $record,
@@ -181,13 +241,11 @@ class CampaignDetails extends Component
             'site_id' => 1,
             //'agency_id' => 1
             ]);
-
+        */
         if($record->id) {
 
             $campaign_id = $record->id;
-            $this->emit('message');
-            $this->message = "Saved correctly";
-            
+
             if($this->photoOne) {
                 // upload photo
                 $photo = $this->photoOne->store('public/campaign_image');
@@ -206,56 +264,63 @@ class CampaignDetails extends Component
         }
         $this->createQuestions($campaign_id);
         $this->createRewars($campaign_id);
-        $this->banner('Successfully saved!');
+        $this->bannerSuccess('Successfully saved!');
         return redirect()->route('campaign/create/questions', ['campaign' => $record]);
     }
 
     // updatign data
     public function Update() {
         
-        if ($this->type_campaign == 'ORGANIZATION')
+        if($this->type_campaign == 'PERSONAL')
+        {
             $this->validate([
-                'title' => 'required|min:5|max:60',
-                'category_campaign_id' => 'required',
                 'slug' => "required|min:3|max:60|alpha_dash|unique:campaigns,slug,$this->campaign_id",
-                //'photoOne' => 'image|max:2048',
-                'extract' => 'required|min:5|max:170',
-                'type_campaign' => 'required',
-                'organization_id' => 'required',
-                'locality' => 'required|min:3|max:100',
-                'agency_id' => 'required',
-                //'country_id' => 'required',
-                'country_state_id' => 'required',
                 'amount_target' => "required|numeric|between:$this->amount_min,$this->amount_max",
-                //'period' => 'required',
 
-                'phone' => 'required|digits_between:7,15',
-
+                'agency_id' => 'required',
+                'title' => 'required',
+                'extract' => 'required',
+                'category_campaign_id' =>  'required',
+                'type_campaign' => 'required',
+                'period' => 'required',
+                'country_state_id' => 'required',
+                'locality' => 'required',
+                'phone' => 'required',
+                //'photoOne' => 'required|image|max:2048',
+                'video_url' => 'nullable'
             ]);
-        else {
+        } elseif($this->type_campaign == 'ORGANIZATION') {
             $this->validate([
-                'title' => 'required|min:5|max:60',
-                'category_campaign_id' => 'required',
                 'slug' => "required|min:3|max:60|alpha_dash|unique:campaigns,slug,$this->campaign_id",
-                //'photoOne' => 'image|max:2048',
-                'extract' => 'required|min:5|max:170',
-                'type_campaign' => 'required',
-                'locality' => 'required|min:3|max:100',
-                'agency_id' => 'required',
-                //'country_id' => 'required',
-                'country_state_id' => 'required',
                 'amount_target' => "required|numeric|between:$this->amount_min,$this->amount_max",
-                //'period' => 'required',
 
-                'phone' => 'required|digits_between:7,15',
+                'agency_id' => 'required',
+                'title' => 'required',
+                'extract' => 'required',
+                'category_campaign_id' =>  'required',
+                'type_campaign' => 'required',
+                'period' => 'required',
+                'country_state_id' => 'required',
+                'locality' => 'required',
+                'phone' => 'nullable',
+                //'photoOne' => 'required|image|max:2048',
+                'video_url' => 'nullable'
             ]);
-            $this->organization_id = null;
+        }
+        $record = Campaign::
+                    where('slug', Str::slug($this->slug))
+                    ->where('id', '<>', $this->campaign_id)
+                    ->get();
+
+        if($record->count() > 0)
+        {
+            $this->emit('bannerDanger', 'Ya existe slug');
+            return;
         }
 
-        if($this->video_url) {
-            $this->validate([
-                'video_url' => 'required|url'
-            ]);
+        if ($this->type_campaign != 'ORGANIZATION')
+        {
+            $this->organization_id = null;
         }
 
         $search_upper =  strtoupper(
@@ -270,7 +335,7 @@ class CampaignDetails extends Component
         if ($this->photoOne and $this->photo_url == null) {
 
             $this->validate([
-                'photoOne' => 'image|max:2048',
+                'photoOne' => 'image',
             ]);
 
             $record_image = Campaign::findOrFail($this->campaign_id);
@@ -285,11 +350,11 @@ class CampaignDetails extends Component
             ]);
         } elseif($this->photoOne == null and $this->photo_url == null) {
             $this->validate([
-                'photoOne' => 'image|max:2048',
+                'photoOne' => 'image',
             ]);
         } elseif ($this->photoOne) {
             $this->validate([
-                'photoOne' => 'image|max:2048',
+                'photoOne' => 'image',
             ]);
 
             $record_image = Campaign::findOrFail($this->campaign_id);
@@ -308,11 +373,11 @@ class CampaignDetails extends Component
         // we update the info
         $record->update([
             'title' => addslashes($this->title),
-            'slug' => $this->slug,
+            'slug' => Str::slug($this->slug),
             'extract' => addslashes($this->extract),
             'type_campaign' => $this->type_campaign,
             'organization_id' => $this->organization_id,
-            //'period' => $this->period,
+            'period' => $this->period,
             'views' => 0,
             'shared' => 0,
             'followers' => 0,
@@ -334,7 +399,7 @@ class CampaignDetails extends Component
             'amount_target' => $this->amount_target
         ]);
         $extract = 'Update campaign: '.$record->id;
-        $record->userHistories()->create([
+        /*$record->userHistories()->create([
             'photo_path' => null,
             'extract' => $extract,
             'data' => $record,
@@ -343,10 +408,7 @@ class CampaignDetails extends Component
             'site_id' => 2,
             //'agency_id' => 1
             ]);
-
-        $this->emit('message');
-        $this->message = "Saved correctly";
-
+        */
         if($this->video_url) {
             if($record->video) {
                 $record->video()->update([
@@ -357,8 +419,12 @@ class CampaignDetails extends Component
                     'url' => $this->video_url
                 ]);
             }
+        } else {
+            if($record->video) {
+                $record->video()->delete();
+            }
         }
-        $this->banner('Successfully updated!');
+        $this->bannerSuccess('Successfully updated!');
         return redirect()->route('campaign/update/questions', ['campaign' => $record]);
     }
 
@@ -376,7 +442,7 @@ class CampaignDetails extends Component
         $this->country_state_id = $record->country_state_id;
         $this->locality = $record->locality;
         $this->amount_target = $record->campaignCollected->amount_target;
-       // $this->period = $record->period;
+        $this->period = $record->period;
         $this->phone_prefix = $record->phone_prefix;
         $this->phone = $record->phone;
         $this->status_register =  $record->status_register;
@@ -384,10 +450,11 @@ class CampaignDetails extends Component
         $this->photo_url = $record->image->url;
         if($record->video) {
             $this->video_url = $record->video->url;
+            $this->urlVideo();
         }
        
 
-        $this->agency($this->agency_id);
+        //$this->agency($this->agency_id);
     }
 
     // delete photo one
@@ -402,6 +469,8 @@ class CampaignDetails extends Component
         }
         $this->photoOne = null;
         $this->photo_url = null;
+
+        $this->emit('bannerDanger', 'Was removed successfully');
     }
 
     // generate slug
@@ -423,15 +492,27 @@ class CampaignDetails extends Component
             $this->country_id = $record->country->id;
             $this->collection_country_states = CountryState::
                 where('country_id', $record->country->id)
+                ->where('status', 'ACTIVE')
                 ->orderBy('name', 'asc')
                 ->get();
-
+            
             $this->collection_organization = Organization::
                 join('organization_agreements', 'organizations.id', '=', 'organization_agreements.organization_id')
+                ->with('users')
+                ->selectRaw('organizations.*')->whereHas('users', function ($query) {
+                    $query->where('organization_user.user_id', '=', auth()->user()->id);
+                })
+                ->where('organization_agreements.status', '=', 'ACTIVE')
+                ->orderBy('organizations.created_at', 'desc')
+                ->get();
+            /*
+            $this->collection_organization = Organization::
+                join('organization_agreements', 'organizations.id', '=', 'organization_agreements.organization_id')
+                ->select('organizations.*')
                 ->where('organization_agreements.status', '=', 'ACTIVE')
                 //->where('organizations.agency_id', '=' , $this->agency_id)
                 ->get();
-
+            */
         } else {
             $this->currency_symbol = null;
             $this->phone_prefix = null;
@@ -467,77 +548,24 @@ class CampaignDetails extends Component
         }
      }
 
-     // create rewards BO
-     public function createRewarsBO($id) {
-
-        $languaje = 'es';
-
-        if($languaje == 'es') {
-            $description_one = "¡Gracias! No hay aportación pequeña cuando se trata de ayudar.";
-            $description_two = "¡Muchas gracias! Recibirás un correo personalizado de agradecimiento.";
-            $description_three = "¡Wow! Tu aportación es muy valiosa, por eso queremos hacerte llegar un certificado digital de agradecimiento.";
-            $description_four = "¡Muchas gracias! Tu aportación está haciendo una gran diferencia. Como agradecimiento te haremos una mención especial en nuestras redes sociales.";
-            $description_five = "¡Eres un súper colaborador! Tu aportación significa mucho para la recaudación. Como agradecimiento queremos hacerte llegar un video de agradecimiento + un certificado digital + una mención especial en nuestras redes sociales.";
+    // convert url video
+    public function urlVideo() {
+        $url = $this->video_url;
+        if(strlen($url) > 48) {
+            $video_htttp = explode("/",$url);
+            if($video_htttp[2]) {
+                if($video_htttp[2] == 'www.facebook.com') {
+                    $video_array = explode("=",$url);
+                    $this->video_iframe =  $video_array[1];
+                } else {
+                    $this->video_iframe = $url;
+                }
+            } else {
+                $this->video_iframe = null;
+            }
+        } else {
+            $this->video_iframe = null;
         }
-
-        if($this->country_id) {
-            $this->amountOne = 50;
-            $this->amountTwo = 100;
-            $this->amountThree = 150;
-            $this->amountFour = 200;
-            $this->amountFive = 250;
-        }
-
-        $recordOne = CampaignReward::create([
-            'image_url' => null,
-            'amount' => $this->amountOne,
-            'description' => $description_one,
-            'delivery_date' => null,
-            'limiter' => 'NO',
-            'quantity' => 0,
-            'collaborators' => 0,
-            'campaign_id' => $id,
-        ]);
-        $recordTwo = CampaignReward::create([
-            'image_url' => null,
-            'amount' => $this->amountTwo,
-            'description' => $description_two,
-            'delivery_date' => null,
-            'limiter' => 'NO',
-            'quantity' => 0,
-            'collaborators' => 0,
-            'campaign_id' => $id,
-        ]);
-        $recordThree = CampaignReward::create([
-            'image_url' => null,
-            'amount' =>  $this->amountThree,
-            'description' => $description_three,
-            'delivery_date' => null,
-            'limiter' => 'NO',
-            'quantity' => 0,
-            'collaborators' => 0,
-            'campaign_id' => $id,
-        ]);
-        $recordFour = CampaignReward::create([
-            'image_url' => null,
-            'amount' => $this->amountFour,
-            'description' => $description_four,
-            'delivery_date' => null,
-            'limiter' => 'NO',
-            'quantity' => 0,
-            'collaborators' => 0,
-            'campaign_id' => $id,
-        ]);
-        $recordFive = CampaignReward::create([
-            'image_url' => null,
-            'amount' => $this->amountFive,
-            'description' => $description_five,
-            'delivery_date' => null,
-            'limiter' => 'NO',
-            'quantity' => 0,
-            'collaborators' => 0,
-            'campaign_id' => $id,
-        ]);
     }
 }
 

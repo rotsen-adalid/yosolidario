@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Campaigns\Preview;
 use Livewire\Component;
 
 use App\Models\Campaign;
+use Carbon\Carbon;
 
 class CountersPreview extends Component
 {
@@ -21,5 +22,14 @@ class CountersPreview extends Component
 
     public function shared() {
 
+    }
+
+    public function calculateDateExpiration($date_expiration)
+    {
+        $currentDate = Carbon::createFromFormat('Y-m-d', date('Y-m-d'));
+        $expirationDate = Carbon::createFromFormat('Y-m-d', $date_expiration);
+
+        $days = $expirationDate->diffInDays($currentDate);
+        return $days;
     }
 }

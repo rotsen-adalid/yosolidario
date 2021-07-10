@@ -9,12 +9,14 @@ use Illuminate\Support\Facades\Storage;
 
 class DeleteUpdates extends Component
 {
+    public $campaign;
     public $campaign_update_id, $agency_id;
-    public $deleterDialog;
+    public $open;
 
-    public function mount($campaign_update_id, $agency_id) {
-        $this->campaign_update_id = $campaign_update_id;
-        $this->agency_id = $agency_id;
+    protected $listeners = ['deleteDialog' => 'deleteOpen'];
+
+    public function mount() {
+        $this->campaign_update_id = 1;
     }
 
     public function render()
@@ -22,16 +24,20 @@ class DeleteUpdates extends Component
         return view('livewire.campaigns.manage.updates.delete-updates');
     }
 
-    public function deleteConfirm($id) {
+    public function deleteOpen($campaign_id, $id) {
         $record = CampaignUpdate::find($id);
         $this->campaign_update_id = $record->id;
-        $this->deleterDialog = true;
+        $this->title = $record->title;
+        $this->open = true;
+
+        $record = Campaign::find($campaign_id);
+        $this->campaign = $record;
     }
 
     public function delete() {
         if($this->campaign_update_id) {
             $record = CampaignUpdate::find($this->campaign_update_id);
-            if($record->image != null) {
+            if($record->image) {
                 $url = str_replace('storage', 'public', $record->image->url);
                 Storage::delete($url);
                 $record->image()->delete(); 
@@ -45,10 +51,10 @@ class DeleteUpdates extends Component
                 'action' =>  'DELETE',
                 'user_id' => auth()->user()->id,
                 'site_id' => 1,
-                'agency_id' => $this->agency_id
+                'agency_id' => $this->campaign->agency->id
                 ]);
         }
-        $this->deleterDialog = false;
-        $this->emit('render');
+        $this->reset();
+        $this->emitTo('campaigns.manage.updates.show-updates','render');
     }
 }

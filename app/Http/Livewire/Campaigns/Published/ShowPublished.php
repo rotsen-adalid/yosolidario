@@ -5,54 +5,50 @@ use Livewire\Component;
 
 use App\Models\Campaign;
 use App\Models\CampaignUpdate;
+use App\Http\Traits\Utilities;
 
 class ShowPublished extends Component
 {
+    use Utilities;
+    
     public $campaign;
-    public $shared;
-    public $embed;
-    public $widget = 'large';
-    public $copyLarge;
-    public $copyMedium;
-    public $copySmall;
     public $host, $host_previous;
-    public $message;
+    public $country_code;
 
     public $countUpdates;
 
-    public function mount($slug = null)
+    public $updateOpen = false;
+
+    public function mount(Campaign $campaign)
     {
-        if($slug != null) {
+        if($campaign != null) {
             $campaign = Campaign::
-                        where('slug', '=' ,$slug)
-                        ->where(function ($query) {
-                            $query->
-                            where('status', 'IN_REVIEW')
-                            ->orWhere('status', 'PUBLISHED');
-                        })
-                        ->get();
-            if($campaign->count() == 1) {
-                $this->campaign = Campaign::find($campaign[0]->id);
-                $this->copyLarge = '<iframe src="http://yosolidario.com/'.$slug.'/widget/large/?iframe=true" height="420></iframe>';
-                $this->copyMedium = '<iframe src="http://yosolidario.com/'.$slug.'/widget/medium/?iframe=true" height="245"></iframe>';
-                $this->copySmall = '<iframe src="http://yosolidario.com/'.$slug.'/widget/small/?iframe=true" height="60"></iframe>';
-                    
-                    if(isset($_SERVER['HTTP_REFERER'])) {
-                        $url = $_SERVER['HTTP_REFERER'];
-                        $host_array = explode("/",$url);
-                        if($host_array[2] != 'yosolidario.test' and $host_array[2] != 'yosolidario.com') {
-                            $this->host_previous = $host_array[2];
-                            $this->updateShared();
-                        }
+                    where('slug', '=' ,$campaign->slug)
+                    ->where(function ($query) {
+                        $query->
+                        where('status', 'IN_REVIEW')
+                        ->orWhere('status', 'PUBLISHED');
+                    })
+                    ->first();
+
+            $this->campaign = Campaign::find($campaign->id);
+
+                if(isset($_SERVER['HTTP_REFERER'])) {
+                    $url = $_SERVER['HTTP_REFERER'];
+                    $host_array = explode("/",$url);
+                    if($host_array[2] != 'yosolidario.test' and $host_array[2] != 'yosolidario.com') {
+                        $this->host_previous = $host_array[2];
+                        $this->updateShared();
                     }
+                }
                     
-            } else {
-                return redirect()->route('home');
-            }
+            
+        } else {
+            return redirect()->route('home');
         }
 
         $this->countUpdates =   CampaignUpdate::
-                                where('campaign_id', '=' ,$campaign[0]->id)
+                                where('campaign_id', '=' ,$campaign->id)
                                 ->get();
                                 
         $host= $_SERVER["HTTP_HOST"];
@@ -61,27 +57,21 @@ class ShowPublished extends Component
         } elseif($host == 'yosolidario.com') {
             $this->host = 'https://yosolidario.com';
         }
+
+        //
+        $ipapi = $this->ipapiData();
+
+        if ($ipapi != null) {
+            $this->country_code = $ipapi['country_code'];
+        } else {
+            $this->country_code = 'US';
+        }
     } 
     public function render()
     {
         return view('livewire.campaigns.published.show-published');
     }
-    public function shared() {
-        $this->shared = true;
-    }
-    public function messageCopy() {
-        $this->emit('message');
-        $this->message = "Copied";
-    }
-    public function emberHTML($nro) {
-        if($nro == 1) {
-            $this->embed = true;
-        } elseif($nro == 0) {
-            $this->embed = false;
-        }
-    }
 
-    // 
     public function updateShared() {
         
         if($this->campaign->id) {
@@ -101,5 +91,9 @@ class ShowPublished extends Component
     public function backThisCampaign($campaign_id) {
         $record = Campaign::find($campaign_id);
         return redirect()->route('campaign/collaborate', ['campaign' => $record]);
+    }
+
+    public function updateTab() {
+        $this->updateOpen = true;
     }
 }

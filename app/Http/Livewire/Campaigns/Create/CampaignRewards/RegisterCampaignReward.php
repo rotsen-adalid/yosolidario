@@ -15,7 +15,7 @@ class RegisterCampaignReward extends Component
     use WithFileUploads;
 
     public $status_register;
-    public $campaign_reward_id, $image_url, $amount, $description, $delivery_date, $limiter, $quantity, $campaign_id;
+    public $campaign_reward_id, $image_url, $amount, $description, $delivery_date, $limiter, $quantity = 1, $campaign_id;
     public $photoOne;
     public $currency_symbol;
     public $campaign;
@@ -41,24 +41,36 @@ class RegisterCampaignReward extends Component
         return view('livewire.campaigns.create.campaign-rewards.register-campaign-reward');
     }
     
+    // validate
+    protected $rules = [
+        'amount' => 'required|numeric|min:5|max:999',
+        'description' => 'required|min:10|max:250',
+        'limiter' => 'required',
+        'quantity' => 'numeric|min:1|max:999',
+        'photoOne' => 'nullable|image|max:2048',
+    ];
+
+    protected $messages = [
+        //'agency_id.required' => 'The country field is required.',
+        //'title.required' => 'The title field is required.',
+    ];
+
+    protected $validationAttributes = [
+        'amount' => '',
+        'description' => '',
+        'limiter' => '',
+        'quantity' => '',
+    ];
+
+    public function updated($propertyName)
+    {
+        $this->validateOnly($propertyName);
+    }
+
     // store or update
     public function StoreOrUpdate() {
 
-        if ($this->limiter == 'YES') {
-            $this->validate([
-                'amount' => 'required|numeric|min:5|max:999',
-                'description' => 'required|min:10|max:250',
-                'limiter' => 'required',
-                'quantity' => 'required|numeric',
-            ]);
-        } else {    
-            $this->validate([
-                'amount' => 'required|numeric|min:5|max:999',
-                'description' => 'required|min:10|max:400',
-                'limiter' => 'required',
-            ]);
-            $this->quantity = 0;
-        }
+        $this->validate();
 
         if($this->delivery_date == '') {
             $this->delivery_date = null;
@@ -78,10 +90,6 @@ class RegisterCampaignReward extends Component
         
         // upload photo
         if($this->photoOne) {
-            $this->validate([
-                'photoOne' => 'image|max:2048',
-            ]);
-            
             $photo = $this->photoOne->store('public/campaign_rewards_image');
             $this->image_url = Storage::url($photo);
 
@@ -112,7 +120,7 @@ class RegisterCampaignReward extends Component
             //'agency_id' => 1
             ]);
         $this->resetInput();
-        $this->banner('Successfully saved!');
+        $this->bannerSuccess('Successfully saved!');
         return redirect()->route('campaign/rewards/show', ['campaign' => $this->campaign]);
     }
 
@@ -121,9 +129,6 @@ class RegisterCampaignReward extends Component
 
         // upload photo
         if($this->photoOne) {
-            $this->validate([
-                'photoOne' => 'image|max:2048',
-            ]);
             $record = CampaignReward::findOrFail($this->campaign_reward_id);
             $url = str_replace('storage', 'public', $record->image_url);
             Storage::delete($url);
@@ -158,7 +163,7 @@ class RegisterCampaignReward extends Component
             ]);
 
         $this->resetInput();
-        $this->banner('Successfully updated!');
+        $this->bannerSuccess('Successfully updated!');
         return redirect()->route('campaign/rewards/show', ['campaign' => $this->campaign]);
     }
 
@@ -199,35 +204,5 @@ class RegisterCampaignReward extends Component
         }
         $this->photoOne = null;
         $this->image_url = null;
-    }
-
-    // open delete reward
-    public function deleteDialog($id) {
-        $this->campaign_reward_id = $id;
-        $record = CampaignReward::find($id);
-        $this->amount = $record->amount;
-        $this->description = $record->description;
-        $this->currency_symbol = $record->campaign->agency->agencySetting->money->currency_symbol;
-        $this->confirmingDeletion = true;
-    }
-
-    // delete reward
-    public function delete($id) {
-        if($id) {
-            $record = CampaignReward::find($id);
-            $record->delete();
-            $extract = 'Delete campaign recognition: '.$record->id;
-            $record->userHistories()->create([
-                'photo_path' => null,
-                'extract' => $extract,
-                'data' => $record,
-                'action' =>  'DELETE',
-                'user_id' => auth()->user()->id,
-                'site_id' => 1,
-                //'agency_id' => 1
-                ]);
-        }
-        $this->resetInput();
-        $this->confirmingDeletion = false;
     }
 }

@@ -13,14 +13,14 @@ class Profile extends Component
     public $user;
     public $country;
     
-    public function mount($slug)
+    public function mount(User $user)
     {
-        $this->slug = $slug; //DB::table('users')->where('slug', $slug)->get();
-        $data = User::where('slug', '=', $this->slug)->get();
-        if($data->count() == 1) {
-            $this->user = $data[0];
+        $this->slug = $user->slug; //DB::table('users')->where('slug', $slug)->get();
+        $data = User::where('slug', '=', $this->slug)->first();
+        if($data) {
+            $this->user = $data;
             if($this->user->profile) {
-                $this->country = Country::find($data[0]->profile->whatsapp_country_id);
+                $this->country = Country::find($data->profile->whatsapp_country_id);
             } else {
                 //return redirect()->route('home');
             }

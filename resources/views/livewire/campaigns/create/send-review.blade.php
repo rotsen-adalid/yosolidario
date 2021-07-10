@@ -1,20 +1,5 @@
 <div>
-
-    <div class="hidden lg:flex lg:items-center">
-        <x-basic-button wire:click="reviewConfirm" wire:loading.attr="disabled">
-            <span class="material-icons-outlined pr-1">open_in_new</span>
-            <span class="">{{ __('Publish campaign') }}</span>
-        </x-basic-button>
-    </div>
-    <!-- Responsive -->
-    <div class="lg:hidden">
-        <x-button wire:click="reviewConfirm" wire:loading.attr="disabled">
-            <span class="material-icons-outlined pr-1">open_in_new</span>
-            <span class="">{{ __('Publish campaign') }}</span>
-        </x-button>
-    </div>
-
-    <x-dialog-modal wire:model="confirmingSendReview">
+    <x-dialog-modal wire:model="open">
         <x-slot name="title">
             <div class="font-bold text-2xl">
                 {{ __('Publish campaign') }}?
@@ -35,6 +20,8 @@
             <div class="summary-post text-base text-justify mt-5">
                 {{ __('You can start fundraising now.') }}
             </div>
+
+            @if ($this->campaign->type_campaign == 'PERSONAL' or $this->campaign->type_campaign == 'PERSONAL_ORGANIZATION')
             <div class="summary-post text-base text-justify mt-2">
                 {{ __('We will contact you in less than 24 hours to verify the authenticity of your campaign.') }}
             </div>
@@ -42,7 +29,7 @@
             <div class="flex items-center pt-3">
                 @if(Auth::user()->profile_photo_path)
                 <div class="flex-shrink-0 w-10 h-10">
-                    <img class="w-full h-full rounded-full"
+                    <img class="w-full h-full rounded-full object-cover"
                         src="{{ URL::to('/') }}{{Auth::user()->profile_photo_path}}"
                         alt="" />
                 </div>
@@ -65,7 +52,8 @@
                     </a>
                 </div>
             </div>
-
+            @endif
+            
             @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
             <div class="my-5">
                 <x-label for="terms">
@@ -111,16 +99,16 @@
                         <span>{{Auth::user()->name}}</span>
                     </div>
                     <div>
-                        <x-button class="ml-2 text-sm" wire:click="editProfile" wire:loading.attr="disabled">
+                        <x-secondary-button class="ml-2 text-sm" wire:click="editProfile" wire:loading.attr="disabled">
                             {{ __('Complete your profile') }}
-                        </x-button>
+                        </x-secondary-button>
                     </div>
                 </div>
             </div>
             @endif
         </x-slot>
         <x-slot name="footer">
-            <x-secondary-button wire:click="$toggle('confirmingSendReview')" wire:loading.attr="disabled">
+            <x-secondary-button wire:click="$toggle('open')" wire:loading.attr="disabled">
                 <span class="">{{ __('Nevermind') }}</span>
             </x-secondary-button>
             @if(Auth::user()->profile)

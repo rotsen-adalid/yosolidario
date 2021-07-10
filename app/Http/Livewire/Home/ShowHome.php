@@ -11,7 +11,7 @@ class ShowHome extends Component
     public $ipapi;
 
     public function mount() {
-        $this->registerGeolocation();
+        //$this->registerGeolocation();
     }
 
     public function render()

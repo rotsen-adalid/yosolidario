@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Campaigns\Collaborate;
 use Livewire\Component;
 use Illuminate\Support\Facades\Http;
 use App\Models\Campaign;
+use App\Models\CampaignReward;
 use App\Models\Country;
 use App\Models\CountryState;
 use App\Models\Money;
@@ -15,46 +16,61 @@ use DOMDocument;
 use Exception;
 use SoapClient;
 
+use App\Http\Traits\Collaborate;
+use App\Http\Traits\Utilities;
+use App\Http\Traits\InteractsWithBanner;
+use App\Models\AgencyPm;
+use App\Models\AgencyPp;
+
 class RegisterNoRewardCollaborate extends Component
 {
+    use InteractsWithBanner;
+    use Collaborate;
+    use Utilities;
+
     public $campaign;
     public $money_id, $currency, $country_code; 
 
     // data ys
-    public $amount_collaborator, $amount_percentage_yosolidario, $amount_total, $amount_yosolidario;
-    public $name, $lastname, $show_name, $email, $phone, $phone_prefix, $country_id, $country_estate_id, $payment_method, $commentary;
+    public $amount_user, $amount_percentage_yosolidario, $amount_total, $amount_yosolidario;
+    public $name, $lastname, $show_name, $email, $phone, $phone_prefix, $country_id, $country_state_id, $payment_method = 'CARD', $commentary;
+    public $locality, $address;
 
     public $collected_percentage_ys, $collection_countries, $collection_country_states, $states_denomination;
     public $loadindPay;
     // data pagosNet
-    public $messagePn, $ipapi, $codigoRecaudacionPn, $idTransaccionPn;
-
+    public $ipapi, $codigoRecaudacionPn, $idTransaccionPn, $value;
+    public $host;
+    
     public function mount(Campaign $campaign)
     {
         if($campaign->status == 'PUBLISHED') {
             $this->campaign = $campaign;
             
             // ipapi
-            $this->ipapi = session()->get('ipapi');
+            $this->ipapi = $this->ipapiData();
 
-            if ( $this->ipapi != null) {
-                $this->country_code =  $this->ipapi['country_code'];
+            if ($this->ipapi != null) {
+                $this->country_code = $this->ipapi['country_code'];
             } else {
                 $this->country_code = 'US';
             }
-            //$this->country_code = 'US';
+            // $this->country_code = 'US';
             if($this->campaign->agency->country->code == $this->country_code) {
                 $this->currency = $this->campaign->agency->agencySetting->money->currency_symbol;
                 $this->money_id = $this->campaign->agency->agencySetting->money->id;
-                $this->phone_prefix = $this->campaign->agency->country->phone_prefix;
+                //$this->phone_prefix = $this->campaign->agency->country->phone_prefix;
             } else {
                 $record_money = Money::find(2);
                 $this->currency = $record_money->currency_symbol; 
                 $this->money_id = $record_money->id;
             }
 
+            $this->phone_prefix = '+'.$this->ipapi['location']['calling_code'];
             if(auth()->user()) {
                 $this->name = auth()->user()->name;
+                $this->lastname = auth()->user()->lastname;
+                $this->email = auth()->user()->email;
             } else {
 
             }
@@ -73,142 +89,64 @@ class RegisterNoRewardCollaborate extends Component
 
         //
         $this->collected_percentage_ys = array(
-            array("value" => "7","amount_collaborator" => 0),
-            array("value" => "10","amount_collaborator" => 0),
-            array("value" => "12","amount_collaborator" => 0),
-            array("value" => "15","amount_collaborator" => 0),
+            array("value" => "7","amount_user" => 0),
+            array("value" => "10","amount_user" => 0),
+            array("value" => "12","amount_user" => 0),
+            array("value" => "15","amount_user" => 0),
         );
         $this->amount_percentage_yosolidario = 12;
 
         // other
-
+        $host= $_SERVER["HTTP_HOST"];
+        if($host == 'yosolidario.test') {
+            $this->host = 'http://yosolidario-adm.test';
+        } elseif($host == 'yosolidario.com') {
+            $this->host = 'https://admin.yosolidario.com';
+        }
     } 
 
     public function render()
     {
-        $this->countryState();
-
         return view('livewire.campaigns.collaborate.register-no-reward-collaborate');
+    }
+    // validate
+     protected $rules = [
+        'amount_user' => "required|numeric|between:5,1000",
+        'name' => 'required',
+        'lastname' => 'required',
+        'email' => 'nullable|email',
+        'locality' => 'required',
+        'address' => 'nullable',
+        'phone' => 'required|numeric',
+        'payment_method' => 'required',
+    ];
+
+    protected $messages = [
+        //'agency_id.required' => 'The country field is required.',
+        //'title.required' => 'The title field is required.',
+    ];
+
+    protected $validationAttributes = [
+        'amount_user' => '',
+        'name' => '',
+        'lastname' =>'',
+        'show_name' => '',
+        'email' => '',
+        'locality' => '',
+        'address' => '',
+        'phone' => '',
+        'payment_method' => ''
+    ];
+
+    public function updated($propertyName)
+    {
+        $this->validateOnly($propertyName);
     }
 
     public function viewUser() {
 
     }
 
-    public function amountTotal() {
-        if($this->amount_collaborator != '') {
-            /*
-            if($this->amount_collaborator >= 5 and $this->amount_collaborator <= 14) {
-                $this->collected_percentage_ys = array(
-                    array("value" => "1","amount_collaborator" => 1),
-                    array("value" => "2","amount_collaborator" => 2),
-                    array("value" => "3","amount_collaborator" => 3),
-                );
-                $this->amount_percentage_yosolidario = 1;
-                $this->amount_yosolidario = $this->amount_percentage_yosolidario;
-                $this->amount_total = (float)$this->amount_collaborator + (float)$this->amount_percentage_yosolidario;
-            */
-            if($this->amount_collaborator >= 5) {
-                $x7 = $this->amount_collaborator * 7 / 100;
-                $x10 = $this->amount_collaborator * 10 / 100;
-                $x12 = $this->amount_collaborator * 12 / 100;
-                $x15 = $this->amount_collaborator * 15 / 100;
-
-                $this->collected_percentage_ys = array(
-                    array("value" => "7","amount_collaborator" => $x7),
-                    array("value" => "10","amount_collaborator" => $x10),
-                    array("value" => "12","amount_collaborator" => $x12),
-                    array("value" => "15","amount_collaborator" => $x15),
-                );
-        
-                $this->amount_percentage_yosolidario = 12;
-                $this->amount_yosolidario = (float)$this->amount_collaborator * (float)$this->amount_percentage_yosolidario / 100;
-                $this->amount_total = (float)$this->amount_collaborator + (float)($this->amount_collaborator * $this->amount_percentage_yosolidario / 100);
-            } else {
-                $this->collected_percentage_ys = array(
-                    array("value" => "7","amount_collaborator" => 0),
-                    array("value" => "10","amount_collaborator" => 0),
-                    array("value" => "12","amount_collaborator" => 0),
-                    array("value" => "15","amount_collaborator" => 0),
-                );
-        
-                // $this->amount_percentage_yosolidario = 12;
-                $this->amount_total = 0;
-            }
-        } else {
-            $this->amount_yosolidario = 0;
-        }
-    }
-
-    public function percentageAmountTotal() {
-        if($this->amount_collaborator) {
-            if($this->amount_percentage_yosolidario != 'OTHER') {
-                /*
-                if($this->amount_collaborator >= 5 and $this->amount_collaborator <= 14) {
-                    $this->amount_yosolidario = $this->amount_percentage_yosolidario;
-                    $this->amount_total = (float)$this->amount_collaborator + (float)$this->amount_percentage_yosolidario;
-                */
-                if($this->amount_collaborator >= 5) { 
-                    $this->amount_yosolidario = (float)($this->amount_collaborator * $this->amount_percentage_yosolidario / 100);
-                    $this->amount_total = $this->amount_collaborator + (float)($this->amount_collaborator * $this->amount_percentage_yosolidario / 100);
-                } else { 
-                    $this->amount_percentage_yosolidario = 12;
-                    $this->amount_total = 0;
-                }
-
-            } elseif($this->amount_percentage_yosolidario == 'OTHER') {
-
-                if($this->amount_collaborator >= 5 and $this->amount_collaborator <= 14) {
-                    $this->amount_yosolidario = 0;
-                }elseif($this->amount_collaborator >= 15) {
-                    $this->amount_yosolidario = 0;
-                }
-
-                $this->amount_total = $this->amount_collaborator + (float)$this->amount_yosolidario;
-            }
-        }
-    }
-    
-    public function amountOther() {
-        if($this->amount_percentage_yosolidario == 'OTHER') {
-            $this->amount_total = $this->amount_collaborator + (float)$this->amount_yosolidario;
-        }
-    }
-
-    // convert
-    public function cutLetter($letter, $number) {
-
-        if(strlen($letter) > $number) {
-            $l = substr($letter, 0, $number);
-            return $l.'...';
-        } else {
-            $l = substr($letter, 0, $number);
-            return $l;
-        }
-    }
-    public function cutLetterTwo($letterOne, $letterTwo, $number) {
-
-        $letter = $letterOne.', '.$letterTwo;
-        
-        if(strlen($letter) > $number) {
-            $l = substr($letter, 0, $number);
-            return $l.'...';
-        } else {
-            $l = substr($letter, 0, $number);
-            return $l;
-        }
-    }
-
-    public function convertCurrency($amount_collaborator, $buy_usd) {
-        if ($amount_collaborator > 0) {
-            $convert = $amount_collaborator / $buy_usd;
-            return $convert;
-        } else {
-            return $amount_collaborator;
-        }
-    }
-    // end convert
-    
     // country state 
     public function countryState() {
         if($this->country_id) {
@@ -219,36 +157,18 @@ class RegisterNoRewardCollaborate extends Component
         }
     }
 
-    //--------------------------------------- pagosNet
-
-    private function conexionPagosNet() {
-        // URL WS ambiente de PRE-PRODUCCION
-        define("WSDL_PAGOSNET", "http://test.sintesis.com.bo/WSApp-war/ComelecWS?WSDL");
-        //URL ambiente de PRODUCCION
-        // wwwwwwwwww.wsdl produccion
-    }
-
     public function pay() {
 
-        //request()->session()->flash('flash.banner', 'hola');
-        //request()->session()->flash('flash.bannerStyle', 'success');
+        $this->validate();
 
-        //return $this->redirect('/');
- 
         if($this->campaign->agency->country->code == $this->country_code) {
-            $this->validate([
-                'amount_collaborator' => "required|numeric|between:5,1000",
-                'name' => 'required',
-                'lastname' => 'required',
-                'payment_method' => 'required',
-            ]);
 
+            // ++++ BOLIVIA ++++ //
+            
             if($this->payment_method == 'CASH') {
-                $this->pagosNetEfectivo();
-                
+                $this->registerPagosnetCash();          // PAGOSNET EFECTIVO
             }elseif($this->payment_method == 'CARD') { 
-                // $this->pagofacil('CARD');
-                $this->pagosNetTarjeta();
+                $this->registerCardPagosnet();          // PAGOSNET TARJETA
             }elseif($this->payment_method == 'MOBILE_WALLET') { 
                 $this->pagofacil('MOBILE_WALLET');
             }elseif($this->payment_method == 'QR_PAYMENT') { 
@@ -256,11 +176,6 @@ class RegisterNoRewardCollaborate extends Component
             }
 
         } else { 
-            $this->validate([
-                'amount_collaborator' => "required|numeric|between:5,1000",
-                'name' => 'required',
-                'lastname' => 'required',
-            ]);
 
             if($this->payment_method == 'CARD') { 
                 $this->pagofacil('CARD');
@@ -272,7 +187,7 @@ class RegisterNoRewardCollaborate extends Component
         }
     }
 
-    public function store($payment_method, $agency_pp_id) {
+    public function store($payment_method) {
 
         if(auth()->user()) {
             $user_id = auth()->user()->id;
@@ -282,7 +197,7 @@ class RegisterNoRewardCollaborate extends Component
             $type_user = 'INVITED';
         }
 
-        $this->amount_yosolidario = (float)$this->amount_total - (float)$this->amount_collaborator;
+        $this->amount_yosolidario = (float)$this->amount_total - (float)$this->amount_user;
 
         
         if(!$this->phone_prefix) {
@@ -296,6 +211,13 @@ class RegisterNoRewardCollaborate extends Component
             $show_name = 'NO';
         }
 
+        $search_all = $this->name.' '.$this->lastname.' '.$this->email. ' '.$this->phone;
+
+        if(!$this->address)
+        {
+            $this->address = $this->locality;
+        }
+        
         $record = PaymentOrder::create([
             //'code_collection' => $codigoRecaudacionPn,
             'id_transaction' => 0,
@@ -306,563 +228,192 @@ class RegisterNoRewardCollaborate extends Component
             'phone_prefix' => $this->phone_prefix,
             'phone' => $this->phone,
             'show_name' => $show_name,
+            'locality' => $this->locality,
+            'address' => $this->address,
             'commentary' => $this->commentary,
 
             'amount_total' => $this->amount_total,
-            'amount_collaborator' => $this->amount_collaborator,
+            'amount_user' => $this->amount_user,
             'amount_yosolidario' => $this->amount_yosolidario,
             'amount_percentage_yosolidario' => $this->amount_percentage_yosolidario,
 
-            'campaign_id' => $this->campaign->id,
             'agency_id' => $this->campaign->agency->id,
             'payment_method' => $payment_method,
             'money_id' => $this->money_id,
-            'agency_pp_id' => $agency_pp_id,
             'user_id' => $user_id,
             'type_user' => $type_user,
+            'type' => 'CAMPAIGN',
+            'status_transaction' => 'PETITION',
+
+            'search' =>  $this->generateSearch($search_all)
+        ]);
+        $record->update([
+            'code_collection' => 'YS'.$record->id
+        ]);
+        $record->paymentOrderCampaign()->create([
+            'campaign_id' => $this->campaign->id,
             'campaign_reward_id' => null,
             'type_collaboration' => 'NO_REWARD',
-            'status' => 'PETITION'
         ]);
-        return $record->id;
+
+        $dataReturn = array(
+            'id' =>  $record->id,
+            'code_collection' => $record->code_collection
+        );
+        return $dataReturn;
     }
 
+    // +++++++++++++++++++++++++++++++ BOLIVIA +++++++++++++++++++++++++++++++++++++++//
+
+    // PAGOFACIL
     private function pagofacil($payment_method) {
-        $paymentOrderId = $this->store($payment_method, 2);
-         // updating data
-         $record = PaymentOrder::find($paymentOrderId);
-         $record->update([
-             'status' => 'PENDING_PAYMENT',
-             'code_collection' => 'YS-'.$paymentOrderId,
-         ]);
-        //redirect
-        return redirect()->route('campaign/collaborate/pagofacil/PagoFacilCheckout', ['paymentOrder' => $record]);
-    }
-
-    private function pagosNetEfectivo() {
-    
-        // register data
-        
-        if($this->currency == 'Bs') {
-            $monedaPn = 'BS';
-        } elseif($this->currency == '$') {
-            $monedaPn = 'US';
-        }
-       
-        $paymentOrderId = $this->store('CASH', 1);
-        $codigoRecaudacionPn = 'YS-'.$paymentOrderId;
-
-        $this->conexionPagosNet();
-
-        // echo ("Datos para registroPlan"); 
-        //-----------------------   Registro Plan    ----------------------------
-        //Request
-        
-        $categoriaProducto           = 1;
-        $codigoComprador             = $codigoRecaudacionPn;      //código interno del cliente
-        $codigoRecaudacion           = $codigoRecaudacionPn;  //identificador propio, el formato lo define el cliente
-        $correoElectronico           = $this->email;
-        $descripcionRecaudacion      = $this->campaign->title;
-        $documentoIdentidadComprador = '';
-        $fecha                       = date("Ymd");
-        $fechaVencimiento            = 0;  //0 = no tiene vencimiento
-        $hora                        = date("His");
-        $horaVencimiento             = 0;  //0 = para no tiene vencimiento
-        $moneda                      = $monedaPn; // BS=Bolivianos, US=Dolares, EU=Euros
-        $nombreComprador             = $this->name.' '.$this->lastname;
-        // Datos para array planillas
-        $descripcion                 = $this->campaign->title;
-        $montoCreditoFiscal          = 0; //$this->amount_total
-        $montoPago                   = $this->amount_total;
-        $nitFactura                  = '';
-        $nombreFactura               = $this->name.' '.$this->lastname;
-        $numeroPago                  = $paymentOrderId;
-        
-        $planillas = array(
-            'descripcion'        => $descripcion,
-            'montoCreditoFiscal' => $montoCreditoFiscal,
-            'montoPago'          => $montoPago,
-            'nitFactura'         => $nitFactura,
-            'nombreFactura'      => $nombreFactura,
-            'numeroPago'         => $numeroPago 
-          );
-        
-        $precedenciaCobro            = 'N';
-        $transaccion                 = 'A';       //A=adicionar, B=baja, M=modificar
-        $cuenta      = 'wssolidario';
-        $password    = 'Wssolidario2020';
-
-        //----------------------------------------------
-        // Arma el array
-        $datos = array(
-            'categoriaProducto'           => $categoriaProducto,
-            'codigoComprador'             => $codigoComprador,
-            'codigoRecaudacion'           => $codigoRecaudacion,
-            'correoElectronico'           => $correoElectronico,
-            'descripcionRecaudacion'      => $descripcionRecaudacion,
-            'documentoIdentidadComprador' => $documentoIdentidadComprador,
-            'fecha'                       => $fecha,
-            'fechaVencimiento'            => $fechaVencimiento,
-            'hora'                        => $hora,
-            'horaVencimiento'             => $horaVencimiento,	
-            'moneda'                      => $moneda,
-            'nombreComprador'             => $nombreComprador,
-            'planillas'                   => $planillas,
-            'precedenciaCobro'            => $precedenciaCobro,
-            'transaccion'                 => $transaccion	
-            );
-
-        $params = array(
-            'datos'    => $datos,
-            'cuenta'   => $cuenta,
-            'password' => $password,
-        );
-
-        //   Preparo la invocación del WS con registroPlan
-        $client = null;
-        $metodo = '--undefined--';
-
-        try{
-            //Instancio el ws
-            $client = new soapclient(WSDL_PAGOSNET, array('trace'=>true, 'exceptions'=>true	));
-     
-            $resultPlan1 = $client->__soapCall("registroPlan", array($params));
-            $resultPlan =get_object_vars($resultPlan1);
-            $resultPlan=$resultPlan['return'];
-            $resultPlan=get_object_vars($resultPlan);
-            //var_dump($resultPlan);
-            //print_r($resultPlan['codigoError']);
-            //print_r($resultPlan['descripcionError']);
-            
-            //Analizo la respuesta	
-            if ($resultPlan['codigoError'] === 0) {
-                $this->messagePn = 'Registro Plan exitoso... <br/>';
-                $this->codigoRecaudacionPn = 'Recaudacion: ' . $codigoRecaudacion . '<br/>';
-                $this->idTransaccionPn = 'Transaccion: ' . $resultPlan['idTransaccion'] . '<br/>';  	
-                //var_dump($resultPlan1);
-                //echo "<br/><br/>";
-                //TODO: Cliente debe registrar las respuestas	
-                
-            } else {
-                 $this->messagePn =   'Registro Plan sin exito : { codError=' . $resultPlan['codigoError']
-                                    . ', ' .
-                                    'descripcionError=' . $resultPlan['descripcionError'] 
-                                    . '}<br/>';	
-                //TODO: Desplegar mensaje de error
-                return;     
-            }
-            
-        } catch(Exception $ex){
-            //echo $ex->getMessage();
-            if ($client != null){
-                $this->escribirHandler($client->__getLastRequest() , $metodo, 'Request');
-                $this->escribirHandler($client->__getLastResponse(), $metodo, 'Response');
-            }
-        }
-
+        $valueStore = $this->store($payment_method);
         // updating data
-        $record = PaymentOrder::find($paymentOrderId);
-        $record->update([
-            'status' => 'PENDING_PAYMENT',
-            'code_collection' => $codigoRecaudacion,
-            'id_transaction' => $resultPlan['idTransaccion'],
-        ]);
-        $record->pagosnetRegistroplans()->create([
-            'transaccion' => $transaccion,
-            'documentoIdentidadComprador' => $documentoIdentidadComprador,
-            'codigoComprador' => $codigoComprador,
-            'fecha' => $fecha,
-            'hora' => $hora,
-            'correoElectronico' => $correoElectronico,
-            'moneda' => $moneda,
-            'codigoRecaudacion' => $codigoRecaudacion,
-            'descripcionRecaudacion' => $descripcionRecaudacion,
-            'fechaVencimiento' => $fechaVencimiento,
-            'horaVencimiento' => $horaVencimiento,
-            'categoriaProducto' => $categoriaProducto,
-            'precedenciaCobro' => $precedenciaCobro,
-            'numeroPago' => $numeroPago,
-            'montoPago' => $montoPago,
-            'descripcion' => $descripcion,
-            'montoCreditoFiscal' => $montoCreditoFiscal,
-            'nombreFactura' => $nombreFactura,
-            'nitFactura' => $nitFactura,
-            'idTransaccion' => $resultPlan['idTransaccion'],
-            'codigoError' => $resultPlan['codigoError'],
-            'descripcionError' => $this->messagePn
-        ]);
-
+        $record = PaymentOrder::find($valueStore['id']);
         //redirect
-        return redirect()->route('campaign/collaborate/pagosnet/cash', ['paymentOrder' => $record]);
+        return redirect()->route('collaborate/pagofacil/PagoFacilCheckout', ['paymentOrder' => $record]);
     }
 
-    public function pagosNetTarjeta() {
+    // PAGOSNET
+    public function registerPagosnetCash() {
 
-        if($this->currency == 'Bs') {
-            $monedaPn = 'BS';
-        } elseif($this->currency == '$') {
-            $monedaPn = 'US';
+        $valueStore = $this->store('CASH');
+        $value = $this->pagosNetEfectivo($this->currency, 
+                                $valueStore['code_collection'],
+                                $this->email,
+                                $this->campaign->title,
+                                $this->amount_total,
+                                $this->name,
+                                $this->lastname
+                                );
+        
+        if($value) {
+
+            if($value['action'] == true) {
+                // updating data
+                $record = PaymentOrder::find($valueStore['id']);
+                $record->update([
+                    'status_transaction' => 'PENDING',
+                    'id_transaction' => $value['idTransaccion'],
+                    'search' => $record->search.' '.$value['codigoRecaudacion'].' '.$value['idTransaccion']
+                ]);
+                /* (optional)
+                $record->pagosnetRegistroplans()->create([
+                    'transaccion' => $value['transaccion'],
+                    'documentoIdentidadComprador' => $value['documentoIdentidadComprador'],
+                    'codigoComprador' => $value['codigoComprador'],
+                    'fecha' => $value['fecha'],
+                    'hora' => $value['hora'],
+                    'correoElectronico' => $value['correoElectronico'],
+                    'moneda' => $value['moneda'],
+                    'codigoRecaudacion' => $value['codigoRecaudacion'],
+                    'descripcionRecaudacion' => $value['descripcionRecaudacion'],
+                    'fechaVencimiento' => $value['fechaVencimiento'],
+                    'horaVencimiento' => $value['horaVencimiento'],
+                    'categoriaProducto' => $value['categoriaProducto'],
+                    'precedenciaCobro' => $value['precedenciaCobro'],
+                    'numeroPago' => $value['numeroPago'],
+                    'montoPago' => $value['montoPago'],
+                    'descripcion' => $value['descripcion'],
+                    'montoCreditoFiscal' => $value['montoCreditoFiscal'],
+                    'nombreFactura' => $value['nombreFactura'],
+                    'nitFactura' => $value['nitFactura'],
+                    'idTransaccion' => $value['idTransaccion'],
+                    'codigoError' => $value['codigoError'],
+                    'descripcionError' => $value['descripcionError'],
+                ]);
+                */
+                $this->bannerSuccess('Successfully posted payment');
+                //redirect
+                return redirect()->route('collaborate/pagosnet/cash', ['paymentOrder' => $record]);
+
+            } elseif($value['action'] == false) { 
+                $this->emit('bannerDanger', 'Payment cannot be made');  
+            }
+
+        }else {
+            $this->emit('bannerDanger', 'Payment cannot be made');
         }
-
-        $paymentOrderId = $this->store('CASH', 1);
-        $codigoRecaudacionPn = 'YS-'.$paymentOrderId;
-
-        $this->conexionPagosNet();
-        
-        // echo ("Datos para registroPlan"); 
-
-        //-----------------------   Registro Plan    ----------------------------
-        //Request
-        
-        $categoriaProducto           = 3;
-        $codigoComprador             = $codigoRecaudacionPn;      //código interno del cliente
-        $codigoRecaudacion           = $codigoRecaudacionPn;  //identificador propio, el formato lo define el cliente
-        $correoElectronico           = $this->email;
-        $descripcionRecaudacion      = $this->campaign->title;
-        $documentoIdentidadComprador = '';
-        $fecha                       = date("Ymd");
-        $fechaVencimiento            = 0;  //0 = no tiene vencimiento
-        $hora                        = date("His");
-        $horaVencimiento             = 0;  //0 = para no tiene vencimiento
-        $moneda                      = $monedaPn; // BS=Bolivianos, US=Dolares, EU=Euros
-        $nombreComprador             = $this->name.' '.$this->lastname;
-        // Datos para array planillas
-        $descripcion                 = $this->campaign->title;
-        $montoCreditoFiscal          = 0;
-        $montoPago                   = $this->amount_total;
-        $nitFactura                  = '';
-        $nombreFactura               = '';
-        $numeroPago                  = 1;
-        
-        $planillas = array(
-            'descripcion'        => $descripcion,
-            'montoCreditoFiscal' => $montoCreditoFiscal,
-            'montoPago'          => $montoPago,
-            'nitFactura'         => $nitFactura,
-            'nombreFactura'      => $nombreFactura,
-            'numeroPago'         => $numeroPago 
-          );
-        
-        $precedenciaCobro            = 'N';
-        $transaccion                 = 'A';       //A=adicionar, B=baja, M=modificar
-        $cuenta      = 'wssolidario';
-        $password    = 'Wssolidario2020';
-
-        //----------------------------------------------
-        // Arma el array
-        $datos = array(
-            'categoriaProducto'           => $categoriaProducto,
-            'codigoComprador'             => $codigoComprador,
-            'codigoRecaudacion'           => $codigoRecaudacion,
-            'correoElectronico'           => $correoElectronico,
-            'descripcionRecaudacion'      => $descripcionRecaudacion,
-            'documentoIdentidadComprador' => $documentoIdentidadComprador,
-            'fecha'                       => $fecha,
-            'fechaVencimiento'            => $fechaVencimiento,
-            'hora'                        => $hora,
-            'horaVencimiento'             => $horaVencimiento,	
-            'moneda'                      => $moneda,
-            'nombreComprador'             => $nombreComprador,
-            'planillas'                   => $planillas,
-            'precedenciaCobro'            => $precedenciaCobro,
-            'transaccion'                 => $transaccion	
-            );
-
-        $params = array(
-            'datos'    => $datos,
-            'cuenta'   => $cuenta,
-            'password' => $password,
-        );
-
-        //   Preparo la invocación del WS con registroPlan
-        $client = null;
-        $metodo = '--undefined--';
-   
-        try{
-            //Instancio el ws
-            $client = new soapclient(WSDL_PAGOSNET, array('trace'=>true, 'exceptions'=>true	));
-     
-            $resultPlan1 = $client->__soapCall("registroPlan", array($params));
-            $resultPlan =get_object_vars($resultPlan1);
-            $resultPlan=$resultPlan['return'];
-            $resultPlan=get_object_vars($resultPlan);
-            //var_dump($resultPlan);
-            //print_r($resultPlan['codigoError']);
-            //print_r($resultPlan['descripcionError']);
-            
-            //Analizo la respuesta	
-            if ($resultPlan['codigoError'] === 0) {
-                $this->messagePn = 'Registro Plan exitoso... <br/>';
-                $this->codigoRecaudacionPn = 'Recaudacion: ' . $codigoRecaudacion . '<br/>';
-                $this->idTransaccionPn = 'Transaccion: ' . $resultPlan['idTransaccion'] . '<br/>';  	
-                //var_dump($resultPlan1);
-                //echo "<br/><br/>";
-                //TODO: Cliente debe registrar las respuestas	
-                
-            } else {
-                 $this->messagePn =   'Registro Plan sin exito : { codError=' . $resultPlan['codigoError']
-                                    . ', ' .
-                                    'descripcionError=' . $resultPlan['descripcionError'] 
-                                    . '}<br/>';	
-                //TODO: Desplegar mensaje de error
-                return;     
-            }
-
-            //Preparo la invocación del WS registroTarjetaHabiente (Obligatoria para pagos con tarjeta)
-            //Los datos del tarjetahabiente corresponden al cliente que realizara el pago utilizando tarjeta
-            //de credito o debito.
-            //-----------------------------------------------------------------------------------------------
-            // Datos para registrar datos del cliente que realizara pagos con tarjetas de crédito o débito.
-            //-----------------------------------------------------------------------------
-            $transaccionTH               = 'A';   // A=adicionar, B=Baja, esta es la accion que se realizara sobre este tarjetahabiente.
-            $nombre                      = $this->name;
-            $apellido                    = $this->lastname;
-            $email                       = $this->email;
-            $telefono                    = $this->phone;
-            $pais                        = 'Bolivia';
-            $departamento                = 'La Paz';
-            $ciudad                      = 'La Paz';
-            $direccion                   = 'B/Abc Def C/Ghi Jkl Nro.477';
-
-            $datosTarjetaHabiente = array(
-                'apellido'          => $apellido,
-                'ciudad'            => $ciudad,
-                'correoElectronico' => $email,
-                'departamento'      => $departamento,
-                'direccion'         => $direccion,
-                'idTransaccion'     => $resultPlan['idTransaccion'],
-                'nombre'            => $nombre,
-                'pais'              => $pais,
-                'telefono'          => $telefono,
-                'transaccion'       => $transaccionTH,
-                );
-
-            $paramsTarjetaHabiente = array(
-                'datos' => $datosTarjetaHabiente,
-                'cuenta' => $cuenta,
-                'password' => $password,
-            );
-    
-            $responseRegistroTarjetaHabiente1 =$client->__soapCall("registroTarjetaHabiente", array($paramsTarjetaHabiente));
-            
-            $responseRegistroTarjetaHabiente =get_object_vars($responseRegistroTarjetaHabiente1);
-            $responseRegistroTarjetaHabiente=$responseRegistroTarjetaHabiente['return'];
-            $responseRegistroTarjetaHabiente=get_object_vars($responseRegistroTarjetaHabiente);
-    
-            //Analizo la respuesta	
-            if ($responseRegistroTarjetaHabiente['codigoError'] === 0){
-                $this->messagePn = '<h>Registro de Tarjeta Habiente exitoso... <br/>';	
-                //ar_dump($responseRegistroTarjetaHabiente1);
-                //echo '<br/><br/>';
-            }else{
-                $this->messagePn = 'Registro de Tarjetahabiente fallido: codError=' . $responseRegistroTarjetaHabiente['codigoError'] 
-                                    . ', ' .
-                                    'descripcionError=' . $responseRegistroTarjetaHabiente['descripcionError'] 
-                                    . '<br/>';	
-            }
-
-            //Preparo la invocación del WS registroMdd
-            //Metodo para registrar transacciones hacia cybersource.
-            //------------------------------------------------------------------------------------
-            $comercioId                  = '760';  
-            $id                          = '0';	  //id transaccion del MDD
-            $transaccionMdd              = 'A';   // A=Alta, M=Modificacion, B=Baja de datos de un transaccion Cybersource .
-            $vertical                    = 'Servicios'; //Tipo de servicio puede ser: Servicios,Retail Servicios, Delivery Foods, Retail, Travel, Hoteles (Sintesis lo provee)
-            
-            if(auth()->user()) {
-                $entry= array(
-                    array(
-                    'key'     => "merchant_defined_data1",   // Se describe en un excel que provee Sintesis
-                    'value'	  => 'SI',
-                    ),
-                    /*array(
-                    'key'     => "merchant_defined_data2",
-                    'value'	  => auth()->user->created_at,
-                    ),*/
-                    array(
-                        'key'     => "merchant_defined_data12",
-                        'value'	  => $this->phone,
-                    ),
-                    array(
-                        'key'     => "merchant_defined_data18",
-                        'value'	  => $this->name.' '.$this->lastname,
-                    ),
-                    array(
-                        'key'     => "merchant_defined_data87",
-                        'value'	  => $codigoRecaudacionPn,
-                    ),
-                    array(
-                        'key'     => "merchant_defined_data88",
-                        'value'	  => $this->campaign->title,
-                    )
-                );
-            } else {
-                $entry= array(
-                    array(
-                    'key'     => "merchant_defined_data1",   // Se describe en un excel que provee Sintesis
-                    'value'	  => 'NO',
-                    ),
-                    array(
-                        'key'     => "merchant_defined_data12",
-                        'value'	  => $this->phone,
-                    ),
-                    array(
-                        'key'     => "merchant_defined_data18",
-                        'value'	  => $this->name.' '.$this->lastname,
-                    ),
-                    array(
-                        'key'     => "merchant_defined_data87",
-                        'value'	  => $codigoRecaudacionPn,
-                    ),
-                    array(
-                        'key'     => "merchant_defined_data88",
-                        'value'	  => $this->campaign->title,
-                    )
-                );
-            }
-
-
-            $mdd = array(
-                'entry'          => $entry,
-            );
-
-            $datosMdd = array(
-                'comercioId'        => $comercioId,
-                'id'                => $id,
-                'mdd'               => $mdd,
-                'transaccion'       => $transaccionMdd,
-                'transaccionId'     => $resultPlan['idTransaccion'],
-                'vertical'          => $vertical,
-            );
-
-
-            $paramsRegistroMdd = array(
-                'datos' => $datosMdd,
-                'cuenta' => $cuenta,
-                'password' => $password,
-            );
-
-            $responseRegistroMdd1 =$client->__soapCall("registroMdd", array($paramsRegistroMdd));
-            
-            $responseRegistroMdd =get_object_vars($responseRegistroMdd1);
-            $responseRegistroMdd=$responseRegistroMdd['return'];
-            $responseRegistroMdd=get_object_vars($responseRegistroMdd);
-
-            //Analizo la respuesta	
-            if ($responseRegistroMdd['codigoError'] === 1){
-                $this->messagePn = '<h>Registro del Tarjetahabiente exitoso... <br/>';	
-                //var_dump($responseRegistroMdd1);
-                //echo '<br/><br/>';
-            }else{
-                $this->messagePn = 'Registro de transaccion hacia cybersource fallido: codError=' . $responseRegistroMdd['codigoError'] 
-                                    . ', ' .
-                                    'descripcionError=' . $responseRegistroMdd['descripcionError'] 
-                                    . '<br/>';	
-            }
-
-        } catch(Exception $ex){
-            //echo $ex->getMessage();
-            if ($client != null){
-                $this->escribirHandler($client->__getLastRequest() , $metodo, 'Request');
-                $this->escribirHandler($client->__getLastResponse(), $metodo, 'Response');
-            }
-        }
-
-        // updating data
-        $record_order = PaymentOrder::find($paymentOrderId);
-        $record_order->update([
-            'status' => 'PENDING_PAYMENT',
-            'code_collection' => $codigoRecaudacion,
-            'id_transaction' => $resultPlan['idTransaccion'],
-        ]);
-
-        $recordRp = PagosnetRegistroplan::create([
-            'payment_order_id' => $record_order->id,
-            'transaccion' => $transaccion,
-            'documentoIdentidadComprador' => $documentoIdentidadComprador,
-            'codigoComprador' => $codigoComprador,
-            'fecha' => $fecha,
-            'hora' => $hora,
-            'correoElectronico' => $correoElectronico,
-            'moneda' => $moneda,
-            'codigoRecaudacion' => $codigoRecaudacion,
-            'descripcionRecaudacion' => $descripcionRecaudacion,
-            'fechaVencimiento' => $fechaVencimiento,
-            'horaVencimiento' => $horaVencimiento,
-            'categoriaProducto' => $categoriaProducto,
-            'precedenciaCobro' => $precedenciaCobro,
-            'numeroPago' => $numeroPago,
-            'montoPago' => $montoPago,
-            'descripcion' => $descripcion,
-            'montoCreditoFiscal' => $montoCreditoFiscal,
-            'nombreFactura' => $nombreFactura,
-            'nitFactura' => $nitFactura,
-            'idTransaccion' => $resultPlan['idTransaccion'],
-            'codigoError' => $resultPlan['codigoError'],
-            'descripcionError' => $this->messagePn
-        ]);
-        $recordRp->pagosnetRegistroth()->create([
-            'transaccionTH' => $transaccionTH,
-            'nombre' => $nombre,
-            'email' => $email,
-            'telefono' => $telefono,
-            'pais' => $pais,
-            'departamento' => $departamento,
-            'ciudad' => $ciudad,
-            'direccion' => $direccion,
-            'idTransaccion' => $resultPlan['idTransaccion'],
-            'codigoError' => $responseRegistroTarjetaHabiente['codigoError'],
-            'descripcionError' => $this->messagePn
-        ]);
-        $recordRp->pagosnetRegistromdd()->create([
-            'comercioId' => $comercioId,
-            'id_mdd' => $id,
-            'transaccionMdd' => $transaccionMdd,
-            'vertical' => $vertical,
-        ]);
-
-       //redirect
-       return redirect()->route('campaign/collaborate/pagosnet/card', ['paymentOrder' => $record_order]);
     }
 
-    //Funciones auxiliares 
-	//-----------------------------------------------------------------------------------------------
-	 public function obj2array($obj) {
-	    $out = array();
-	    foreach ($obj as $key => $val) {
-	      switch(true) {
-	        case is_object($val):
-		    //$out[$key] = obj2array($val);
-		  break;
-		case is_array($val):
-		    //$out[$key] = obj2array($val);
-		  break;
-		default:
-		  $out[$key] = $val;
-	      }
-	    }
-	    return $out;
-	  }
+    public function registerCardPagosnet() {
 
+        $valueStore = $this->store('CARD');
+        $value = $this->pagosNetTarjeta($this->currency, 
+                                $valueStore['code_collection'],
+                                $this->email,
+                                $this->campaign->title,
+                                $this->amount_total,
+                                $this->name,
+                                $this->lastname,
+                                $this->locality,
+                                $this->address
+                                );
+        if($value) {                   
+            if($value['action'] == true) {
+            // updating data
+            $record_order = PaymentOrder::find($valueStore['id']);
+            $record_order->update([
+                'status_transaction' => 'PENDING',
+                'id_transaction' => $value['idTransaccion'],
+                'search' => $record_order->search.' '.$value['codigoRecaudacion'].' '.$value['idTransaccion']
+            ]);
+            /* (optional)
+            $recordRp = PagosnetRegistroplan::create([
+                'payment_order_id' => $record_order->id,
+                'transaccion' => $value['transaccion'],
+                'documentoIdentidadComprador' => $value['documentoIdentidadComprador'],
+                'codigoComprador' => $value['codigoComprador'],
+                'fecha' => $value['fecha'],
+                'hora' => $value['hora'],
+                'correoElectronico' => $value['correoElectronico'],
+                'moneda' => $value['moneda'],
+                'codigoRecaudacion' => $value['codigoRecaudacion'],
+                'descripcionRecaudacion' => $value['descripcionRecaudacion'],
+                'fechaVencimiento' => $value['fechaVencimiento'],
+                'horaVencimiento' => $value['horaVencimiento'],
+                'categoriaProducto' => $value['categoriaProducto'],
+                'precedenciaCobro' => $value['precedenciaCobro'],
+                'numeroPago' => $value['numeroPago'],
+                'montoPago' => $value['montoPago'],
+                'descripcion' => $value['descripcion'],
+                'montoCreditoFiscal' => $value['montoCreditoFiscal'],
+                'nombreFactura' => $value['nombreFactura'],
+                'nitFactura' => $value['nitFactura'],
+                'idTransaccion' => $value['idTransaccion'],
+                'codigoError' => $value['codigoError'],
+                'descripcionError' => $value['descripcionError'],
+            ]);
 
-	public function escribirHandler($raw_xml, $metodo, $tipo){
-	  if ($raw_xml == null){
-			return;
-	  }	
-	  $doc = new DOMDocument();
-	  $doc->formatOutput = TRUE;
-	  $doc->loadXML($raw_xml);
-	  $newxml = $doc->saveXML();
-	  
-	  $outputFilename   = 'log/handler_' . date("Ymd") .'.txt';
-	  $handle = fopen($outputFilename, "a");
-	  fwrite($handle, '******************************************************' . PHP_EOL);
-	  fwrite($handle, 'Método: ' . $metodo .  PHP_EOL);
-	  fwrite($handle, 'Hora: ' .  date("H:i:s") . PHP_EOL);
-	  fwrite($handle, 'Tipo: ' . $tipo . PHP_EOL);
-	  fwrite($handle, $newxml);
-	  fwrite($handle, PHP_EOL);
-	  fclose($handle);	
-	}
-
+            $recordRp->pagosnetRegistroth()->create([
+                'transaccionTH' => $value['transaccionTH'],
+                'nombre' => $value['nombre'],
+                'email' => $value['email'],
+                'telefono' => $value['telefono'],
+                'pais' => $value['pais'],
+                'departamento' => $value['departamento'],
+                'ciudad' => $value['direccion'],
+                'direccion' => $value['direccion'],
+                'idTransaccion' => $value['idTransaccion'],
+                'codigoError' => $value['codigoError'],
+                'descripcionError' => $value['descripcionError'],
+            ]);
+            $recordRp->pagosnetRegistromdd()->create([
+                'comercioId' => $value['comercioId'],
+                'id_mdd' => $value['id_mdd'],
+                'transaccionMdd' => $value['transaccionMdd'],
+                'vertical' => $value['vertical'],
+            ]);
+            */
+            $this->bannerSuccess('Successfully posted payment');
+            //redirect
+            return redirect()->route('collaborate/pagosnet/card', ['paymentOrder' => $record_order]);
+            
+            } elseif($value['action'] == false) {    
+                $this->emit('bannerDanger', 'Payment cannot be made');   
+            }
+        } else {
+            $this->emit('bannerDanger', 'Payment cannot be made'); 
+        }
+    }
 }

@@ -14,12 +14,11 @@ class Money extends Model
     protected $fillable = [
         'currency_symbol',
         'currency_iso',
-        'country_id',
     ];
 
-    // uno a uno inversa
+    // uno a muchos 
     public function country() {
-        return $this->belongsTo(Country::class);
+        return $this->hasMany(Country::class);
     }
 
     // uno a muchos 
@@ -35,6 +34,12 @@ class Money extends Model
     // uno a uno
     public function paymentOrder() {
         return $this->hasOne(PaymentOrder::class);
+    }
+
+    // muchos a muchos
+    public function agencies()
+    {
+        return $this->belongsToMany(Agency::class)->withTimestamps();
     }
 
     // relacion polimorfica uno a muchos

@@ -12,7 +12,7 @@
 <x-section-content>
     <x-slot name="header">
         <div class="bg-white shadow mb-10"> 
-            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-2 sm:space-y-0 py-6">
+            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center max-w-6xl mx-auto px-4 sm:px-4 lg:px-4 space-y-2 sm:space-y-0 py-6">
                 <div class=" font-semibold text-xl text-gray-800">
                     {{ __('Saved campaigns') }}
                 </div>
@@ -59,7 +59,7 @@
             <div class="flex items-center ">
                 @if($item->campaign->user->profile_photo_path)
                 <div wire:click="viewUser({{$item->campaign->user->id}})" wire:loading.attr="disabled" class="flex-shrink-0 w-12 h-12 cursor-pointer">
-                    <img class="w-full h-full rounded-full"
+                    <img class="w-full h-full rounded-full object-cover"
                         src="{{ URL::to('/') }}{{$item->campaign->user->profile_photo_path}}"
                         alt="" />
                 </div>
@@ -74,15 +74,6 @@
                         <span class="font-bold">{{__('Organizator')}}: </span>
                         {{$item->campaign->user->name}}
                     </div>
-
-                    @if($item->campaign->user->profile)
-                        <div>
-                            {{$item->campaign->user->profile->country->name}},
-                            @if ($item->campaign->user->profile->locality)
-                                {{$item->campaign->user->profile->locality}}
-                            @endif
-                        </div> 
-                    @endif
                 </div>
             </div>
         </div>

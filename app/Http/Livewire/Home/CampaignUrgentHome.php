@@ -7,15 +7,18 @@ use App\Models\Campaign;
 use Illuminate\Support\Facades\Http;
 
 use App\Models\CampaignUrgent;
+use App\Http\Traits\Utilities;
 
 class CampaignUrgentHome extends Component
 {
+    use Utilities;
+
     public $campaignUrgentCollection;
 
     public function render()
     {
         //$response = Http::get('http://api.ipapi.com/179.58.47.20?access_key=c161289d6c8bc62e50f1abad0c4846aa');
-        $ipapi = session()->get('ipapi');
+        $ipapi = $this->ipapiData();
         
         if ($ipapi != null) {
             $country_code = $ipapi['country_code'];
@@ -23,22 +26,25 @@ class CampaignUrgentHome extends Component
            if($country_code == 'BO') {
                 $collection = CampaignUrgent::
                                 join('campaigns', 'campaign_urgents.campaign_id', '=', 'campaigns.id')
-                                ->where('campaigns.user_id', '>' , 50)
-                                //->orderBy('users.created_at', 'desc')
-                                ->get();
+                                ->where(function ($query) {
+                                    $query->where('campaigns.type', '<>' , 'SHARING');
+                                })
+                                ->first();
            } else {
                 $collection = CampaignUrgent::
                                 join('campaigns', 'campaign_urgents.campaign_id', '=', 'campaigns.id')
-                                // ->where('campaigns.user_id', ' >= ' , 50)
-                                ->whereBetween('user_id', [1, 50])
-                                ->get();
+                                ->where(function ($query) {
+                                    $query->where('campaigns.type', '<>' , 'SHARING');
+                                })
+                                ->first();
            }
         } else {
             $collection = CampaignUrgent::
                         join('campaigns', 'campaign_urgents.campaign_id', '=', 'campaigns.id')
-                        // ->where('campaigns.user_id', ' >= ' , 50)
-                        ->where('campaigns.user_id', '>' , 500000)
-                        ->get();
+                        ->where(function ($query) {
+                            $query->where('campaigns.type', '<>' , 'SHARING');
+                        })
+                        ->first();
         }
 
         return view('livewire.home.campaign-urgent-home',[

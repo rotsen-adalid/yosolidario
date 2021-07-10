@@ -26,9 +26,9 @@
   
 <div class="mt-20">
  
-<livewire:home.hero-home/>
+    <livewire:home.hero-home/>
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-6xl mx-auto px-4 md:px-4 lg:px-4">
         <livewire:home.campaign-urgent-home/>
         <livewire:home.top-fundraising-home/>
 
@@ -37,8 +37,8 @@
     </div>
     
     <!-- Start a campaign -->
-    <div class=" bg-gray-50 py-16 sm:py-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 sm:mt-5">
+    <div class=" py-16 sm:py-20" style="background-color:#fbf8f6">
+        <div class="max-w-6xl mx-auto px-4 md:px-4 lg:px-4 sm:mt-5">
             <div class="text-center text-xl sm:text-3xl font-bold">{{__('Ready to start fundraising?')}}</div>
             <div class="get-app flex space-x-5 mt-2 sm:mt-2 justify-center md:justify-center">
                 <button wire:click="createCampaign" wire:loading.attr="disabled" 
@@ -48,7 +48,7 @@
             </div>
         </div>
     </div>
-    <!-- End Start -->
+    <!-- End Start 
     <div class="flex items-end justify-end fixed bottom-0 right-0 mb-4 mr-4 z-10">
         <div>
             <a href="https://telegram.me/yosolidario" target="_blank" title="YoSolidario" class="block w-10 h-10 rounded-full transition-all shadow hover:shadow-lg transform hover:scale-110 hover:rotate-12">
@@ -56,5 +56,6 @@
             </a>
         </div>
     </div>
+    -->
 </div>
 <livewire:footer.footer-app/>

@@ -5,22 +5,23 @@
    
 </x-slot>
 <x-slot  name="menu">
-    <livewire:menu.navigation-panel/>
+    @livewire('menu.navigation-panel-user')
 </x-slot>
       
 <div class="mt-20 bg-gray-50">
+    
 <x-section-content>
     <x-slot name="header">
-        <div class="bg-white shadow mb-10"> 
-            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-2 sm:space-y-0 py-6">
+        <div class="bg-white shadow-md mb-10"> 
+            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center max-w-6xl mx-auto px-4 sm:px-4 lg:px-4 space-y-2 sm:space-y-0 py-6">
                 <div class=" font-bold text-2xl sm:text-3xl text-gray-800">
                     {{ __('Your campaigns') }}
                 </div>
                 <div>
-                    <a  href="{{ route('campaign/create') }}" class="flex items-center w-full px-3 py-2 sm:py-3 text-center border bg-ys1 rounded-md font-bold text-base text-white tracking-widest hover:bg-ys2 active:bg-ys2 focus:outline-none focus:border-gray-100 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
+                    <x-button-link  href="{{ route('campaign/create') }}" class="px-3 py-2 sm:py-3 text-base space-x-1">
                         <span class="material-icons-outlined">add</span>
                         <span>{{__('Start a campaign')}}</span>
-                    </a>
+                    </x-button-link>
                 </div>
             </div>
         </div>
@@ -30,18 +31,36 @@
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mt-7 ">
     @foreach ($collection as $item)
-    <div class="px-0 sm:px-0 @if($collection->count() == 1) sm:col-start-2 @endif border border-gray-100 rounded-md">
-        <div wire:click="view({{$item->id}})" wire:loading.attr="disabled" class="cursor-pointer bg-gray-300 h-56 w-full rounded-lg shadow-md bg-cover bg-center " 
+    <div class="px-0 sm:px-0 @if($collection->count() == 1) sm:col-start-2 @endif border border-gray-100 rounded">
+        <div wire:click="view({{$item->id}})" wire:loading.attr="disabled" class="cursor-pointer bg-gray-300 h-36 w-full rounded shadow bg-cover bg-center " 
             style="background-image: url({{ URL::to('/').$item->image->url}})">
+            
+            @if ($item->organization)
+            <div class="flex items-center space-x-1 p-2">
+                @if($item->organization->logo_path)
+                <div wire:click="viewOrganization({{$item->organization->id}})" wire:loading.attr="disabled" class="flex-shrink-0 w-10 h-10 cursor-pointer">
+                    <img class="w-full h-full rounded-full object-cover"
+                        src="{{$host}}{{$item->organization->logo_path}}"
+                        alt="{{$item->organization->name}}" />
+                </div>
+                @endif
+                <div class="bg-white rounded-full p-2 text-gray-700 text-sm cursor-pointer truncate-single-line">
+                    <span class="font-bold">{{__('For')}}: </span>
+                    {{$item->organization->name}}
+                </div>
+            </div>
+            
+            @endif
+
         </div>
 
-        <div class=" w-full bg-white -mt-10 shadow-lg rounded-lg overflow-hidden p-5">
-            <div class="text-xl font-bold h-16">
+        <div class=" w-full bg-white -mt-10 shadow rounded overflow-hidden p-5">
+            <div class="text-xl font-bold truncate-single-line">
                 {{$item->title}}
             </div>
 
             <!-- status -->
-            <div class="flex header-content inline-flex ">
+            <div class="flex header-content inline-flex mt-2">
                 @if ($item->status == 'DRAFT')
                 <div class="category-badge flex-1  h-4 w-4 m rounded-full m-1 bg-red-100">
                     <div class="h-2 w-2 rounded-full m-1 bg-red-500 " ></div>
@@ -56,7 +75,13 @@
                     <div class="category-badge flex-1  h-4 w-4 m rounded-full m-1 bg-green-100">
                         <div class="h-2 w-2 rounded-full m-1 bg-green-500 " ></div>
                     </div>
-                    <div>{{__('In campaign')}}</div>
+                    @if ($item->campaignCollected->status_collected == 'IN_COLLECTION')
+                        <div>{{__('In campaign')}}</div>
+                    @elseif ($item->campaignCollected->status_collected == 'COLLECTION_CLOSING')
+                        <div>{{__('Campaing closed')}}</div>
+                    @elseif ($item->campaignCollected->status_collected == 'COLLECTION_FINALIZED')
+                        <div>{{__('Campaing finalized')}}</div>
+                    @endif
                 @elseif ($item->status == 'INACTIVE')
                     @if ($item->campaignOpeningRequest)
                         @if ($item->campaignOpeningRequest->status == 'REJECTED')
@@ -64,15 +89,18 @@
                                 <div class="h-2 w-2 rounded-full m-1 bg-red-500 " ></div>
                             </div>
                             <div>{{__('Rejected')}}</div>
+                        @elseif($item->campaignCollected->status_collected == 'COLLECTION_SUSPENDED')
+                            <div class="category-badge flex-1  h-4 w-4 m rounded-full m-1 bg-red-100">
+                                <div class="h-2 w-2 rounded-full m-1 bg-red-500 " ></div>
+                            </div>
+                            <div>{{__('Campaign suspended')}}</div>
                         @endif
-                    @else
-                        
                     @endif
                    
                 @endif
             </div>
             <div class="space-x-1">
-                <span>{{__('Campaign created')}}</span>
+                <span>{{__('Created')}}</span>
                 <span>{{ \Carbon\Carbon::parse($item->created_at)->diffForHumans() }}</span>
             </div>
         <!-- percentage 
@@ -91,7 +119,7 @@
         </div>
       -->
       <!-- -->
-        <div class="flex justify-between items-start">
+        <div class="hidden justify-between items-start">
             <div class=" m-2  text-sm">
                 
             </div>
@@ -101,12 +129,12 @@
             </div>
         </div>
         <!-- -->
-        <div class="h-1 relative max-w-xl rounded-full overflow-hidden mt-2">
-            <div class="w-full h-full bg-gray-200 absolute"></div>
-            <div class="h-full bg-green-500 absolute" style="width:{{$item->campaignCollected->amount_percentage_collected}}%"></div>
+        <div class="h-1   rounded-full  mt-5">
+            <div class="w-full h-full bg-green-100  bg-opacity-40"></div>
+            <div class="h-full bg-green-500 -mt-1" style="width:{{$item->campaignCollected->amount_percentage_collected}}%"></div>
         </div>
         <!-- -->
-        <div class=" space-x-0 mt-3 campaigns-start">
+        <div class="truncate-single-line space-x-0 mt-3 campaigns-start">
             <span class="text-xl font-bold">
                 {{ number_format($item->campaignCollected->amount_collected, 2 ) }}
                 {{$item->agency->agencySetting->money->currency_symbol}}

@@ -42,13 +42,13 @@
                 </div>
             </div>
             <form wire:submit.prevent="StoreOrUpdate">
-                        <!-- amount -->
+            <!-- amount -->
             <div class="mt-8">
                 <div class="sm:flex sm:space-x-2">
                     <div>
                         <x-label for="amount" class="font-semibold" value="{{ __('Amount') }}" required/>
                         <div class="flex">
-                            <x-input id="amount" type="text" class="mt-1 block w-50" wire:model.defer="amount"  autocomplete="off"  minlength="1" maxlength="3" onKeyPress="return validar(event)"/>
+                            <x-input id="amount" type="text" class="mt-1 block w-50" wire:model="amount"  autocomplete="off"  minlength="1" maxlength="3" onKeyPress="return validar(event)"/>
                             <x-input id="amount" disabled type="text" class="mt-1 ml-1 block w-16 font-bold" placeholder="{{$currency_symbol}}" autocomplete="off"/>
                         </div>
                         <x-input-error for="amount" class="mt-2" />
@@ -56,7 +56,7 @@
                     <div class="mt-4 sm:mt-0">
                         <!-- delivery_date -->
                         <x-label for="delivery_date" class="font-semibold" value="{{ __('Estimated delivery date') }}" />
-                        <x-input id="delivery_date" type="date" class="mt-1 block w-50" wire:model.defer="delivery_date" autocomplete="off" />
+                        <x-input id="delivery_date" type="date" class="mt-1 block w-50" wire:model="delivery_date" autocomplete="off" />
                         <x-input-error for="delivery_date" class="mt-2" />
                     </div>
                 </div>
@@ -64,7 +64,7 @@
             <!-- description -->
             <div class="mt-6">
                 <x-label for="description" class="font-semibold" value="{{ __('Description') }}" required/>
-                <x-textarea id="description" class="mt-1 block w-full" wire:model.defer="description" autocomplete="off"/>
+                <x-textarea id="description" class="mt-1 block w-full" wire:model="description" autocomplete="off"/>
                 <x-input-error for="description" class="mt-2" />
             </div>
             <!-- limiter -->
@@ -84,7 +84,7 @@
                     <div class="w-36">
                         @if ($limiter == 'YES')
                             <x-label for="limiter" class="ml-2 font-semibold" value="{{ __('Quantity') }}" />
-                            <x-input id="quantity" type="number" class="ml-2 block w-full" wire:model.defer="quantity" placeholder="{{ __('Quantity') }}" autocomplete="off" />
+                            <x-input id="quantity" type="text" class="ml-2 block w-full" wire:model="quantity" placeholder="{{ __('Quantity') }}" autocomplete="off" onKeyPress="return validar(event)" minlength="1" maxlength="3"/>
                             <x-input-error for="quantity" class="mt-2" />
                         @endif
                     </div>
@@ -108,16 +108,16 @@
                 <!-- Current Profile Photo -->
                 <div class="mt-2" x-show="!photoPreview">
                     @if( $image_url)
-                    <x-icon-button wire:click="deleteOne" class="absolute m-1 opacity-70">
+                    <x-icon-button wire:click="deleteOne" class=" flex justify-center m-1 opacity-70">
                         <span class="material-icons-outlined">delete</span>
                     </x-icon-button>
                         <img src="{{ URL::to('/') }}{{$image_url}}" alt="" class="rounded-sm w-full h-36 sm:h-64 object-cover">
                     @else 
-                        <div class="mt-1 flex justify-center items-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md w-full h-36 sm:h-64">
+                        <div  x-on:click.prevent="$refs.photo.click()" class="cursor-pointer mt-1 flex justify-center items-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md w-full h-36 sm:h-64">
                             <div class="space-y-1 text-center">
                             <span class="material-icons-outlined text-5xl text-gray-500">add_a_photo</span>
                             <p class="text-xs text-gray-500">
-                                PNG, JPG up to 2MB
+                                {{__('PNG, JPG up to 2MB')}}
                             </p>
                             </div>
                         </div>
@@ -125,28 +125,13 @@
                 </div>
                 <!-- Image Preview -->
                 <div class="mt-2" x-show="photoPreview">
-                    @if($photoOne)
-                        <span class="block rounded-sm w-full h-36 sm:h-64"
-                            x-bind:style="'background-size: cover; background-repeat: no-repeat; background-position: center center; background-image: url(\'' + photoPreview + '\');'">
-                            <x-icon-button wire:click="deleteOne" class="m-1 opacity-70">
-                                <span class="material-icons-outlined">delete</span>
-                            </x-icon-button>
-                        </span>
-                    @else
-                        <div class="mt-1 flex justify-center items-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md w-full h-36 sm:h-64">
-                            <div class="space-y-1 text-center">
-                            <span class="material-icons-outlined text-5xl text-gray-500">add_a_photo</span>
-                            <p class="text-xs text-gray-500">
-                                PNG, JPG up to 2MB
-                            </p>
-                            </div>
-                        </div>
-                    @endif
+                    <span class="block rounded-sm w-full h-36 sm:h-64"
+                        x-bind:style="'background-size: cover; background-repeat: no-repeat; background-position: center center; background-image: url(\'' + photoPreview + '\');'">
+                        <x-icon-button  @click="photoPreview = null" class=" flex justify-center m-1 opacity-70">
+                            <span class="material-icons-outlined">delete</span>
+                        </x-icon-button>
+                    </span>
                 </div>
-
-                <x-secondary-button class="mt-2 mr-2 w-auto" type="button" x-on:click.prevent="$refs.photo.click()">
-                    {{ __('Select A Image') }}
-                </x-secondary-button>
 
                 <x-input-error for="photoOne" class="mt-2" />
             </div>

@@ -35,7 +35,6 @@ class EditProfileSetting extends Component
 
     public function mount()
     {
-       
         $this->user_id = auth()->user()->id;
         $this->edit($this->user_id);
         

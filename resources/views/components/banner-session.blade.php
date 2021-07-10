@@ -1,7 +1,7 @@
 @props(['style' => session('flash.bannerStyle', 'success'), 'message' => session('flash.banner'), ])
 
 <div  
-    {{ $attributes->merge(['class' => 'fixed w-full']) }}
+    {{ $attributes->merge(['class' => 'fixed w-full top-20']) }}
         x-data="{{ json_encode(['show' => true, 'style' => $style, 'message' => $message, 'timeout' => null]), }}"
         :class="{ 'bg-green-500': style == 'success', 'bg-red-700': style == 'danger' }"
         style="display: none;"

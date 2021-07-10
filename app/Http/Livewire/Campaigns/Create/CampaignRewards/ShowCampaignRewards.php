@@ -15,14 +15,11 @@ use Illuminate\Support\Facades\Storage;
 class ShowCampaignRewards extends Component
 {
     use WithFileUploads;
-
     public $status_register;
-    public $campaign_reward_id, $image_url, $amount, $description, $delivery_date, $limiter, $quantity, $campaign_id;
-    public $photoOne;
-    public $recognition_currency_symbol;
     public $campaign;
-    public $confirmingDeletion;
     public $bannerStyle, $message;
+
+    protected $listeners = ['render'];
 
     public function mount(Campaign $campaign)
     {
@@ -38,7 +35,7 @@ class ShowCampaignRewards extends Component
     public function render()
     {
         $collection = CampaignReward::
-                    where('campaign_id', $this->campaign_id)
+                    where('campaign_id', $this->campaign->id)
                     ->orderBy('amount', 'asc')->get();
             return view('livewire.campaigns.create.campaign-rewards.show-campaign-rewards', ['collection' => $collection]);
     }
@@ -52,36 +49,5 @@ class ShowCampaignRewards extends Component
     public function edit($id) {
         $record = CampaignReward::find($id);
         return redirect()->route('campaign/rewards/update', ['campaign' => $this->campaign, 'campaignReward' => $record]);
-    }
-    // open delete reward
-    public function deleteDialog($id) {
-        $this->campaign_reward_id = $id;
-        $record = CampaignReward::find($id);
-        $this->amount = $record->amount;
-        $this->description = $record->description;
-        $this->recognition_currency_symbol = $record->campaign->agency->agencySetting->money->currency_symbol;
-        $this->confirmingDeletion = true;
-    }
-
-    // delete reward
-    public function delete($id) {
-        if($id) {
-            $record = CampaignReward::find($id);
-            $record->delete();
-            $extract = 'Delete campaign recognition: '.$record->id;
-            $record->userHistories()->create([
-                'photo_path' => null,
-                'extract' => $extract,
-                'data' => $record,
-                'action' =>  'DELETE',
-                'user_id' => auth()->user()->id,
-                'site_id' => 1,
-                //'agency_id' => 1
-                ]);
-        }
-        $this->emit('saved');
-        $this->bannerStyle = "danger";
-        $this->message = "Was removed successfully";
-        $this->confirmingDeletion = false;
     }
 }

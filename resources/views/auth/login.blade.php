@@ -1,4 +1,7 @@
 <x-guest-layout>
+    <x-slot name="title">
+        {{__('Login')}} : YoSolidario
+    </x-slot>
     <div class="md:min-h-screen md:flex md:flex-col md:justify-center md:items-center py-10 md:-mt-5 bg-gray-50">
     <x-authentication-card>
         <x-slot name="logo">

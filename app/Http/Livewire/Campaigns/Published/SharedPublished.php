@@ -9,7 +9,7 @@ use App\Models\CampaignUpdate;
 class SharedPublished extends Component
 {
     public $campaign;
-    public $shared;
+    public $open;
     public $embed;
     public $widget = 'large';
     public $copyLarge;
@@ -21,34 +21,37 @@ class SharedPublished extends Component
     public $countUpdates;
     public $buttonShared;
 
-    public function mount(Campaign $campaign, $buttonShared)
+    public $rrssAlpine = true, $embedAlpine = false;
+
+    protected $listeners = ['sharedOpen' => 'sharedOpen'];
+
+    public function render()
     {
-        if($campaign) {
+        return view('livewire.campaigns.published.shared-published');
+    }
 
-            if($campaign->count() == 1) {
-                $this->campaign = Campaign::find($campaign->id);
-                $this->copyLarge = '<iframe src="http://yosolidario.com/'.$campaign->slug.'/widget/large/?iframe=true" height="420></iframe>';
-                $this->copyMedium = '<iframe src="http://yosolidario.com/'.$campaign->slug.'/widget/medium/?iframe=true" height="245"></iframe>';
-                $this->copySmall = '<iframe src="http://yosolidario.com/'.$campaign->slug.'/widget/small/?iframe=true" height="60"></iframe>';
-                    
-                    if(isset($_SERVER['HTTP_REFERER'])) {
-                        $url = $_SERVER['HTTP_REFERER'];
-                        $host_array = explode("/",$url);
-                        if($host_array[2] != 'yosolidario.test' and $host_array[2] != 'yosolidario.com') {
-                            $this->host_previous = $host_array[2];
-                            $this->updateShared();
-                        }
+    public function sharedOpen($id) {
+        $this->open = true;
+
+        if($id) {
+
+            $this->campaign = Campaign::find($id);
+            $this->copyLarge = '<iframe src="https://yosolidario.com/'.$this->campaign->slug.'/widget/large/?iframe=true" height="420></iframe>';
+            $this->copyMedium = '<iframe src="https://yosolidario.com/'.$this->campaign->slug.'/widget/medium/?iframe=true" height="245"></iframe>';
+            $this->copySmall = '<iframe src="https://yosolidario.com/'.$this->campaign->slug.'/widget/small/?iframe=true" height="60"></iframe>';
+                
+                if(isset($_SERVER['HTTP_REFERER'])) {
+                    $url = $_SERVER['HTTP_REFERER'];
+                    $host_array = explode("/",$url);
+                    if($host_array[2] != 'yosolidario.test' and $host_array[2] != 'yosolidario.com') {
+                        $this->host_previous = $host_array[2];
+                        $this->updateShared();
                     }
-                    
-            } else {
-                return redirect()->route('home');
-            }
-            $this->buttonShared = $buttonShared;
+                }
+            $this->countUpdates =   CampaignUpdate::
+                where('campaign_id', '=' ,$this->campaign->id)
+                ->get();
         }
-
-        $this->countUpdates =   CampaignUpdate::
-                                where('campaign_id', '=' ,$campaign->id)
-                                ->get();
                                 
         $host= $_SERVER["HTTP_HOST"];
         if($host == 'yosolidario.test') {
@@ -56,15 +59,6 @@ class SharedPublished extends Component
         } elseif($host == 'yosolidario.com') {
             $this->host = 'https://yosolidario.com';
         }
-    } 
-
-    public function render()
-    {
-        return view('livewire.campaigns.published.shared-published');
-    }
-
-    public function shared() {
-        $this->shared = true;
     }
     public function messageCopy() {
         $this->emit('message');

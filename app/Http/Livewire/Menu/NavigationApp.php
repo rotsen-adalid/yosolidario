@@ -2,13 +2,22 @@
 
 namespace App\Http\Livewire\Menu;
 
+use App\Models\Organization;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class NavigationApp extends Component
 {
+    use WithPagination;
+
     public $notificationsCollection;
     public $notificationsUnreadCollection;
+
+    public function mount()
+    {
+
+    }
 
     public function render()
     {
@@ -19,7 +28,7 @@ class NavigationApp extends Component
             
             $this->notificationsUnreadCollection = auth()->user()->unreadNotifications;
         }
-
+                
         return view('livewire.menu.navigation-app');
     }
 

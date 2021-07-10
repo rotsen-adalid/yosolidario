@@ -48,3 +48,10 @@
 .u-ratio--16by9::before {
     padding-top: calc((9 / 16) * 100%);
 }
+
+.truncate-single-line
+{
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis
+}

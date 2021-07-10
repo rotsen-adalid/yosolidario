@@ -1,7 +1,6 @@
-<x-banner-session class="top-20"/>
-<nav x-data="{ open: false, open0:false }" class=" bg-white border-b border-gray-100  header w-full  fixed shadow-md top-0">
+<nav x-data="{ open: false, open0:false }" class=" bg-white border-b border-gray-100  header w-full  fixed shadow top-0">
     <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+    <div class="max-w-6xl mx-auto px-4 md:px-4 lg:px-4">
       <div class="flex justify-between h-20">
           <div class="flex">
               <!-- Logo -->
@@ -12,12 +11,6 @@
               </div>
 
               <!-- Navigation Links -->
-
-              <div class="hidden space-x-8 sm:-my-px sm:ml-6 lg:flex">
-                  <x-nav-link href="{{ route('campaign/create') }}" :active="request()->routeIs('campaign/create')" class="font-bold text-base ">
-                      {{ __('Start a campaign') }}
-                  </x-nav-link>
-              </div>
 
               <div class="hidden space-x-8 sm:-my-px sm:ml-6 lg:flex">
                   <x-nav-link href="{{ route('campaigns/discover') }}" :active="request()->routeIs('campaigns/discover')">
@@ -41,19 +34,27 @@
 
           <div class="hidden lg:flex sm:items-center sm:ml-6">
 
-                <div class="relative text-gray-600 ">
+                <button type="button" class="inline-flex items-center px-2 py-2 bg-gray-100 rounded-full border text-sm leading-4 font-medium rounded-md text-gray-500 hover:bg-gray-100 hover:text-gray-700 focus:outline-none focus:bg-gray-100 active:bg-gray-200 transition ease-in-out duration-150">
+                    <span class="material-icons-outlined cursor-pointer">
+                        search
+                    </span>
+                </button>
+
+                <!-- 
+                <div class="relative text-gray-600">
                     <input type="text" name="serch" placeholder="{{__('Search Campaigns')}}" 
-                    class="border border-gray-200 bg-white h-11 px-5 pr-10 rounded-full text-sm w-64 focus:border-green-500 focus:ring focus:ring-green-50 focus:ring-opacity-50 rounded-md shadow-sm">
+                    class="border border-gray-200 bg-white h-11 px-5 pr-10 rounded-full text-sm md:w-64 lg:w-80 focus:border-green-500 focus:ring focus:ring-green-50 focus:ring-opacity-50 rounded-md shadow-sm">
                     <button type="submit" class="absolute right-0 mt-3 mr-2">
                         <span class="material-icons-outlined cursor-pointer">
                             search
                         </span>
                     </button>
                 </div>
-
+                -->
+               
               @auth
 
-                <!-- notification -->
+                <!-- notification 
                 <div class="ml-3 relative">
                   <x-dropdown-notifications align="right">
                       <x-slot name="trigger">
@@ -79,7 +80,7 @@
 
                       <x-slot name="content">
                             @if (count($notificationsCollection))
-                                <!-- notifications show -->
+                    
                                 <div class="block px-4 py-2 text-lg text-gray-800 font-bold">
                                     {{ __('Notifications') }}
                                 </div>
@@ -101,7 +102,7 @@
                       </x-slot>
                     </x-dropdown-notifications>
                 </div>
-
+                -->
               <!-- Teams Dropdown -->
               @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
                   <div class="ml-3 relative">
@@ -152,105 +153,49 @@
                   </div>
               @endif
 
-              <!-- Settings Dropdown -->
-              <div class="ml-3 relative">
-                  <x-dropdown align="right" width="48">
-                      <x-slot name="trigger">
-                          @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
-                              <button class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition duration-150 ease-in-out">
-                                  @if (Auth::user()->profile_photo_path)
-                                      <img class="h-10 w-10 rounded-full object-cover" src="{{ Auth::user()->profile_photo_path }}" alt="{{ Auth::user()->name }}" />
-                                  @else 
-                                      <img class="h-10 w-10 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
-                                  @endif
-                              </button>
-                          @else
-                              <span class="inline-flex rounded-md">
-                                  <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                                      {{ Auth::user()->name }}
+                <!-- Settings Dropdown -->
+                <div class="ml-3 relative">
+                    <x-dropdown align="right" width="48">
+                        <x-slot name="trigger">
+                            @livewire('menu.navigation-menu', ['option' => 0])
+                        </x-slot>
 
-                                      <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                          <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                      </svg>
-                                  </button>
-                              </span>
-                          @endif
-                      </x-slot>
+                        <x-slot name="content">
+                            @livewire('menu.navigation-menu', ['option' => 2])
+                        </x-slot>
+                    </x-dropdown>
+                </div>
 
-                      <x-slot name="content">
-                          
-                            <!-- Management Panel -->
-                            <div class="block px-4 py-2 text-xs text-gray-400">
-                                {{ __('Management panel') }}
-                            </div>
-
-                            <!-- My campaigns -->
-                            <x-dropdown-link href="{{ route('your/campaigns') }}">
-                                {{ __('Your campaigns') }}
-                            </x-dropdown-link>
-
-                            <!-- My collaborations -->
-                            <x-dropdown-link href="{{ route('your/collaborations') }}">
-                                {{ __('Your collaborations') }}
-                            </x-dropdown-link>
-                            
-                            <!-- Saved campaigns -->
-                            <x-dropdown-link href="{{ route('campaign/saves/show') }}">
-                                {{ __('Saved campaigns') }}
-                            </x-dropdown-link>
-                          
-                            <!-- Account Management -->
-                            <div class="block px-4 py-2 text-xs text-gray-400">
-                                {{ __('Manage account') }}
-                            </div>
-
-                            @if(Auth::user()->slug)
-                                <x-dropdown-link href="{{ route('user', Auth::user()) }}">
-                                    {{ __('Profile') }}
-                                </x-dropdown-link>
-                            @endif
-
-                            @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
-                                <x-dropdown-link href="{{ route('api-tokens.index') }}">
-                                    {{ __('API Tokens') }}
-                                </x-dropdown-link>
-                            @endif
-
-                            <x-dropdown-link href="{{ route('setting/account') }}">
-                                {{ __('Account setting') }}
-                            </x-dropdown-link>
-
-                            <div class="border-t border-gray-100"></div>
-
-                            <!-- Authentication -->
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
-
-                                <x-dropdown-link href="{{ route('logout') }}"
-                                        onclick="event.preventDefault();
-                                                this.closest('form').submit();">
-                                    {{ __('Logout') }}
-                                </x-dropdown-link>
-                            </form>
-                      </x-slot>
-                  </x-dropdown>
-              </div>
-              @else
-              <div class="hidden space-x-8 sm:-my-px sm:ml-6 sm:flex">
-
-                    <a class="font-bold text-sm text-sm text-gray-600 hover:text-gray-900 underline" href="{{ route('login') }}">
-                        <span class=" font-semibold ">{{ __('Sign in') }}</span>
+                <div class="hidden space-x-8 sm:-my-px sm:ml-3 lg:flex">
+                    <a href="{{ route('campaign/create') }}" class=" bg-ys1 shadow-lg rounded font-ligth text-base py-1 px-2 ">
+                    <span class="text-white "> {{ __('Start a campaign') }}</span>
                     </a>
-              </div>
+                </div>
+              @else
+                <div class="hidden space-x-0 sm:-my-px sm:ml-6 sm:flex">
+
+                        <a class="font-bold text-sm text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
+                            <span class=" font-semibold ">{{ __('Sign in') }}</span>
+                        </a>
+                </div>
+
+                <div class="hidden space-x-8 sm:-my-px sm:ml-6 lg:flex">
+                    <a href="{{ route('campaign/create') }}" class=" bg-ys1 shadow-lg rounded font-ligth text-base py-1 px-2 ">
+                    <span class="text-white "> {{ __('Start a campaign') }}</span>
+                    </a>
+                </div>
+
               @endauth
           </div>
          
           <!-- Hamburger -->
           <div class="-mr-2 flex items-center lg:hidden">
 
+            <!-- 
             <button @click="open0 = ! open0" class="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
                 <span class="material-icons-outlined text-3xl">notifications</span>
             </button>
+            -->
             
             <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-800 hover:text-gray-900 hover:bg-gray-50 focus:outline-none focus:bg-gray-50 focus:text-gray-800 transition duration-150 ease-in-out">
                 <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
@@ -323,113 +268,7 @@
             </x-responsive-nav-link>
         </div>
         -->
+        @livewire('menu.navigation-menu', ['option' => 3])
 
-      @auth
-      <!-- Responsive Settings Options -->
-      <div class="mt-2 pt-4 pb-2 border-t border-gray-200 ">
-          <a  href="{{ route('user', Auth::user()->slug)}}">
-            <div class="flex items-center px-4">
-                @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
-                    <div class="flex-shrink-0 mr-3">
-                        @if (Auth::user()->profile_photo_path)
-                            <img class="h-10 w-10 rounded-full object-cover" src="{{ Auth::user()->profile_photo_path }}" alt="{{ Auth::user()->name }}" />
-                        @else 
-                            <img class="h-10 w-10 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
-                        @endif
-                    </div>
-                @endif
-
-                <div>
-                    <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-                    <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
-                </div>
-            </div>
-          </a>
-          <div class="mt-3">
-              <!-- Management Panel -->
-              <div class="block pt-2 pb-1 px-4 text-xs text-gray-400">
-                {{ __('Management panel') }}
-              </div>
-              <x-responsive-nav-link href="{{ route('your/campaigns') }}" :active="request()->routeIs('your/campaigns')">
-                {{ __('Your campaigns') }}
-              </x-responsive-nav-link>
-
-              <x-responsive-nav-link href="{{ route('your/collaborations') }}" :active="request()->routeIs('your/collaborations')">
-                {{ __('Your collaborations') }}
-              </x-responsive-nav-link>
-              <!-- Account Management -->
-              <div class="block pt-2 pb-1 px-4 text-xs text-gray-400">
-                {{ __('Manage account') }}
-              </div>
-
-              @if(Auth::user()->slug)
-                <x-responsive-nav-link href="{{ route('user', Auth::user()->slug) }}" :active="request()->routeIs('user')">
-                    {{ __('Profile') }}
-                </x-responsive-nav-link>
-              @endif
-
-              <x-responsive-nav-link href="{{ route('setting/account') }}" :active="request()->routeIs('setting/account')">
-                  {{ __('Account setting') }}
-              </x-responsive-nav-link>
-
-              <div class="border-t mt-2 mb-1 border-gray-200"></div>
-
-              @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
-                  <x-responsive-nav-link href="{{ route('api-tokens.index') }}" :active="request()->routeIs('api-tokens.index')">
-                      {{ __('API Tokens') }}
-                  </x-responsive-nav-link>
-              @endif
-
-              <!-- Authentication -->
-              <form method="POST" action="{{ route('logout') }}">
-                  @csrf
-
-                  <x-responsive-nav-link href="{{ route('logout') }}"
-                                 onclick="event.preventDefault();
-                                  this.closest('form').submit();">
-                      {{ __('Logout') }}
-                  </x-responsive-nav-link>
-              </form>
-
-              <!-- Team Management -->
-              @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
-                  <div class="border-t border-gray-200"></div>
-
-                  <div class="block px-4 py-2 text-xs text-gray-400">
-                      {{ __('Manage Team') }}
-                  </div>
-
-                  <!-- Team Settings -->
-                  <x-responsive-nav-link href="{{ route('teams.show', Auth::user()->currentTeam->id) }}" :active="request()->routeIs('teams.show')">
-                      {{ __('Team Settings') }}
-                  </x-responsive-nav-link>
-
-                  @can('create', Laravel\Jetstream\Jetstream::newTeamModel())
-                      <x-responsive-nav-link href="{{ route('teams.create') }}" :active="request()->routeIs('teams.create')">
-                          {{ __('Create New Team') }}
-                      </x-responsive-nav-link>
-                  @endcan
-
-                  <div class="border-t border-gray-200"></div>
-
-                  <!-- Team Switcher -->
-                  <div class="block px-4 py-2 text-xs text-gray-400">
-                      {{ __('Switch Teams') }}
-                  </div>
-
-                  @foreach (Auth::user()->allTeams() as $team)
-                      <x-switchable-team :team="$team" component="responsive-nav-link" />
-                  @endforeach
-              @endif
-          </div>
-      </div>
-      @else
-          <div class="border-t border-gray-200"></div>
-          <div class="pt-3 pb-3 space-y-1">
-              <x-responsive-nav-link href="{{ route('login') }}" :active="request()->routeIs('login')">
-                    <span class="py-2 px-3 rounded-lg text-gray-900 font-semibold ">{{ __('Login') }}</span>
-              </x-responsive-nav-link>
-          </div>
-      @endauth
     </div>
 </nav>

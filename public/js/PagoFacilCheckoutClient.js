@@ -17,7 +17,6 @@ function PrepararParametros()
         }
     });
     
-    
     //----------
     $.ajax({                  
             url: lcUrlajax,

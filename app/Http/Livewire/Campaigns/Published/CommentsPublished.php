@@ -1,19 +1,21 @@
 <?php
 
 namespace App\Http\Livewire\Campaigns\Published;
-use Livewire\Component;
 
+use Livewire\Component;
 use App\Models\Campaign;
+use App\Http\Traits\Utilities;
+use App\Models\Collection;
+use Livewire\WithPagination;
 
 class CommentsPublished extends Component
 {
+    use WithPagination;
+    use Utilities;
+
+    public $search, $paginate = 20, $sumCollection; 
+
     public $campaign;
-    public $shared;
-    public $embed;
-    public $widget = 'large';
-    public $copyLarge;
-    public $copyMedium;
-    public $copySmall;
     public $host;
     public $message;
 
@@ -21,9 +23,13 @@ class CommentsPublished extends Component
     {
         if($campaign->id) {
             $this->campaign = $campaign;
-            $this->copyLarge = '<iframe src="http://yosolidario.com/'.$campaign->slug.'/widget/large/?iframe=true" height="420></iframe>';
-            $this->copyMedium = '<iframe src="http://yosolidario.com/'.$campaign->slug.'/widget/medium/?iframe=true" height="245"></iframe>';
-            $this->copySmall = '<iframe src="http://yosolidario.com/'.$campaign->slug.'/widget/small/?iframe=true" height="60"></iframe>';
+            $this->sumCollection = Collection::
+                    join('payment_order_campaigns', 'payment_order_campaigns.payment_order_id', '=' ,'collections.payment_order_id')
+                    ->join('payment_orders', 'payment_orders.id', '=' ,'collections.payment_order_id')
+                    ->where('payment_order_campaigns.campaign_id', '=', $this->campaign->id)
+                    ->where('collections.status', '=', 'PAYMENT')
+                    ->orderBy('collections.updated_at', 'desc')
+                    ->get();
         } else {
             // return redirect()->route('home');
         }
@@ -38,22 +44,41 @@ class CommentsPublished extends Component
 
     public function render()
     {
-        return view('livewire.campaigns.published.comments-published');
-    }
-
-    public function shared() {
-        $this->shared = true;
-    }
-
-    public function messageCopy() {
-        $this->emit('message');
-        $this->message = "Copied";
-    }
-    public function emberHTML($nro) {
-        if($nro == 1) {
-            $this->embed = true;
-        } elseif($nro == 0) {
-            $this->embed = false;
+        if(strlen($this->search) > 0) {
+            $collection = Collection::
+                            join('payment_order_campaigns', 'payment_order_campaigns.payment_order_id', '=' ,'collections.payment_order_id')
+                            ->join('payment_orders', 'payment_orders.id', '=' ,'collections.payment_order_id')
+                            ->where('payment_order_campaigns.campaign_id', '=', $this->campaign->id)
+                            ->where('collections.status', '=', 'PAYMENT')
+                            ->where('payment_orders.commentary', '<>', null)
+                            ->where('payment_orders.commentary_hidden', '=', 'NO')
+                            ->orderBy('collections.updated_at', 'desc')
+                            ->paginate($this->paginate);  
+        } else {
+            $collection = Collection::
+                            join('payment_order_campaigns', 'payment_order_campaigns.payment_order_id', '=' ,'collections.payment_order_id')
+                            ->join('payment_orders', 'payment_orders.id', '=' ,'collections.payment_order_id')
+                            ->where('payment_order_campaigns.campaign_id', '=', $this->campaign->id)
+                            ->where('collections.status', '=', 'PAYMENT')
+                            ->where('payment_orders.commentary', '<>', null)
+                            ->where('payment_orders.commentary_hidden', '=', 'NO')
+                            ->orderBy('collections.updated_at', 'desc')
+                            ->paginate($this->paginate);
         }
+
+        return view('livewire.campaigns.published.comments-published',[
+            'collection' => $collection
+            ]);
+    }
+
+    //for searches with paging
+    public function updatingSearch(): void 
+    {
+        $this->gotoPage(1);
+    }
+
+    public function resetCollection() {
+        $this->search = "";
+        $this->gotoPage(1);
     }
 }

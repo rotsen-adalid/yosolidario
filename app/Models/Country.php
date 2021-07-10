@@ -19,12 +19,13 @@ class Country extends Model
         'states_denomination',
         'country_estates',
         'status',
+        'money_id',
         'search'
     ];
 
-    // uno a uno
+    // uno a muchos inversa
     public function money() {
-        return $this->hasOne(Money::class);
+        return $this->belongsTo(Money::class);
     }
 
     // uno a muchos 
@@ -43,7 +44,7 @@ class Country extends Model
     }
 
     // uno a muchos
-    public function personalInformation() {
+    public function personalInformations() {
         return $this->hasMany(PersonalInformation::class);
     }
 

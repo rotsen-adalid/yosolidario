@@ -9,10 +9,16 @@ use App\Http\Traits\InteractsWithBanner;
 class ShowYourCampaigns extends Component
 {
     use InteractsWithBanner;
+    public $host;
 
     public function mount() {
 
-        // $this->banner('Successfully saved!');
+        $host= $_SERVER["HTTP_HOST"];
+        if($host == 'yosolidario.test') {
+            $this->host = 'http://yosolidario-adm.test';
+        } elseif($host == 'yosolidario.com') {
+            $this->host = 'https://admin.yosolidario.com';
+        }
     }
 
     public function render()
@@ -48,5 +54,10 @@ class ShowYourCampaigns extends Component
     public function manage($id) {
         $record = Campaign::find($id);
         return redirect()->route('campaign/manage', ['campaign' => $record]);
+    }
+
+    public function viewOrganization($id)
+    {
+        
     }
 }

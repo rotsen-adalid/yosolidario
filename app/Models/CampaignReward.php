@@ -22,8 +22,8 @@ class CampaignReward extends Model
         'limiter',
         'quantity',
         'collaborators',
-        'campaign_id'
-
+        'campaign_id',
+        'status'
     ];
 
     // uno a muchos inversa
@@ -32,8 +32,8 @@ class CampaignReward extends Model
     }
 
     // uno a muchos 
-    public function paymentOrders() {
-        return $this->hasMany(PaymentOrder::class);
+    public function paymentOrderCampaigns() {
+        return $this->hasMany(PaymentOrderCampaign::class);
     }
     
     // relacion polimorfica uno a muchos

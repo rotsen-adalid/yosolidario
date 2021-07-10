@@ -3,7 +3,7 @@
     <div>
         {{ $header }}
     </div>
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10">
+    <div class="max-w-6xl mx-auto px-4 sm:px-4 lg:px-4 pb-10">
         {{$content}}
     </div>
 </div>

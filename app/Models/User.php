@@ -129,6 +129,17 @@ class User extends Authenticatable // implements MustVerifyEmail
         return $this->belongsToMany(Site::class)->withTimestamps();
     }
     
+    // relacion muchos a muchos
+    public function organizations()
+    {
+        return $this->belongsToMany(Organization::class);
+    }
+
+    // uno a uno
+    public function organizationSession() {
+        return $this->hasOne(OrganizationSession::class);
+    }
+
     // function autorize site
     public function authorizeSites($sites)
     {

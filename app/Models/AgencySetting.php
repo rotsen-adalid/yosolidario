@@ -14,9 +14,8 @@ class AgencySetting extends Model
     protected $fillable = [
         'amount_min',
         'amount_max',
+        'iva',
         'money_id',
-        'buy_usd',
-        'sale_usd',
         'agency_id',
     ];
 

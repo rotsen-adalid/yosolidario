@@ -48,7 +48,7 @@
             </div>
             <div>
                 <div class="mb-5 font-bold py-1 text-lg">
-                    {{__('How will I use the money?')}}
+                    {{__('Como se usara el dinero?')}}
                 </div>
                 <div class="text-justify">
                     {!! nl2br(e($this->campaign->campaignQuestion->use_of_money), false) !!}
@@ -56,7 +56,7 @@
             </div>
         </div>
            
-        <!-- -->
+        <!-- 
         <div class="pt-6 pb-10 sm:pb-5 flex flex-col-reverse sm:flex-col sm:block border-b">
             <div @click="$dispatch('img-modal', {  imgModalSrc: '{{URL::to('/').$this->campaign->campaignQuestion->about_organizer_url}}', imgModalDesc: '' })" class="flex justify-center sm:block">
                 @if($this->campaign->campaignQuestion->about_organizer_url)
@@ -73,6 +73,7 @@
                 </div>
             </div>
         </div>
+        -->
         <!-- -->
         <div class="pt-6 pb-10 sm:pb-5 flex flex-col-reverse sm:flex-col sm:block border-b">
            <div @click="$dispatch('img-modal', {  imgModalSrc: '{{URL::to('/').$this->campaign->campaignQuestion->delivery_of_rewards_url}}', imgModalDesc: '' })" class="flex justify-center sm:block">
@@ -121,7 +122,7 @@
            </div>
             <div class="">
                 <div class="mb-5 font-bold py-1 text-lg">
-                    {{__('Organizer contact details')}}
+                    {{__('Contact details')}}
                 </div>
                 <div class="text-justify">
                     {!! nl2br(e($this->campaign->campaignQuestion->contact_organizer), false) !!}

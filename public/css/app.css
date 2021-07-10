@@ -33094,6 +33094,13 @@ select {
   padding-top: calc((9 / 16) * 100%);
 }
 
+.truncate-single-line
+{
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis
+}
+
 @media (min-width: 640px) {
   .sm\:container {
     width: 100%;

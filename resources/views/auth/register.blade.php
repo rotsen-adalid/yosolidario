@@ -1,4 +1,7 @@
 <x-guest-layout>
+    <x-slot name="title">
+        {{__('Register')}} : YoSolidario
+    </x-slot>
     <div class="md:min-h-screen md:flex md:flex-col md:justify-center md:items-center py-14 md:-mt-5 bg-gray-50">
     <x-authentication-card>
         <x-slot name="logo">
@@ -16,7 +19,7 @@
                     <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
                 </div>
                 <div class="mt-4">
-                    <x-label for="lastname" value="{{ __('Lastnames') }}" />
+                    <x-label for="lastname" value="{{ __('Lastname') }}" />
                     <x-input id="lastname" class="block mt-1 w-full" type="text" name="lastname" :value="old('lastname')" required autofocus autocomplete="lastname" />
                 </div>
             </div>

@@ -1,8 +1,10 @@
 <?php
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Bolivia\Pagofacil;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 use App\Models\PaymentOrder;
-use Illuminate\Http\Request;
 
 class PagoFacilCheckoutClient extends Controller
 {

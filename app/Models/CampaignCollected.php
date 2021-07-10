@@ -17,7 +17,7 @@ class CampaignCollected extends Model
         'amount_percentage_collected',
         'last_deposit',
         'campaign_id',
-        'status',
+        'status_collected',
     ];
 
     // uno a uno inversa

@@ -1,51 +1,26 @@
-<div>
-    @if ($buttonShared == 1)
-        <button  wire:click="shared" 
-            class="flex justify-center items-center w-full text-center px-4  py-1 sm:py-3 bg-white border border-gray-300 rounded-md font-bold text-sm text-black uppercase tracking-widest shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">
-            <span class="material-icons-outlined">share</span>
-            {{__('Share')}}
-        </button>
-    @elseif ($buttonShared == 2)
-        <button wire:click="shared" type="button" 
-        class="border border-yellow-500 text-black py-1 px-2 font-bold rounded-md text-base
-        hover:bg-yellow-100 focus:outline-none focus:border-yellow-500 shadow-sm focus:shadow-outline-yellow active:bg-yelow-400 transition ease-in-out duration-150">
-            {{__('Share')}}
-        </button>
-    @elseif ($buttonShared == 3)
+<x-dialog-modal wire:model="open">
+
+    <x-slot name="content">
+
+        <!-- 
         <button wire:click="shared" class="w-full lg:w-72 px-4 py-2 sm:py-4 text-center border border-yellow-400 border border-yellow-500 rounded-md font-bold text-base text-black uppercase tracking-widest hover:border-yellow-500 active:border-yellow-500 focus:outline-none focus:border-yellow-300 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
-            <!-- <img src="{asset('images/icono.png')}}" class="h-7" alt=""> -->
             <span>{{__('Share')}}</span>
         </button>
-    @elseif ($buttonShared == 4)
         <button wire:click="shared" class="w-full lg:w-72 px-4 py-2 sm:py-4 text-center border border-yellow-400 border border-yellow-500 rounded-md font-bold text-base text-black uppercase tracking-widest hover:border-yellow-500 active:border-yellow-500 focus:outline-none focus:border-yellow-300 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
-            <!-- <img src="{asset('images/icono.png')}}" class="h-7" alt=""> -->
             <span>{{__('Share')}}</span>
         </button>
-    @elseif ($buttonShared == 5)
-        <button wire:click="shared" class="w-full lg:w-72 px-4 py-2 sm:py-4 text-center border border-yellow-400 border border-yellow-500 rounded-md font-bold text-base text-black uppercase tracking-widest hover:border-yellow-500 active:border-yellow-500 focus:outline-none focus:border-yellow-300 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">
-            <!-- <img src="{asset('images/icono.png')}}" class="h-7" alt=""> -->
-            <span>{{__('Share')}}</span>
-        </button>
-    @endif
-   
-    <x-dialog-modal wire:model="shared">
-        <x-slot name="title">
-            @if(!$embed)
-                <div class="font-bold text-2xl">
-                    {{ __('Help by sharing') }}
-                </div>
-            @else
-                <div class="flex items-center space-x-2">
-                    <div wire:click="emberHTML(0)" class="flex spacex-1 px-2 py-1 bg-red-50 items-center w-20 cursor-pointer rounded-sm">
-                        <span class="material-icons-outlined text-2xl">arrow_back_ios</span>
-                        <span>{{__('back')}}</span>
-                    </div>
-                    <div class="font-bold text-2xl">{{__('Ember HTML')}}</div>
-                </div>
-            @endif
-        </x-slot>
-        <x-slot name="content">
-            @if(!$embed)
+        -->
+
+        @if ($campaign)
+            
+        <!-- rrss -->
+        <div x-data="{ rrss:  @entangle('rrssAlpine'), embed: @entangle('embedAlpine') }">
+
+        <div x-show="rrss">
+            <div class="font-bold text-2xl">
+                {{ __('Help by sharing') }}
+            </div>
+
             <div class="mt-2 text-sm sm:text-base">
                 {{__('Fundraisers shared on social networks raise up to 5x more')}}
             </div>
@@ -82,23 +57,31 @@
                             <img class="h-10" src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjUxMnB0IiB2aWV3Qm94PSItMSAwIDUxMiA1MTIiIHdpZHRoPSI1MTJwdCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJtMTAuODk0NTMxIDUxMmMtMi44NzUgMC01LjY3MTg3NS0xLjEzNjcxOS03Ljc0NjA5My0zLjIzNDM3NS0yLjczNDM3Ni0yLjc2NTYyNS0zLjc4OTA2My02Ljc4MTI1LTIuNzYxNzE5LTEwLjUzNTE1NmwzMy4yODUxNTYtMTIxLjU0Njg3NWMtMjAuNzIyNjU2LTM3LjQ3MjY1Ni0zMS42NDg0MzctNzkuODYzMjgyLTMxLjYzMjgxMy0xMjIuODk0NTMyLjA1ODU5NC0xMzkuOTQxNDA2IDExMy45NDE0MDctMjUzLjc4OTA2MiAyNTMuODcxMDk0LTI1My43ODkwNjIgNjcuODcxMDk0LjAyNzM0MzggMTMxLjY0NDUzMiAyNi40NjQ4NDQgMTc5LjU3ODEyNSA3NC40MzM1OTQgNDcuOTI1NzgxIDQ3Ljk3MjY1NiA3NC4zMDg1OTQgMTExLjc0MjE4NyA3NC4yODkwNjMgMTc5LjU1ODU5NC0uMDYyNSAxMzkuOTQ1MzEyLTExMy45NDUzMTMgMjUzLjgwMDc4MS0yNTMuODY3MTg4IDI1My44MDA3ODEgMCAwLS4xMDU0NjggMC0uMTA5Mzc1IDAtNDAuODcxMDkzLS4wMTU2MjUtODEuMzkwNjI1LTkuOTc2NTYzLTExNy40Njg3NS0yOC44NDM3NWwtMTI0LjY3NTc4MSAzMi42OTUzMTJjLS45MTQwNjIuMjM4MjgxLTEuODQzNzUuMzU1NDY5LTIuNzYxNzE5LjM1NTQ2OXptMCAwIiBmaWxsPSIjZTVlNWU1Ii8+PHBhdGggZD0ibTEwLjg5NDUzMSA1MDEuMTA1NDY5IDM0LjQ2ODc1LTEyNS44NzEwOTRjLTIxLjI2MTcxOS0zNi44Mzk4NDQtMzIuNDQ1MzEyLTc4LjYyODkwNi0zMi40Mjk2ODctMTIxLjQ0MTQwNi4wNTQ2ODctMTMzLjkzMzU5NCAxMDkuMDQ2ODc1LTI0Mi44OTg0MzggMjQyLjk3NjU2Mi0yNDIuODk4NDM4IDY0Ljk5MjE4OC4wMjczNDQgMTI1Ljk5NjA5NCAyNS4zMjQyMTkgMTcxLjg3MTA5NCA3MS4yMzgyODEgNDUuODcxMDk0IDQ1LjkxNDA2MyA3MS4xMjUgMTA2Ljk0NTMxMyA3MS4xMDE1NjIgMTcxLjg1NTQ2OS0uMDU4NTkzIDEzMy45Mjk2ODgtMTA5LjA2NjQwNiAyNDIuOTEwMTU3LTI0Mi45NzI2NTYgMjQyLjkxMDE1Ny0uMDA3ODEyIDAgLjAwMzkwNiAwIDAgMGgtLjEwNTQ2OGMtNDAuNjY0MDYzLS4wMTU2MjYtODAuNjE3MTg4LTEwLjIxNDg0NC0xMTYuMTA1NDY5LTI5LjU3MDMxM3ptMTM0Ljc2OTUzMS03Ny43NSA3LjM3ODkwNyA0LjM3MTA5M2MzMSAxOC4zOTg0MzggNjYuNTQyOTY5IDI4LjEyODkwNyAxMDIuNzg5MDYyIDI4LjE0ODQzOGguMDc4MTI1YzExMS4zMDQ2ODggMCAyMDEuODk4NDM4LTkwLjU3ODEyNSAyMDEuOTQ1MzEzLTIwMS45MDIzNDQuMDE5NTMxLTUzLjk0OTIxOC0yMC45NjQ4NDQtMTA0LjY3OTY4Ny01OS4wOTM3NS0xNDIuODM5ODQ0LTM4LjEzMjgxMy0zOC4xNjAxNTYtODguODMyMDMxLTU5LjE4NzUtMTQyLjc3NzM0NC01OS4yMTA5MzctMTExLjM5NDUzMSAwLTIwMS45ODQzNzUgOTAuNTY2NDA2LTIwMi4wMjczNDQgMjAxLjg4NjcxOS0uMDE1NjI1IDM4LjE0ODQzNyAxMC42NTYyNSA3NS4yOTY4NzUgMzAuODc1IDEwNy40NDUzMTJsNC44MDQ2ODggNy42NDA2MjUtMjAuNDA2MjUgNzQuNXptMCAwIiBmaWxsPSIjZmZmIi8+PHBhdGggZD0ibTE5LjM0Mzc1IDQ5Mi42MjUgMzMuMjc3MzQ0LTEyMS41MTk1MzFjLTIwLjUzMTI1LTM1LjU2MjUtMzEuMzI0MjE5LTc1LjkxMDE1Ny0zMS4zMTI1LTExNy4yMzQzNzUuMDUwNzgxLTEyOS4yOTY4NzUgMTA1LjI3MzQzNy0yMzQuNDg4MjgyIDIzNC41NTg1OTQtMjM0LjQ4ODI4MiA2Mi43NS4wMjczNDQgMTIxLjY0NDUzMSAyNC40NDkyMTkgMTY1LjkyMTg3NCA2OC43NzM0MzggNDQuMjg5MDYzIDQ0LjMyNDIxOSA2OC42NjQwNjMgMTAzLjI0MjE4OCA2OC42NDA2MjYgMTY1Ljg5ODQzOC0uMDU0Njg4IDEyOS4zMDA3ODEtMTA1LjI4MTI1IDIzNC41MDM5MDYtMjM0LjU1MDc4MiAyMzQuNTAzOTA2LS4wMTE3MTggMCAuMDAzOTA2IDAgMCAwaC0uMTA1NDY4Yy0zOS4yNTM5MDctLjAxNTYyNS03Ny44MjgxMjYtOS44NjcxODgtMTEyLjA4NTkzOC0yOC41MzkwNjN6bTAgMCIgZmlsbD0iIzY0YjE2MSIvPjxnIGZpbGw9IiNmZmYiPjxwYXRoIGQ9Im0xMC44OTQ1MzEgNTAxLjEwNTQ2OSAzNC40Njg3NS0xMjUuODcxMDk0Yy0yMS4yNjE3MTktMzYuODM5ODQ0LTMyLjQ0NTMxMi03OC42Mjg5MDYtMzIuNDI5Njg3LTEyMS40NDE0MDYuMDU0Njg3LTEzMy45MzM1OTQgMTA5LjA0Njg3NS0yNDIuODk4NDM4IDI0Mi45NzY1NjItMjQyLjg5ODQzOCA2NC45OTIxODguMDI3MzQ0IDEyNS45OTYwOTQgMjUuMzI0MjE5IDE3MS44NzEwOTQgNzEuMjM4MjgxIDQ1Ljg3MTA5NCA0NS45MTQwNjMgNzEuMTI1IDEwNi45NDUzMTMgNzEuMTAxNTYyIDE3MS44NTU0NjktLjA1ODU5MyAxMzMuOTI5Njg4LTEwOS4wNjY0MDYgMjQyLjkxMDE1Ny0yNDIuOTcyNjU2IDI0Mi45MTAxNTctLjAwNzgxMiAwIC4wMDM5MDYgMCAwIDBoLS4xMDU0NjhjLTQwLjY2NDA2My0uMDE1NjI2LTgwLjYxNzE4OC0xMC4yMTQ4NDQtMTE2LjEwNTQ2OS0yOS41NzAzMTN6bTEzNC43Njk1MzEtNzcuNzUgNy4zNzg5MDcgNC4zNzEwOTNjMzEgMTguMzk4NDM4IDY2LjU0Mjk2OSAyOC4xMjg5MDcgMTAyLjc4OTA2MiAyOC4xNDg0MzhoLjA3ODEyNWMxMTEuMzA0Njg4IDAgMjAxLjg5ODQzOC05MC41NzgxMjUgMjAxLjk0NTMxMy0yMDEuOTAyMzQ0LjAxOTUzMS01My45NDkyMTgtMjAuOTY0ODQ0LTEwNC42Nzk2ODctNTkuMDkzNzUtMTQyLjgzOTg0NC0zOC4xMzI4MTMtMzguMTYwMTU2LTg4LjgzMjAzMS01OS4xODc1LTE0Mi43NzczNDQtNTkuMjEwOTM3LTExMS4zOTQ1MzEgMC0yMDEuOTg0Mzc1IDkwLjU2NjQwNi0yMDIuMDI3MzQ0IDIwMS44ODY3MTktLjAxNTYyNSAzOC4xNDg0MzcgMTAuNjU2MjUgNzUuMjk2ODc1IDMwLjg3NSAxMDcuNDQ1MzEybDQuODA0Njg4IDcuNjQwNjI1LTIwLjQwNjI1IDc0LjV6bTAgMCIvPjxwYXRoIGQ9Im0xOTUuMTgzNTk0IDE1Mi4yNDYwOTRjLTQuNTQ2ODc1LTEwLjEwOTM3NS05LjMzNTkzOC0xMC4zMTI1LTEzLjY2NDA2My0xMC40ODgyODItMy41MzkwNjItLjE1MjM0My03LjU4OTg0My0uMTQ0NTMxLTExLjYzMjgxMi0uMTQ0NTMxLTQuMDQ2ODc1IDAtMTAuNjI1IDEuNTIzNDM4LTE2LjE4NzUgNy41OTc2NTctNS41NjY0MDcgNi4wNzQyMTgtMjEuMjUzOTA3IDIwLjc2MTcxOC0yMS4yNTM5MDcgNTAuNjMyODEyIDAgMjkuODc1IDIxLjc1NzgxMyA1OC43MzgyODEgMjQuNzkyOTY5IDYyLjc5Mjk2OSAzLjAzNTE1NyA0LjA1MDc4MSA0MiA2Ny4zMDg1OTMgMTAzLjcwNzAzMSA5MS42NDQ1MzEgNTEuMjg1MTU3IDIwLjIyNjU2MiA2MS43MTg3NSAxNi4yMDMxMjUgNzIuODUxNTYzIDE1LjE5MTQwNiAxMS4xMzI4MTMtMS4wMTE3MTggMzUuOTE3OTY5LTE0LjY4NzUgNDAuOTc2NTYzLTI4Ljg2MzI4MSA1LjA2MjUtMTQuMTc1NzgxIDUuMDYyNS0yNi4zMjQyMTkgMy41NDI5NjgtMjguODY3MTg3LTEuNTE5NTMxLTIuNTI3MzQ0LTUuNTY2NDA2LTQuMDQ2ODc2LTExLjYzNjcxOC03LjA4MjAzMi02LjA3MDMxMy0zLjAzNTE1Ni0zNS45MTc5NjktMTcuNzI2NTYyLTQxLjQ4NDM3Ni0xOS43NS01LjU2NjQwNi0yLjAyNzM0NC05LjYxMzI4MS0zLjAzNTE1Ni0xMy42NjAxNTYgMy4wNDI5NjktNC4wNTA3ODEgNi4wNzAzMTMtMTUuNjc1NzgxIDE5Ljc0MjE4Ny0xOS4yMTg3NSAyMy43ODkwNjMtMy41NDI5NjggNC4wNTg1OTMtNy4wODU5MzcgNC41NjY0MDYtMTMuMTU2MjUgMS41MjczNDMtNi4wNzAzMTItMy4wNDI5NjktMjUuNjI1LTkuNDQ5MjE5LTQ4LjgyMDMxMi0zMC4xMzI4MTItMTguMDQ2ODc1LTE2LjA4OTg0NC0zMC4yMzQzNzUtMzUuOTY0ODQ0LTMzLjc3NzM0NC00Mi4wNDI5NjktMy41MzkwNjItNi4wNzAzMTItLjA1ODU5NC05LjA3MDMxMiAyLjY2Nzk2OS0xMi4zODY3MTkgNC45MTAxNTYtNS45NzI2NTYgMTMuMTQ4NDM3LTE2LjcxMDkzNyAxNS4xNzE4NzUtMjAuNzU3ODEyIDIuMDIzNDM3LTQuMDU0Njg4IDEuMDExNzE4LTcuNTk3NjU3LS41MDM5MDYtMTAuNjM2NzE5LTEuNTE5NTMyLTMuMDM1MTU2LTEzLjMyMDMxMy0zMy4wNTg1OTQtMTguNzE0ODQ0LTQ1LjA2NjQwNnptMCAwIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiLz48L2c+PC9zdmc+" />
                         </div>
                         <div class="mt-1 flex justify-center">WhatsApp</div>
-                     </a>
+                        </a>
                 </div>
                 <div>
                     <a  href="javascript:windowTelegram('{{$campaign->title}}', '{{$campaign->slug}}')">
                         <div class="flex justify-center">
-                             <img class="h-10" src="data:image/svg+xml;base64,PHN2ZyBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCAyNCAyNCIgaGVpZ2h0PSI1MTIiIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjUxMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiBmaWxsPSIjMDM5YmU1IiByPSIxMiIvPjxwYXRoIGQ9Im01LjQ5MSAxMS43NCAxMS41Ny00LjQ2MWMuNTM3LS4xOTQgMS4wMDYuMTMxLjgzMi45NDNsLjAwMS0uMDAxLTEuOTcgOS4yODFjLS4xNDYuNjU4LS41MzcuODE4LTEuMDg0LjUwOGwtMy0yLjIxMS0xLjQ0NyAxLjM5NGMtLjE2LjE2LS4yOTUuMjk1LS42MDUuMjk1bC4yMTMtMy4wNTMgNS41Ni01LjAyM2MuMjQyLS4yMTMtLjA1NC0uMzMzLS4zNzMtLjEyMWwtNi44NzEgNC4zMjYtMi45NjItLjkyNGMtLjY0My0uMjA0LS42NTctLjY0My4xMzYtLjk1M3oiIGZpbGw9IiNmZmYiLz48L3N2Zz4=" />
+                                <img class="h-10" src="data:image/svg+xml;base64,PHN2ZyBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCAyNCAyNCIgaGVpZ2h0PSI1MTIiIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjUxMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiBmaWxsPSIjMDM5YmU1IiByPSIxMiIvPjxwYXRoIGQ9Im01LjQ5MSAxMS43NCAxMS41Ny00LjQ2MWMuNTM3LS4xOTQgMS4wMDYuMTMxLjgzMi45NDNsLjAwMS0uMDAxLTEuOTcgOS4yODFjLS4xNDYuNjU4LS41MzcuODE4LTEuMDg0LjUwOGwtMy0yLjIxMS0xLjQ0NyAxLjM5NGMtLjE2LjE2LS4yOTUuMjk1LS42MDUuMjk1bC4yMTMtMy4wNTMgNS41Ni01LjAyM2MuMjQyLS4yMTMtLjA1NC0uMzMzLS4zNzMtLjEyMWwtNi44NzEgNC4zMjYtMi45NjItLjkyNGMtLjY0My0uMjA0LS42NTctLjY0My4xMzYtLjk1M3oiIGZpbGw9IiNmZmYiLz48L3N2Zz4=" />
                         </div>
                         <div class="mt-1 flex justify-center">Telegram</div>
-                     </a>
+                        </a>
                 </div>
                 <div>
                     <a  href="mailto:?subject={{$campaign->title}}  :  yosolidario.com&amp;body=https://www.yosolidario.com/{{$campaign->slug}}" class="keyboard-focusable">
                         <div class=" flex justify-center">
-                           <img class="h-10" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pg0KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE5LjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPg0KPHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSIwIDAgNDkwLjY2NyA0OTAuNjY3IiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA0OTAuNjY3IDQ5MC42Njc7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxwYXRoIHN0eWxlPSJmaWxsOiNGRkQ1NEY7IiBkPSJNNDgwLjQyNywzMi42NDJMMzAxLjAxNCwxNjIuMzQ4bC0yOS40NCwyMS4zMzNjLTE1LjU5NiwxMS41MjItMzYuODg0LDExLjUyMi01Mi40OCwwbC0yOS40NC0yMS4zMzMNCglMMTAuMDI3LDMyLjg1NWM5Ljk5MS0xMy45NzIsMjYuMTMtMjIuMjQxLDQzLjMwNy0yMi4xODdoMzg0QzQ1NC4zODUsMTAuNjgzLDQ3MC40MDEsMTguODUsNDgwLjQyNywzMi42NDJ6Ii8+DQo8Zz4NCgk8cGF0aCBzdHlsZT0iZmlsbDojRkZDMTA3OyIgZD0iTTEwLjAyNywzMi44NTVsMTc5LjYyNywxMjkuNDkzbC0xNzQuMDgsMTc0LjA4QzUuNTc4LDMyNi40MDctMC4wMjUsMzEyLjgyMywwLDI5OC42NjhWNjQuMDAyDQoJCUMtMC4wNDcsNTIuODE4LDMuNDY0LDQxLjkxLDEwLjAyNywzMi44NTV6Ii8+DQoJPHBhdGggc3R5bGU9ImZpbGw6I0ZGQzEwNzsiIGQ9Ik00OTAuNjY3LDY0LjAwMnYyMzQuNjY3YzAuMDI1LDE0LjE1NS01LjU3NywyNy43MzktMTUuNTczLDM3Ljc2bC0xNzQuMDgtMTc0LjA4TDQ4MC40MjcsMzIuNjQyDQoJCUM0ODcuMDg4LDQxLjc0LDQ5MC42NzQsNTIuNzI1LDQ5MC42NjcsNjQuMDAyeiIvPg0KPC9nPg0KPHBhdGggc3R5bGU9ImZpbGw6IzQ1NUE2NDsiIGQ9Ik0zMjAsMzk0LjY2OGMtMTQuMTY1LDAtMjEuMzMzLTEwLjY2Ny0yMS4zMzMtMzJjMC4zNDktMjkuODA3LTIzLjUzMS01NC4yNTItNTMuMzM4LTU0LjYwMQ0KCWMtMjkuODA3LTAuMzQ5LTU0LjI1MiwyMy41MzEtNTQuNjAxLDUzLjMzOGMtMC4zNDksMjkuODA3LDIzLjUzMSw1NC4yNTIsNTMuMzM4LDU0LjYwMWMxNS45NzUsMC4xODcsMzEuMjEyLTYuNzEzLDQxLjYwOS0xOC44NDINCgljNy4wODMsMTIuMTM4LDIwLjI4MiwxOS4zODEsMzQuMzI1LDE4LjgzN2M0Mi42NjcsMCw0Mi42NjctNDAuMTQ5LDQyLjY2Ny01My4zMzNjMC4wMDEtNjQuODAxLTUyLjUzLTExNy4zMzQtMTE3LjMzMS0xMTcuMzM2DQoJUzEyOC4wMDIsMjk3Ljg2MiwxMjgsMzYyLjY2NGMtMC4wMDEsNjQuODAxLDUyLjUzLDExNy4zMzQsMTE3LjMzMSwxMTcuMzM2YzMwLjQ0NSwwLjAwMSw1OS42OTktMTEuODMzLDgxLjU4MS0zMw0KCWM0LjIzNi00LjEyNCw0LjMyNi0xMC45LDAuMjAzLTE1LjEzNmMtNC4xMjQtNC4yMzYtMTAuOS00LjMyNi0xNS4xMzYtMC4yMDNsMCwwYy0zOC4xNjEsMzYuODA3LTk4LjkzNSwzNS43MDktMTM1Ljc0Mi0yLjQ1Mg0KCXMtMzUuNzA5LTk4LjkzNSwyLjQ1Mi0xMzUuNzQyYzM4LjE2MS0zNi44MDcsOTguOTM1LTM1LjcwOSwxMzUuNzQyLDIuNDUyYzE3LjI4NCwxNy45MiwyNi45Myw0MS44NTQsMjYuOTAzLDY2Ljc1DQoJQzM0MS4zMzQsMzg2LjU4MywzMzUuOTU4LDM5NC42NjgsMzIwLDM5NC42Njh6IE0yNDUuMzM0LDM5NC42NjhjLTE3LjY3MywwLTMyLTE0LjMyNy0zMi0zMnMxNC4zMjctMzIsMzItMzJzMzIsMTQuMzI3LDMyLDMyDQoJUzI2My4wMDcsMzk0LjY2OCwyNDUuMzM0LDM5NC42Njh6Ii8+DQo8cGF0aCBzdHlsZT0iZmlsbDojRkZBMDAwOyIgZD0iTTMwMS4wMTQsMTYyLjM0OGwtMjkuNDQsMjEuMzMzYy0xNS41OTYsMTEuNTIyLTM2Ljg4NCwxMS41MjItNTIuNDgsMGwtMjkuNDQtMjEuMzMzbC0xNzQuMDgsMTc0LjA4DQoJYzEwLjAyMSw5Ljk5NiwyMy42MDUsMTUuNTk5LDM3Ljc2LDE1LjU3M0gxMDcuMmM1Ljc3MS03Ni4yODMsNzIuMjg4LTEzMy40NDUsMTQ4LjU3Mi0xMjcuNjc0DQoJYzY4LjI1OSw1LjE2NCwxMjIuNTEsNTkuNDE1LDEyNy42NzQsMTI3LjY3NGg1My44ODhjMTQuMTU1LDAuMDI1LDI3LjczOS01LjU3NywzNy43Ni0xNS41NzNMMzAxLjAxNCwxNjIuMzQ4eiIvPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPC9zdmc+DQo=" />
+                            <img class="h-10" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pg0KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE5LjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPg0KPHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSIwIDAgNDkwLjY2NyA0OTAuNjY3IiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA0OTAuNjY3IDQ5MC42Njc7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxwYXRoIHN0eWxlPSJmaWxsOiNGRkQ1NEY7IiBkPSJNNDgwLjQyNywzMi42NDJMMzAxLjAxNCwxNjIuMzQ4bC0yOS40NCwyMS4zMzNjLTE1LjU5NiwxMS41MjItMzYuODg0LDExLjUyMi01Mi40OCwwbC0yOS40NC0yMS4zMzMNCglMMTAuMDI3LDMyLjg1NWM5Ljk5MS0xMy45NzIsMjYuMTMtMjIuMjQxLDQzLjMwNy0yMi4xODdoMzg0QzQ1NC4zODUsMTAuNjgzLDQ3MC40MDEsMTguODUsNDgwLjQyNywzMi42NDJ6Ii8+DQo8Zz4NCgk8cGF0aCBzdHlsZT0iZmlsbDojRkZDMTA3OyIgZD0iTTEwLjAyNywzMi44NTVsMTc5LjYyNywxMjkuNDkzbC0xNzQuMDgsMTc0LjA4QzUuNTc4LDMyNi40MDctMC4wMjUsMzEyLjgyMywwLDI5OC42NjhWNjQuMDAyDQoJCUMtMC4wNDcsNTIuODE4LDMuNDY0LDQxLjkxLDEwLjAyNywzMi44NTV6Ii8+DQoJPHBhdGggc3R5bGU9ImZpbGw6I0ZGQzEwNzsiIGQ9Ik00OTAuNjY3LDY0LjAwMnYyMzQuNjY3YzAuMDI1LDE0LjE1NS01LjU3NywyNy43MzktMTUuNTczLDM3Ljc2bC0xNzQuMDgtMTc0LjA4TDQ4MC40MjcsMzIuNjQyDQoJCUM0ODcuMDg4LDQxLjc0LDQ5MC42NzQsNTIuNzI1LDQ5MC42NjcsNjQuMDAyeiIvPg0KPC9nPg0KPHBhdGggc3R5bGU9ImZpbGw6IzQ1NUE2NDsiIGQ9Ik0zMjAsMzk0LjY2OGMtMTQuMTY1LDAtMjEuMzMzLTEwLjY2Ny0yMS4zMzMtMzJjMC4zNDktMjkuODA3LTIzLjUzMS01NC4yNTItNTMuMzM4LTU0LjYwMQ0KCWMtMjkuODA3LTAuMzQ5LTU0LjI1MiwyMy41MzEtNTQuNjAxLDUzLjMzOGMtMC4zNDksMjkuODA3LDIzLjUzMSw1NC4yNTIsNTMuMzM4LDU0LjYwMWMxNS45NzUsMC4xODcsMzEuMjEyLTYuNzEzLDQxLjYwOS0xOC44NDINCgljNy4wODMsMTIuMTM4LDIwLjI4MiwxOS4zODEsMzQuMzI1LDE4LjgzN2M0Mi42NjcsMCw0Mi42NjctNDAuMTQ5LDQyLjY2Ny01My4zMzNjMC4wMDEtNjQuODAxLTUyLjUzLTExNy4zMzQtMTE3LjMzMS0xMTcuMzM2DQoJUzEyOC4wMDIsMjk3Ljg2MiwxMjgsMzYyLjY2NGMtMC4wMDEsNjQuODAxLDUyLjUzLDExNy4zMzQsMTE3LjMzMSwxMTcuMzM2YzMwLjQ0NSwwLjAwMSw1OS42OTktMTEuODMzLDgxLjU4MS0zMw0KCWM0LjIzNi00LjEyNCw0LjMyNi0xMC45LDAuMjAzLTE1LjEzNmMtNC4xMjQtNC4yMzYtMTAuOS00LjMyNi0xNS4xMzYtMC4yMDNsMCwwYy0zOC4xNjEsMzYuODA3LTk4LjkzNSwzNS43MDktMTM1Ljc0Mi0yLjQ1Mg0KCXMtMzUuNzA5LTk4LjkzNSwyLjQ1Mi0xMzUuNzQyYzM4LjE2MS0zNi44MDcsOTguOTM1LTM1LjcwOSwxMzUuNzQyLDIuNDUyYzE3LjI4NCwxNy45MiwyNi45Myw0MS44NTQsMjYuOTAzLDY2Ljc1DQoJQzM0MS4zMzQsMzg2LjU4MywzMzUuOTU4LDM5NC42NjgsMzIwLDM5NC42Njh6IE0yNDUuMzM0LDM5NC42NjhjLTE3LjY3MywwLTMyLTE0LjMyNy0zMi0zMnMxNC4zMjctMzIsMzItMzJzMzIsMTQuMzI3LDMyLDMyDQoJUzI2My4wMDcsMzk0LjY2OCwyNDUuMzM0LDM5NC42Njh6Ii8+DQo8cGF0aCBzdHlsZT0iZmlsbDojRkZBMDAwOyIgZD0iTTMwMS4wMTQsMTYyLjM0OGwtMjkuNDQsMjEuMzMzYy0xNS41OTYsMTEuNTIyLTM2Ljg4NCwxMS41MjItNTIuNDgsMGwtMjkuNDQtMjEuMzMzbC0xNzQuMDgsMTc0LjA4DQoJYzEwLjAyMSw5Ljk5NiwyMy42MDUsMTUuNTk5LDM3Ljc2LDE1LjU3M0gxMDcuMmM1Ljc3MS03Ni4yODMsNzIuMjg4LTEzMy40NDUsMTQ4LjU3Mi0xMjcuNjc0DQoJYzY4LjI1OSw1LjE2NCwxMjIuNTEsNTkuNDE1LDEyNy42NzQsMTI3LjY3NGg1My44ODhjMTQuMTU1LDAuMDI1LDI3LjczOS01LjU3NywzNy43Ni0xNS41NzNMMzAxLjAxNCwxNjIuMzQ4eiIvPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPC9zdmc+DQo=" />
                         </div>
                         <div class="mt-1 flex justify-center">Email</div>
                     </a>
+                </div>
+                <div>
+                    <div @click="rrss = false, embed = true" class="cursor-pointer keyboard-focusable">
+                        <div class=" flex justify-center">
+                            <img  class="h-10" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pg0KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE5LjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPg0KPHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNTEyIDUxMjsiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPGc+DQoJPGc+DQoJCTxnPg0KCQkJPHBhdGggZD0iTTMxNS4zNiw0LjY0QzMxMi4zNDEsMS42NDUsMzA4LjI1My0wLjAyNCwzMDQsMEg0OEMyMS40OSwwLDAsMjEuNDkxLDAsNDh2NDE2YzAsMjYuNTEsMjEuNDksNDgsNDgsNDhoMTEydi0zMkg0OA0KCQkJCWMtOC44MzcsMC0xNi03LjE2My0xNi0xNlY0OGMwLTguODM3LDcuMTYzLTE2LDE2LTE2aDI0MHY2NGMwLDE3LjY3MywxNC4zMjcsMzIsMzIsMzJoNjR2NDhoMzJ2LTY0DQoJCQkJYzAuMDI1LTQuMjUzLTEuNjQ1LTguMzQxLTQuNjQtMTEuMzZMMzE1LjM2LDQuNjR6Ii8+DQoJCQk8cG9seWdvbiBwb2ludHM9IjE3NiwyODggMjA4LDI4OCAyMDgsNDE2IDI0MCw0MTYgMjQwLDI4OCAyNzIsMjg4IDI3MiwyNTYgMTc2LDI1NiAJCQkiLz4NCgkJCTxwb2x5Z29uIHBvaW50cz0iMTI4LDMyMCA5NiwzMjAgOTYsMjU2IDY0LDI1NiA2NCw0MTYgOTYsNDE2IDk2LDM1MiAxMjgsMzUyIDEyOCw0MTYgMTYwLDQxNiAxNjAsMjU2IDEyOCwyNTYgCQkJIi8+DQoJCQk8cGF0aCBkPSJNNDA2LjA4LDI1Ny4yOGMtNS45OS0yLjQ2NS0xMi44NzUtMS4wNzUtMTcuNDQsMy41MkwzNTIsMjk3LjQ0bC0zNi42NC0zNi42NGMtNi4yMjMtNi4yNzQtMTYuMzUzLTYuMzE2LTIyLjYyNy0wLjA5Mw0KCQkJCWMtMy4wMTMsMi45ODgtNC43MTUsNy4wNS00LjczMywxMS4yOTN2MTQ0aDMyVjMxMC41NmwyMC42NCwyMC42NGM2LjI0MSw2LjIwNCwxNi4zMTksNi4yMDQsMjIuNTYsMGwyMC44LTIwLjY0VjQxNmgzMlYyNzINCgkJCQlDNDE1Ljk2OCwyNjUuNTQxLDQxMi4wNTUsMjU5LjczNSw0MDYuMDgsMjU3LjI4eiIvPg0KCQkJPHBhdGggZD0iTTQ2NCwzODRWMjU2aC0zMnYxNDRjMCw4LjgzNyw3LjE2MywxNiwxNiwxNmg2NHYtMzJINDY0eiIvPg0KCQk8L2c+DQoJPC9nPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPC9zdmc+DQo=" />
+                        </div>
+                        <div class="mt-1 flex justify-center">{{__('Ember HTML')}}</div>
+                    </div>
                 </div>
                 <div>
                     <div class="cursor-pointer">
@@ -130,7 +113,7 @@
                 <span class="material-icons-outlined text-sm mr-1">content_copy</span>
                 {{__('Copy link')}}
             </x-secondary-button>
-            
+        
             <div wire:click="messageCopy" class="mt-3 bg-red-50 p-3 cursor-pointer rounded-sm" onclick="copyToClipboard('p1')">
                 <div class="flex justify-center space-x-1">
                     <span class="font-bold">{{__('Tip')}} </span>
@@ -144,23 +127,36 @@
                 </div>
             </div>
 
-            <!-- embed html -->
-            @else 
-            
+        </div>
+        <!-- embed html -->
+        
+        <div x-show="embed">
+
+            <div class="flex items-center space-x-2">
+                <div @click="rrss = true, embed = false" class="flex spacex-1 px-2 py-1 bg-red-50 items-center w-20 cursor-pointer rounded-sm">
+                    <span class="material-icons-outlined text-lg">arrow_back_ios</span>
+                    <span>{{__('Back')}}</span>
+                </div>
+                <div class="font-bold text-2xl">{{__('Ember HTML')}}</div>
+            </div>
+
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-3">
                 <div class="py-3 w-full">
                     <div>
-                        <input wire:model="widget" name="widget" type="radio" value="large" />
+                        <input wire:model="widget" name="widget" type="radio" value="large" 
+                        class="rounded-full h-5 w-5 border-green-500 text-green-600 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50"/>
                         <span class="ml-1"> {{__('Large')}}</span>
                     </div>
                     <div class="mt-4">
-                        <input wire:model="widget" name="widget" type="radio" value="medium" />
+                        <input wire:model="widget" name="widget" type="radio" value="medium"
+                        class="rounded-full h-5 w-5 border-green-500 text-green-600 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50" />
                         <span class="ml-1">{{__('Medium')}}</span>
                     </div>
                     <div class="mt-4">
-                        <input wire:model="widget" name="widget" type="radio" value="small" />
+                        <input wire:model="widget" name="widget" type="radio" value="small"
+                        class="rounded-full h-5 w-5 border-green-500 text-green-600 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50" />
                         <span class="ml-1">{{__('Small')}}</span>
-                    </div>
+                    </div> 
                     <x-section-border />
                     <div class="w-full mt-3 sm:mt-0">
                         <x-label for="copyLarge" value="{{ __('Copy and paste the following embed code') }}" />
@@ -184,57 +180,60 @@
                     @endif
                 </div>
             </div>
-            @endif
-            <script> 
-                var myWidth = 1050;
-                var myHeight = 550;
-                var left = (screen.width - myWidth) / 2;
-                var top = (screen.height - myHeight) / 4;
-    
-                function windowTwitter (title, slug){ 
-                    var myURL = "https://twitter.com/intent/tweet?text="+title+" https://www.yosolidario.com/"+slug+"";
-                    windowOpen(myURL, title);
-                }
-                function windowFacebook(title, slug){ 
-                    FB.ui({
-                        method: 'share',
-                        href: "https://www.yosolidario.com/"+slug,
-                        }, function(response){});
-                    //var myURL = "https://www.facebook.com/sharer/sharer.php?u=https://www.yosolidario.com/"+slug+"&src=sdkpreparse";
-                    windowOpen(myURL, title);
-                } 
-                function windowWhatsApp(title, slug){ 
-                    var myURL = "https://wa.me/?text=https://www.yosolidario.com/"+slug+"";
-                    windowOpen(myURL, title);
-                }
-                function windowTelegram(title, slug){ 
-                    var myURL = "https://t.me/share/url?url=https://www.yosolidario.com/"+slug+"&text="+title+"";
-                    windowOpen(myURL, title);
-                }
-                function windowMessenger(title, slug){ 
-                    FB.ui({
-                        method: 'send',
-                        link: "https://www.yosolidario.com/"+slug,
-                        });
-                    //var myURL = "https://www.facebook.com/v7.0/dialog/send?app_id=407682420960&channel_url=https%3A%2F%2Fstaticxx.facebook.com%2Fx%2Fconnect%2Fxd_arbiter%2F%3Fversion%3D46%23cb%3Df671437134a888%26domain%3Dwww.gofundme.com%26origin%3Dhttps%253A%252F%252Fwww.gofundme.com%252Ff1e014553c66d74%26relation%3Dopener&display=popup&e2e=%7B%7D&fallback_redirect_uri=https%3A%2F%2Fwww.gofundme.com%2Fshare%2Fs%2Fshare-family-friends%2Fmano-con-mano-por-gaby&link=https%3A%2F%2Fwww.gofundme.com%2Ff%2Fmano-con-mano-por-gaby%3Futm_source%3Dmessenger%26utm_medium%3Dsocial%26utm_campaign%3Dp_cf%2Bshare-flow-1&locale=en_US&next=https%3A%2F%2Fstaticxx.facebook.com%2Fx%2Fconnect%2Fxd_arbiter%2F%3Fversion%3D46%23cb%3Dfc4bc0116622d%26domain%3Dwww.gofundme.com%26origin%3Dhttps%253A%252F%252Fwww.gofundme.com%252Ff1e014553c66d74%26relation%3Dopener%26frame%3Df32a0c8523ea0bc%26result%3D%2522xxRESULTTOKENxx%2522&sdk=joey&version=v7.0";
-                    //var myURL = "http://www.facebook.com/dialog/send?app_id=123456789&amp;link=http://www.nytimes.com/interactive/2015/04/15/travel/europe-favorite-streets.html&amp;redirect_uri=https://www.domain.com/";
-                    //windowOpen(myURL, title);
-                }
-                function windowOpen(myURL, title) {
-                    var myWindow = window.open(myURL, title, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=' + myWidth + ', height=' + myHeight + ', top=' + top + ', left=' + left);
-                } 
-                function copyToClipboard(id_element) {
-                    var aux = document.createElement("input");
-                    aux.setAttribute("value", document.getElementById(id_element).innerHTML);
-                    document.body.appendChild(aux);
-                    aux.select();
-                    document.execCommand("copy");
-                    document.body.removeChild(aux);
-                }
-            </script>
-        </x-slot>
-        <x-slot name="footer">
-            
-        </x-slot>
-    </x-dialog-modal>
-</div>
+
+        </div>
+        
+        </div>
+        
+        @endif
+
+        <script> 
+            var myWidth = 1050;
+            var myHeight = 550;
+            var left = (screen.width - myWidth) / 2;
+            var top = (screen.height - myHeight) / 4;
+
+            function windowTwitter (title, slug){ 
+                var myURL = "https://twitter.com/intent/tweet?text="+title+" https://www.yosolidario.com/"+slug+"";
+                windowOpen(myURL, title);
+            }
+            function windowFacebook(title, slug){ 
+                FB.ui({
+                    method: 'share',
+                    href: "https://www.yosolidario.com/"+slug,
+                    }, function(response){});
+                //var myURL = "https://www.facebook.com/sharer/sharer.php?u=https://www.yosolidario.com/"+slug+"&src=sdkpreparse";
+                windowOpen(myURL, title);
+            } 
+            function windowWhatsApp(title, slug){ 
+                var myURL = "https://wa.me/?text=https://www.yosolidario.com/"+slug+"";
+                windowOpen(myURL, title);
+            }
+            function windowTelegram(title, slug){ 
+                var myURL = "https://t.me/share/url?url=https://www.yosolidario.com/"+slug+"&text="+title+"";
+                windowOpen(myURL, title);
+            }
+            function windowMessenger(title, slug){ 
+                FB.ui({
+                    method: 'send',
+                    link: "https://www.yosolidario.com/"+slug,
+                    });
+                //var myURL = "https://www.facebook.com/v7.0/dialog/send?app_id=407682420960&channel_url=https%3A%2F%2Fstaticxx.facebook.com%2Fx%2Fconnect%2Fxd_arbiter%2F%3Fversion%3D46%23cb%3Df671437134a888%26domain%3Dwww.gofundme.com%26origin%3Dhttps%253A%252F%252Fwww.gofundme.com%252Ff1e014553c66d74%26relation%3Dopener&display=popup&e2e=%7B%7D&fallback_redirect_uri=https%3A%2F%2Fwww.gofundme.com%2Fshare%2Fs%2Fshare-family-friends%2Fmano-con-mano-por-gaby&link=https%3A%2F%2Fwww.gofundme.com%2Ff%2Fmano-con-mano-por-gaby%3Futm_source%3Dmessenger%26utm_medium%3Dsocial%26utm_campaign%3Dp_cf%2Bshare-flow-1&locale=en_US&next=https%3A%2F%2Fstaticxx.facebook.com%2Fx%2Fconnect%2Fxd_arbiter%2F%3Fversion%3D46%23cb%3Dfc4bc0116622d%26domain%3Dwww.gofundme.com%26origin%3Dhttps%253A%252F%252Fwww.gofundme.com%252Ff1e014553c66d74%26relation%3Dopener%26frame%3Df32a0c8523ea0bc%26result%3D%2522xxRESULTTOKENxx%2522&sdk=joey&version=v7.0";
+                //var myURL = "http://www.facebook.com/dialog/send?app_id=123456789&amp;link=http://www.nytimes.com/interactive/2015/04/15/travel/europe-favorite-streets.html&amp;redirect_uri=https://www.domain.com/";
+                //windowOpen(myURL, title);
+            }
+            function windowOpen(myURL, title) {
+                var myWindow = window.open(myURL, title, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=' + myWidth + ', height=' + myHeight + ', top=' + top + ', left=' + left);
+            } 
+            function copyToClipboard(id_element) {
+                var aux = document.createElement("input");
+                aux.setAttribute("value", document.getElementById(id_element).innerHTML);
+                document.body.appendChild(aux);
+                aux.select();
+                document.execCommand("copy");
+                document.body.removeChild(aux);
+            }
+        </script>
+    </x-slot>
+
+</x-dialog-modal>

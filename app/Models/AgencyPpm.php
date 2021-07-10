@@ -14,6 +14,7 @@ class AgencyPpm extends Model
     protected $fillable = [
         'agency_pp_id',
         'payment_method',
+        'code',
         'money_id',
         'range_of',
         'range_up_to',

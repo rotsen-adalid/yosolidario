@@ -14,9 +14,8 @@
     <fieldset>
         <form id="FormCliente" >
             @csrf
-            
             <label for=""> PedidoDeVenta: </label>
-            <input type="number" name="PedidoDeVenta" value="{{$data->id_transaction}}" >
+            <input type="text" name="PedidoDeVenta" value="{{$data->code_collection}}" >
             <br>
             <label for=""> Email: </label>
             <input type="text" name="Email" value="{{$data->email}}" >

@@ -19,20 +19,27 @@ class PersonalInformation extends Model
         'identification_exp',
         'identification_obverse_path',
         'identification_back_path',
-        'telephone',
-        'telephone_movil',
+        'fecha_nacimiento',
+        'phone',
+        'phone_prefix',
+        'phone_movil',
+        'phone_movil_prefix',
         'email',
         'address',
+        'tipo_domicilio',
         'longitude',
-        'latigude',
+        'latitude',
         'locality',
         'face_path',
         'address_document_path',
         'marital_status',
         'gender',
         'reference_contact',
+        'observations',
+
         'user_id',
         'country_id',
+        'country_state_id',
         'agency_id',
         'status',
         'search'
@@ -46,9 +53,13 @@ class PersonalInformation extends Model
     public function bank() {
         return $this->belongsTo(Bank::class);
     }
-    // uno a uno inversa
+    // uno a muchos inversa
     public function country() {
         return $this->belongsTo(Country::class);
+    }
+    // uno a muchos inversa
+    public function countryState() {
+        return $this->belongsTo(CountryState::class);
     }
     // uno a uno inversa
     public function agency() {

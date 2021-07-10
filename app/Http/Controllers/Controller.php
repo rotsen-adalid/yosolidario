@@ -20,4 +20,9 @@ class Controller extends BaseController
         session()->put('locale', $lang);
         return back();
     }
+
+    public function  sessionCurrenty()
+    {
+        
+    }
 }

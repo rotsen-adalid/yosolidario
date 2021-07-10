@@ -1,4 +1,4 @@
-<div class="shadow-lg rounded-lg overflow-hidden p-5 border  sm:mt-10">
+<div class="overflow-hidden  sm:mt-5">
     <div class="flex justify-start">
         <div class="flex items-center ">
             <div class="flex-shrink-0 w-12 h-12 cursor-pointer">

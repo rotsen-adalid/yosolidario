@@ -27,21 +27,20 @@ class PaymentOrder extends Model
         'phone',
         'show_name',
         'commentary',
+        'commentary_hidden',
 
         'amount_total',
-        'amount_collaborator',
+        'amount_user',
         'amount_yosolidario',
         'amount_percentage_yosolidario',
         
         'payment_method',
         'money_id',
-        'campaign_id',
         'agency_id',
-        'agency_pp_id',
         'user_id',
         'type_user',
-        'campaign_reward_id',
-        'type_collaboration',
+        'type',
+        'status_transaction',
         'status',
         'search'
     ];
@@ -52,33 +51,13 @@ class PaymentOrder extends Model
     }
 
     // uno a uno inversa
-    public function agencyPp() {
-        return $this->belongsTo(AgencyPp::class);
-    }
-
-    // uno a uno inversa
     public function user() {
         return $this->belongsTo(User::class);
     }
 
     // uno a uno inversa
-    public function campaignReward() {
-        return $this->belongsTo(CampaignReward::class);
-    }
-
-    // uno a muchos 
-    public function pagosnetRegistroplans() {
-        return $this->hasMany(PagosnetRegistroplan::class);
-    }
-
-    // uno a uno inversa
     public function money() {
         return $this->belongsTo(Money::class);
-    }
-
-    // uno a uno inversa
-    public function campaign() {
-        return $this->belongsTo(Campaign::class);
     }
 
     // uno a muchos inversa
@@ -89,6 +68,24 @@ class PaymentOrder extends Model
     // uno a muchos inversa
     public function countryState() {
         return $this->belongsTo(CountryState::class);
+    }
+
+    // uno a uno 
+    public function paymentOrderCampaign()
+    {
+        return $this->hasOne(PaymentOrderCampaign::class);
+    }
+
+    // uno a uno 
+    public function paymentOrderOrganization()
+    {
+        return $this->hasOne(PaymentOrderOrganization::class);
+    }
+
+    // uno a uno 
+    public function collection()
+    {
+        return $this->hasOne(Collection::class);
     }
 
     // relacion polimorfica uno a muchos

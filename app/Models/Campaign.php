@@ -27,6 +27,7 @@ class Campaign extends Model
         //'extract_pt_BR',
         'type_campaign',
         'period',
+        'date_expiration',
 
         'views',
         'collaborators',
@@ -46,6 +47,7 @@ class Campaign extends Model
 
         'search',
         
+        'type',
         'status',
         'status_register',
     ];
@@ -93,6 +95,10 @@ class Campaign extends Model
     public function campaignQuestion() {
         return $this->hasOne(CampaignQuestion::class);
     }
+    // uno a uno
+    public function campaignPage() {
+        return $this->hasOne(CampaignPage::class);
+    }    
     // uno a muchos 
     public function campaignReward() {
         return $this->hasMany(CampaignReward::class);
@@ -115,8 +121,8 @@ class Campaign extends Model
     }
 
     // uno a muchos 
-    public function paymentOrders() {
-        return $this->hasMany(PaymentOrder::class);
+    public function paymentOrderCampaigns() {
+        return $this->hasMany(PaymentOrderCampaign::class);
     }
 
     // relacion polimorfica uno a uno
@@ -138,6 +144,11 @@ class Campaign extends Model
         return $this->morphOne(Image::class, 'telegramable');
     }
     
+    // uno a uno
+    public function campaignSharing() {
+        return $this->hasOne(CampaignSharing::class);
+    }
+
     // relacion polimorfica uno a muchos
     public function userHistories() {
         return $this->morphMany(UserHistory::class, 'userhistoriesable');

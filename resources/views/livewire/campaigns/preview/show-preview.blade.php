@@ -22,6 +22,7 @@
 </x-slot>
 <x-slot  name="menu">
     <livewire:menu.navigation-preview :campaign="$campaign"/>
+    <livewire:campaigns.create.send-review :campaign="$campaign"/>
 </x-slot>
       
 <div class="bg-white">
@@ -35,7 +36,8 @@
             <div class="mt-4 text-2xl text-2xl sm:text-4xl font-bold text-black text-center">
                 {!! nl2br(e($this->campaign->title), false) !!}
             </div>
-        
+
+            @if ($this->campaign->type_campaign == 'PERSONAL' or $this->campaign->type_campaign == 'PERSONAL_ORGANIZATION')
             <div class="mt-4 text-gray-500 text-sm sm:text-base mb-2 sm:mb-0">
                 <span class="text-ys1 font-bold capitalize">
                     {!! nl2br(e($this->campaign->locality), false) !!} - 
@@ -44,12 +46,13 @@
                     {!! nl2br(e($this->campaign->extract), false) !!}
                 </span>
             </div>
+            @endif
         </div>
 
         <!----- show preview--- -->
 
         <div class="hidden lg:flex lg:items-center">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-10 rounded-lg sm:pt-2">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-8 rounded-lg sm:pt-2">
                 <div class="lg:col-span-2">
                     <livewire:campaigns.preview.cover-page-preview :campaign="$campaign"/>
                     <!-- --> 
@@ -59,25 +62,27 @@
                                 <div 
                                     x-data="{
                                     openTab: window.location.hash ? window.location.hash.substring(1) : 'about',
-                                    activeClasses: 'bg-white shadow border-b border-ys1 text-ys1 ',
+                                    activeClasses: 'bg-white shadow border-b-4 border-ys1 text-ys1 ',
                                     inactiveClasses: 'hover:text-green-500'
                                     }" 
                                     class="py-6 "
                                 >
-                                <ul class="flex border-b shadow overflow-x-auto overflow-y-hidden" >
+                                <ul class="flex border-b border-ys1 shadow-l-none shadow-r-none overflow-x-auto overflow-y-hidden" >
                                     <li @click.prevent="openTab = 'about'; window.location.hash = 'about'" :class="{ '-mb-px': openTab === 'about' }" class="-mb-px mr-1">
                                         <a :class="openTab === 'about' ? activeClasses : inactiveClasses" 
                                         class="bg-white inline-block py-3 px-5 font-semibold" href="#">
                                         {{__('About')}}
                                     </a>
                                     </li>
-                                    <li class="md:hidden" @click.prevent="openTab = 'rewards'; window.location.hash = 'rewards'" :class="{ '-mb-px': openTab === 'rewards' }" class="mr-1">
+                                    @if($this->campaign->campaignReward->count() > 0)
+                                    <li @click.prevent="openTab = 'rewards'; window.location.hash = 'rewards'" :class="{ '-mb-px': openTab === 'rewards' }" class="mr-1">
                                         <a :class="openTab === 'rewards' ? activeClasses : inactiveClasses" 
                                         class="bg-white inline-block py-3 px-5 font-semibold" href="#">
                                             {{__('Rewards')}}
                                         </a>
                                     </li>
-                                    <li @click.prevent="openTab = 'updates'; window.location.hash = 'updates'" :class="{ '-mb-px': openTab === 'updates' }" class="mr-1">
+                                    @endif
+                                    <li  @click.prevent="openTab = 'updates'; window.location.hash = 'updates'" :class="{ '-mb-px': openTab === 'updates' }" class="mr-1">
                                         <a :class="openTab === 'updates' ? activeClasses : inactiveClasses" 
                                         class="bg-white inline-block py-3 px-5 font-semibold" href="#">
                                             {{__('Updates')}}
@@ -101,6 +106,11 @@
                                     <div x-show="openTab === 'about'">
                                     <livewire:campaigns.preview.about-preview :campaign="$campaign"/>
                                     </div>
+                                    @if($this->campaign->campaignReward->count() > 0)
+                                    <div x-show="openTab === 'rewards'">
+                                        <livewire:campaigns.preview.rewards-preview :campaign="$campaign"/>
+                                    </div>
+                                    @endif
                                     <div x-show="openTab === 'updates'">
                                     <livewire:campaigns.preview.updates-preview :campaign="$campaign"/>
                                     </div>
@@ -121,15 +131,19 @@
     
                 <div class="">
                     <!-- organizer -->
-                    <livewire:campaigns.preview.organizer-preview :campaign="$campaign"/>
-                    <livewire:campaigns.preview.counters-preview :campaign="$campaign"/>
-                    <livewire:campaigns.preview.important-collaborations-preview :campaign="$campaign"/>
-                    <div class="mt-10">
-                        <!-- rewards -->
-                        <div class="hidden md:block">
-                            <livewire:campaigns.preview.rewards-preview :campaign="$campaign"/>
+                    @if ($this->campaign->type_campaign == 'PERSONAL' or $this->campaign->type_campaign == 'PERSONAL_ORGANIZATION')
+                        <livewire:campaigns.preview.organizer-preview :campaign="$campaign"/>
+                        <div class="o-campaign-sidebar shadow-lg border border-gray-100 p-5 rounded mt-5 mb-10">
+                            <livewire:campaigns.preview.counters-preview :campaign="$campaign"/>
+                            <livewire:campaigns.preview.important-collaborations-preview :campaign="$campaign"/>
                         </div>
-                    </div>
+                    @elseif ($this->campaign->type_campaign == 'ORGANIZATION')
+                        <div class="o-campaign-sidebar shadow-lg border border-gray-100 p-5 rounded mt-0 mb-10">
+                            <livewire:campaigns.preview.counters-preview :campaign="$campaign"/>
+                            <livewire:campaigns.preview.organizer-preview :campaign="$campaign"/>
+                            <livewire:campaigns.preview.important-collaborations-preview :campaign="$campaign"/>
+                        </div>
+                    @endif
                 </div>
     
             </div>
@@ -146,18 +160,30 @@
             <div class="mt-5">
                 <livewire:campaigns.preview.organizer-preview :campaign="$campaign"/>
             </div>
+            <div class="lg:hidden px-4 sm:px-0 text-sm sm:text-sm sm:flex pt-5 justify-center item-center text-black">
+                @if ($this->campaign)
+                  <div>{{__('Created')}}
+                    {{ \Carbon\Carbon::parse($this->campaign->created_at)->diffForHumans() }}
+                  </div>
+                  <span class="mr-2 sm:mx-4 text-gray-400">|</span>    
+                @endif
+                <!-- <span class="material-icons-outlined text-gray-600 text-base">loyalty</span> -->
+                <span class="ml-0">
+                  {{__($this->campaign->categoryCampaign->name)}}
+                </span>
+            </div>
             <div class="">
                 <!-- -->
                 <div class="text-base text-black "> <!--  activeClasses: 'border-l border-t border-r rounded-t text-ys1 font-bold capitalize', -->
                     <div 
                         x-data="{
                         openTab: window.location.hash ? window.location.hash.substring(1) : 'about',
-                        activeClasses: 'bg-white shadow border-b border-ys1 text-ys1 ',
+                        activeClasses: 'bg-white shadow border-b-4 border-ys1 text-ys1 ',
                         inactiveClasses: 'hover:text-green-500'
                         }" 
                         class="py-6 "
                     >
-                    <ul class="flex border-b shadow overflow-x-auto overflow-y-hidden" >
+                    <ul class="flex border-b border-ys1 shadow-l-none shadow-r-none overflow-x-auto overflow-y-hidden" >
                         <li @click.prevent="openTab = 'about'; window.location.hash = 'about'" :class="{ '-mb-px': openTab === 'about' }" class="-mb-px mr-1">
                             <a :class="openTab === 'about' ? activeClasses : inactiveClasses" 
                             class="bg-white inline-block py-3 px-5 font-semibold" href="#">
@@ -250,3 +276,6 @@
 </x-section-content>
 </div>
 <livewire:footer.footer-app/>
+<style>
+    .o-campaign-sidebar{position:-webkit-sticky;position:sticky;top:1rem}}
+</style>

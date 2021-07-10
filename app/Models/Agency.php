@@ -84,6 +84,12 @@ class Agency extends Model
         return $this->hasMany(PaymentOrder::class);
     }
 
+    // muchos a muchos
+    public function moneys()
+    {
+        return $this->belongsToMany(Money::class)->withTimestamps();
+    }
+
     // relacion polimorfica uno a muchos
     public function userHistories() {
         return $this->morphMany(UserHistory::class, 'userhistoriesable');

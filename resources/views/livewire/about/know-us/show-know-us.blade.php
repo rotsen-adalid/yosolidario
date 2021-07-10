@@ -9,7 +9,7 @@
 </x-slot>
       
 <div class="mt-20">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-20">
+    <div class="max-w-6xl mx-auto px-4 sm:px-4 lg:px-4 mt-20">
         <div>
             {{__('Why YoSolidario?')}}
         </div>

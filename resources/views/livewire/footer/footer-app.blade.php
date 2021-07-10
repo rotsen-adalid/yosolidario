@@ -1,5 +1,5 @@
-<footer class="footer bg-white relative pt-1 border-t border-gray-150 h-full">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<footer class="footer bg-white pt-1 border-t border-gray-150 h-full">
+    <div class="max-w-6xl mx-auto px-4 md:px-4 lg:px-4">
 
         <div class="sm:flex sm:mt-8">
             <div class="mt-8 sm:mt-0 sm:w-full flex flex-col md:flex-row justify-between">
@@ -51,7 +51,7 @@
     </div>
     
     <div class="pt-7">
-        <div class="max-w-7xl mx-auto flex pb-5 pt-5  px-4
+        <div class="max-w-6xl mx-auto flex pb-5 pt-5  px-4
             border-t border-gray-150 text-gray-900  
             flex-col md:flex-row max-w-6xl">
             <div class="mt-2 text-center sm:text-left text-sm">

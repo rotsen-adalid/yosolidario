@@ -6,6 +6,11 @@ use Livewire\Component;
 
 class UpdatesPreview extends Component
 {
+    public function mount()
+    {
+        
+    }
+
     public function render()
     {
         return view('livewire.campaigns.preview.updates-preview');

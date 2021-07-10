@@ -10,6 +10,5 @@ class NotificationCashController extends Controller
     public function index()
     {   
         return redirect()->route('home');
-        
     }
 }

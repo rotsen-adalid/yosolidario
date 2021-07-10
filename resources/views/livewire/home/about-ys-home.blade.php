@@ -1,5 +1,5 @@
 <div>
-    <div class="bannerFondo bg-red-50 bg-left-top bg-auto bg-repeat-x mt-10 sm:mt-10">
+    <div class="bannerFondo bg-left-top bg-auto bg-repeat-x mt-10 sm:mt-10" style="background-color:#fbf8f6">
     </div>
     
         <div class="-mt-72 ">

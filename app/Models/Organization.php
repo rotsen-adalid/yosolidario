@@ -22,14 +22,15 @@ class Organization extends Model
         'identification_path',
         'type',
         'country_id',
+        'country_state_id',
         'agency_id',
         'address',
         'longitude',
         'latigude',
         'locality',
 
-        'telephone',
-        'telephone_movil',
+        'phone',
+        'phone_movil',
         'email',
         'website',
         'references_contact',
@@ -70,8 +71,37 @@ class Organization extends Model
         return $this->morphOne(BankInfo::class, 'bankinfoable');
     }
 
+    // muchos a muchos
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
+
+    // uno a uno 
+    public function organizationProfile()
+    {
+        return $this->hasOne(OrganizationProfile::class);
+    }
+
+    // uno a muchos 
+    public function organizationActivities() {
+        return $this->hasMany(OrganizationActivity::class);
+    }
+    
+    // uno a uno 
+    public function organizationCollected()
+    {
+        return $this->hasOne(OrganizationCollected::class);
+    }
+    
+    // uno a uno
+    public function organizationSession() {
+        return $this->hasOne(OrganizationSession::class);
+    }
+
     // relacion polimorfica uno a muchos
     public function userHistories() {
         return $this->morphMany(UserHistory::class, 'userhistoriesable');
     }
+    
 }

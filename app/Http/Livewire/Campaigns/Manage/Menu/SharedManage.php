@@ -17,7 +17,11 @@ class SharedManage extends Component
     public $message;
     public $buttonShared;
 
-    public function mount(Campaign $campaign, $buttonShared)
+    public $open = false;
+    protected $listeners = ['sharedOpen' => 'sharedOpen'];
+
+
+    public function mount(Campaign $campaign)
     {
         $this->campaign =  $campaign;
         $this->copyLarge = '<iframe src="http://yosolidario.com/'.$campaign->slug.'/widget/large/?iframe=true" height="420></iframe>';
@@ -30,8 +34,6 @@ class SharedManage extends Component
         } elseif($host == 'yosolidario.com') {
             $this->host = 'https://yosolidario.com';
         }
-
-        $this->buttonShared = $buttonShared;
     } 
 
     public function render()
@@ -39,8 +41,8 @@ class SharedManage extends Component
         return view('livewire.campaigns.manage.menu.shared-manage');
     }
 
-    public function shared() {
-        $this->shared = true;
+    public function sharedOpen() {
+        $this->open = true;
     }
     public function messageCopy() {
         $this->emit('message');
